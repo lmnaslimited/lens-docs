@@ -3,8 +3,6 @@ title: Configurator Setup Guide
 description: A detailed guide for setting up the Configurator.
 ---
 
-# Configurator Setup Guide
-
 This guide provides clear steps for setting up the Configurator to test a site with specific doctypes. Follow these instructions to correctly configure your testing environment.
 
 ## Step 1: Add Site Details
@@ -19,7 +17,7 @@ This guide provides clear steps for setting up the Configurator to test a site w
 8. **Save the Site Detail**: Once all fields are completed, save the site details.
 
 
-![Setting up Configurator](/sitedetail.gif)
+![Setting up Configurator](/sitedetails.gif)
 
 ## Step 2: Add a Test Case Configurator
 
