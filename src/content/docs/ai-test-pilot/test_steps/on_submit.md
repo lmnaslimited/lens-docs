@@ -3,6 +3,7 @@ title: On Submit Action Configuration Guide
 description: A guide to understanding and configuring the "On Submit" action in the Configurator.
 ---
 
+## On Submit Action
 
 The "On Submit" action is triggered when a document is submitted. This action is used to perform checks, validations, or updates to the fields before the document is finalized or sent for processing. It ensures that all required fields are properly filled out, any necessary calculations are correct, and the document is ready for submission.
 

@@ -3,6 +3,7 @@ title: System Requirements - LENS AI Test Pilot
 description: Minimum system requirements for using LENS AI Test Pilot.
 ---
 
+## System Requirements
 
 To use LENS AI Test Pilot, your system must meet the following basic requirements:
 

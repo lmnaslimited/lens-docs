@@ -3,6 +3,8 @@ title: Installation Guide - LENS AI Test Pilot
 description: Step-by-step guide to install and set up LENS AI Test Pilot.
 ---
 
+## How to Install LENS AI Test Pilot
+
 Follow these steps to install and set up **LENS AI Test Pilot**.
 
 ### 1. Clone the LENS AI Test Pilot Repository

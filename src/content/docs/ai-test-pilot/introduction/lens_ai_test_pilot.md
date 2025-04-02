@@ -3,6 +3,8 @@ title: LENS AI Test Pilot
 description: Automating Cypress testing for faster development and better quality.
 ---
 
+## What is LENS AI Test Pilot?
+
 LENS AI Test Pilot is a tool that automates the testing of web applications using Cypress. Traditionally, testing was done after development, which caused delays and issues. Now, with LENS AI Test Pilot, you can create automated test scripts *before* development even begins. This allows testing and development to happen at the same time, speeding up the process and improving product quality.
 
 It simplifies the testing process by automating repetitive tasks, allowing both developers and testers to focus on building the software, not on repetitive testing.

@@ -3,6 +3,7 @@ title: On Tab Action Configuration Guide
 description: A guide to understanding and configuring the "On Tab" action in the Configurator.
 ---
 
+## On Tab Action
 
 The "On Tab" action is triggered when a user switches to a specific tab within a document. It allows for specific actions to be performed or validations to be triggered when a tab is selected, helping to ensure that the document is in the correct state as the user navigates through different sections or tabs.
 

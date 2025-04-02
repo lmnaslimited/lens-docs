@@ -3,6 +3,7 @@ title: On Validate Action Configuration Guide
 description: A guide to understanding and configuring the "On Validate" action in the Configurator.
 ---
 
+## On Validate Action
 
 The "On Validate" action is triggered when a field value needs to be validated before the document can proceed further. This action is used to perform validation checks on the field, ensuring that the values entered by the user meet the required criteria. If the field fails validation, an error or warning message can be displayed to guide the user in correcting the issue.
 

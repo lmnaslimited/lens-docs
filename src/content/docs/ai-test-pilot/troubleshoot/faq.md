@@ -3,6 +3,8 @@ title: Frequently Asked Questions (FAQ)
 description: Answers to common questions regarding adding test configurations in the "Test Fields" child table.
 ---
 
+## Frequently Asked Questions (FAQ)
+
 ### 1. **What is the "Test Fields" child table?**
 The "Test Fields" child table is where you can configure test actions, fields, values, and their properties. This table is used to automate and validate test configurations for different actions like `on_load`, `on_change`, and others.
 
