@@ -39,8 +39,8 @@ Input parameters should be prefixed with i to clearly distinguish them from othe
 
 - **Example**:
   ```python
-    def fn_calculate_total(i_order_id):
-        l_order = fn_get_order(i_order_id)  # i_order_id is the input parameter
+    def fn_calculate_total(id_order_id):
+        l_order = fn_get_order(id_order_id)  # i_order_id is the input parameter
   ``` 
 
 #### e. Input Arrays (ia prefix)
@@ -155,5 +155,4 @@ class OrderImplementation(IOrder):
 | **Input Arrays**          | ia         | Arrays passed into functions                           | `ia_order_items`             |
 | **Input Dictionaries**    | id         | Dictionaries passed into functions                     | `id_customer_info`         |
 | **Function Names**        | fn         | Descriptive function names starting with `fn`          | `fn_calculate_total_amount()` |
-| **Constants**             | Uppercase  | Constants written in uppercase with underscores        | `MAX_ORDER_LIMIT`         |
-| **Special Case Variables**| N/A        | Reserved names in frameworks (e.g., frm, doc, fieldname) | `frmOrderForm`, `docCustomerDetails`         |
+| **Special Case Variables**| N/A        | Reserved names in frameworks (e.g., frm, doc, fieldname) | `frm.doc.field_name`         |

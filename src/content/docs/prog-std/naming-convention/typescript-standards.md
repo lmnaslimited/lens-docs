@@ -7,7 +7,7 @@ Some naming conventions are the same in both JavaScript and TypeScript, such as 
 
 Here are additional naming conventions that apply specifically to TypeScript:
 
-#### 1. **Class Naming Convention**
+## 1. **Class Naming Convention**
 
 - **Class Names**: Class names in TypeScript should follow **PascalCase** (uppercase at the start of each word).
 
@@ -25,7 +25,7 @@ Here are additional naming conventions that apply specifically to TypeScript:
     }
     ```
 
-#### 2. **Interface Naming Convention**
+## 2. **Interface Naming Convention**
 
 - **Interface Names**: Prefix the name of interfaces with `I` (following common TypeScript conventions). This is done to signify that the interface is being implemented or used for type-checking in TypeScript.
 
@@ -54,7 +54,7 @@ Here are additional naming conventions that apply specifically to TypeScript:
     }
     ```
 
-#### 3. **Type Alias Naming Convention**
+## 3. **Type Alias Naming Convention**
 
 - **Type Aliases**: Type aliases in TypeScript should follow **PascalCase** to maintain consistency with other types like interfaces.
 
@@ -67,10 +67,13 @@ Here are additional naming conventions that apply specifically to TypeScript:
     };
     ```
 
-#### 4. **Generics Naming Convention**
+## 4. **Generics Naming Convention**
 
 - **Generics**: For generics in TypeScript, use short, meaningful names like `T`, `U`, `V`, etc. You can also use more descriptive names when appropriate.
 
+  - **`T`** → When you need a single generic type.  
+  - **`T, U`** → When two types interact (e.g., mapping keys to values).  
+  - **`T, U, V`** → When three types are involved (e.g., complex data structures).  
     **Example:**
     ```ts
     function getArray<T>(items: T[]): T[] {
@@ -78,12 +81,12 @@ Here are additional naming conventions that apply specifically to TypeScript:
     }
 
     // More descriptive naming
-    function getKeyValueMap<K, V>(key: K, value: V): Record<K, V> {
+    function getKeyValueMap<K, V>(key: T, value: U): Record<T, U> {
       return { [key]: value };
     }
     ```
 
-#### 5. **Module Naming Convention**
+## 5. **Module Naming Convention**
 
 - **Modules**: In TypeScript, module names (such as files) should follow **kebab-case** (lowercase letters with hyphens separating words) to make the module easier to identify and import.
 
@@ -96,11 +99,11 @@ Here are additional naming conventions that apply specifically to TypeScript:
     import { UserProfile } from './user-profile';
     ```
 
-# Summary of Naming Conventions in LENS
+## Summary of Naming Conventions in LENS
 
 | **Category**      | **Prefix**                | **Naming Convention**                                                | **Example**                                      |
 |-------------------|---------------------------|----------------------------------------------------------------------|--------------------------------------------------|
 | **Interface Names** | `I`                       | Prefix with `I` followed by PascalCase for interfaces                | `IOrder`                                         |
 | **Type Aliases**    | PascalCase                | Type aliases should use PascalCase                                    | `OrderDetails`                                   |
-| **Generics**        | Short names like `T`, `K`, `V` | Use simple, descriptive names for generic types                       | `getArray<T>(items: T[]): T[]`                   |
+| **Generics**        | Short names like `T`, `U`, `V` | Use simple, descriptive names for generic types                       | `getArray<T>(items: T[]): T[]`                   |
 | **Module Names**    | Kebab-case                | Use kebab-case for module file names                                  | `user-profile.ts`                                |

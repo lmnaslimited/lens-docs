@@ -38,7 +38,7 @@ Input parameters to functions should use the i prefix to clearly differentiate t
 - **Example**:
 ```js
     function fnCalculateTotal(iOrderId) {
-      let order = fnGetOrder(iOrderId);  // iOrderId is the input parameter
+      let ldOrder = fnGetOrder(iOrderId);  // iOrderId is the input parameter
     }
 ```
 #### e. Input Arrays (ia prefix)
@@ -57,7 +57,7 @@ Dictionaries (objects) passed as input to a function should be prefixed with id.
 
 - **Example**:
 ```js
-    function updateOrderStatus(idOrderDetails) {
+    function fnUpdateOrderStatus(idOrderDetails) {
       idOrderDetails.status = 'Shipped';  // idOrderDetails is the input dictionary
     }
 ```
@@ -88,7 +88,7 @@ Function names should start with "fn" to clearly identify them as functions.
       // Function logic for calculating total amount
     }
 
-    function fnProcessOrder(orderId) {
+    function fnProcessOrder(idOrderId) {
       // Function logic to process an order
     }
 ```
@@ -169,7 +169,7 @@ class OrderImplementation extends IOrder {
 | **Input Arrays**           | `ia`        | Arrays passed into functions                                        | `iaOrderItems`,                 |
 | **Input Dictionaries**     | `id`        | Dictionaries passed into functions                                  | `idCustomerInfo`,              |
 | **Function Names**         | `fn`        | Descriptive function names starting with `fn`                       | `fnCalculateTotalAmount()`,  |
-| **Constants**              | Uppercase   | Constants written in uppercase with underscores                     | `MAX_ORDER_LIMIT`,             |
-| **Special Case Variables** | N/A         | Reserved names in frameworks (`frm`, `doc`, `fieldname`)           | `frmOrderForm`, `docCustomerDetails`, |
+| **Constants**              | `L` with pascal  | Constants written in L prefix with Pascal Case                     | `LaMaxOrderLimit`,             |
+| **Special Case Variables** | N/A         | Reserved names in frameworks (`frm`, `doc`, `fieldname`)           | `frm.doc.field_name`|
 | **Interface Names**        | `I`         | Prefix with `I` followed by PascalCase for interfaces (optional)   | `IOrder`,                             |
 | **Class Names**            | N/A         | Use **PascalCase** for class names                                  | `OrderProcessing`,            |

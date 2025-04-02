@@ -3,11 +3,11 @@ title: Introduction to Programming Standards
 description: This guide covers programming standards that help ensure code is clean, easy to maintain, and performs well.
 ---
 
-#### Why Have Programming Standards?
+## Why Have Programming Standards?
 
 Programming standards are essential for ensuring that code remains consistent, maintainable, and scalable over time. Without clear coding guidelines, a project can quickly become chaotic, leading to inconsistent practices, increased complexity, and difficulty in debugging and extending the codebase. Programming standards serve as a blueprint to avoid these issues, enabling a smoother development process and better collaboration across teams.
 
-#### Objectives of This Guide
+## Objectives of This Guide
 
 This documentation aims to establish clear and actionable guidelines to:
 
@@ -17,7 +17,7 @@ This documentation aims to establish clear and actionable guidelines to:
 - Minimize bugs and technical debt through the use of structured programming principles.
 - Promote collaboration by adhering to a common standard that everyone can follow.
 
-#### Who Should Follow These Standards?
+## Who Should Follow These Standards?
 
 This guide is intended for:
 
@@ -25,7 +25,7 @@ This guide is intended for:
 
 - **Testers** responsible for validating functionality and ensuring bug-free code.
 
-#### Scope of This Documentation
+## Scope of This Documentation
 
 This guide will cover best practices across several critical areas:
 

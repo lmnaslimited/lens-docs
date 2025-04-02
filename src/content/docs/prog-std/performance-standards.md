@@ -139,15 +139,6 @@ Steps to reproduce:
 Expected result: User should be logged in successfully
 Actual result: Login button becomes unresponsive
 
-Use labels to categorize issues (e.g., bug, feature, documentation). This helps prioritize and organize issues.
-
-Assign appropriate severity and priority: Clearly indicate whether an issue is critical (e.g., system crash) or a minor issue.
-
-**Example:**
-
-    Priority: High
-    Severity: Critical
-
 **Avoid:**
 
     Vague issue descriptions: Do not submit issues that are unclear or lack enough detail for the team to reproduce and fix the problem.

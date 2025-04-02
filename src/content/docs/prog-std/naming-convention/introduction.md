@@ -22,16 +22,14 @@ This document outlines best practices for naming various components—such as va
     | `item1`               | `customerOrder`     |
 
 - **Follow a Consistent Casing Style** – Different elements may require different casing styles:
-    - *Lower Camel Case* (e.g., `customerName`) for general elements
-    - *Pascal Case* (e.g., `CustomerProfile`) for structured objects
-    - *Upper Snake Case* (e.g., `MAX_RETRIES`) for constant values
-
+    - *Lower Camel Case* (e.g., `lcustomerName`) for general elements
+    - *Pascal Case* (e.g., `laCustomerProfile`) for structured objects
+    
     | **Incorrect Example** | **Correct Example** |
     |-----------------------|---------------------|
-    | `customername`        | `customerName`      |
-    | `customer_profile`    | `CustomerProfile`   |
-    | `max_retries`         | `MAX_RETRIES`       |
-
+    | `lcustomername`        | `lcustomerName`      |
+    | `lacustomer_profile`    | `laCustomerProfile`   |
+   
 - **Avoid Unnecessary Abbreviations** – Use abbreviations only if they are widely recognized.  
 
     | **Incorrect Example** | **Correct Example** |
@@ -48,7 +46,7 @@ This document outlines best practices for naming various components—such as va
 
     | **Incorrect Example** | **Correct Example** |
     |-----------------------|---------------------|
-    | `process()`           | `generateReport()`  |
+    | `fnProcess()`           | `fnGenerateReport()`  |
 
 
 #### Scope of This Guide
