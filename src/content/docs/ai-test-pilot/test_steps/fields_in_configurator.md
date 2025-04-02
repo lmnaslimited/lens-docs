@@ -3,7 +3,6 @@ title: Fields in Test Case Configurator
 description: Detailed explanation of the fields in the Test Case Configurator used in LENS AI Test Pilot.
 ---
 
-## Fields in Test Case Configurator
 
 The **Test Case Configurator** in LENS AI Test Pilot has multiple fields that are organized into two main sections: **Details** and **More Info**. Below is a detailed explanation of each field within these tabs.
 

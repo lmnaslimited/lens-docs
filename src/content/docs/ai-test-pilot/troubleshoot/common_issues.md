@@ -3,7 +3,6 @@ title: Common Issues and Solutions
 description: A guide to solving common issues encountered during development, including Cypress file extension errors, CORS errors, and missing doctypes in the host site.
 ---
 
-## 1. Cypress File Extension Error (.ts)
 
 **Issue:**
 When working with Cypress and TypeScript, you might encounter an error related to the `.ts` (TypeScript) file extension. This error typically occurs because Cypress doesn't recognize or properly handle the TypeScript configuration in the default setup.
