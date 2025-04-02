@@ -40,10 +40,6 @@ These keys will be used by LENS AI Test Pilot to authenticate and authorize the 
 
 For LENS AI Test Pilot to function effectively, the user accounts associated with both sites need to have the proper access permissions. These permissions ensure that LENS AI Test Pilot can interact with the sites and execute the required test actions without restrictions.
 
-- **Administrator Access**: The user account must have **Administrator** access on both sites. This will allow you to configure the Doctypes on the Target Site and ensure that the tool can run tests on the Host Site.
-  
-- **API Access**: The API keys generated for both sites must have the necessary permissions to interact with the Frappe REST API. This includes creating, updating, and reading Doctype records and test data during execution.
-
 - **Test Management Access**: The user must also have permissions to create, modify, and manage test cases, as this is necessary for defining, executing, and tracking tests during the process.
 
 Once these access levels are granted, LENS AI Test Pilot will be able to perform actions on both sites, ensuring that the test automation process runs smoothly.

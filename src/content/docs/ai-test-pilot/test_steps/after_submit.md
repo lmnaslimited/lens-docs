@@ -49,6 +49,3 @@ Besides the required fields, you may need to configure additional properties for
 3. **Log Submission Details**: Log the submission details such as the user who submitted the document, the time of submission, and the status of the document for auditing purposes.
 4. **Synchronize with External Systems**: After submission, synchronize the document data with external systems like a CRM or ERP system to keep all data up to date.
 
-### Further Reading
-
-- Learn more about [how-to guides](https://diataxis.fr/how-to-guides/) in the Diátxis framework.

@@ -44,7 +44,3 @@ Besides the required fields, you may need to configure additional properties to 
 1. **Field Dependency Checking**: If the "status" field is changed from "Draft" to "Approved," automatically update the "approval_date" field with the current date.
 2. **Mandatory Field Enforcement**: Ensure that the "customer_name" field is mandatory when the "customer_id" field is modified.
 3. **Read-Only Fields After Change**: Make the "invoice_number" field read-only after any changes are made to prevent further modifications.
-
-### Further Reading
-
-- Learn more about [how-to guides](https://diataxis.fr/how-to-guides/) in the Diátaxis framework.

@@ -50,7 +50,3 @@ Each action allows you to define specific fields and their behavior in your test
 Yes, you can add multiple rows for the same action to configure different fields, values, and properties. Each row will have its own POS value to maintain the correct order.
 
 ---
-
-## Further Reading
-
-- [Read more about test configurations](https://diataxis.fr/how-to-guides/) in the Diátxis framework.

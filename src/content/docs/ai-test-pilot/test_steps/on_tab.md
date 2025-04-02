@@ -46,6 +46,3 @@ You can also configure additional properties that define how the fields and acti
 2. **Making Fields Mandatory on Tab**: Make the "payment_method" field mandatory when the user switches to the "Payment" tab.
 3. **Read-Only Fields on Certain Tabs**: When viewing the "Invoice" tab, ensure that the "invoice_number" field is read-only to prevent modification.
 
-### Further Reading
-
-- Learn more about [how-to guides](https://diataxis.fr/how-to-guides/) in the Diátaxis framework.

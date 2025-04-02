@@ -85,6 +85,3 @@ This guide explains the configuration of child fields in the Configurator. It de
 - **Description**: Hides the field while keeping its value.
 - **Details**: When enabled, this checkbox ensures that the field is hidden from the UI but retains its value behind the scenes. This is useful when you want to keep data without displaying it to the user.
 
-## Further reading
-
-- Read [about how-to guides](https://diataxis.fr/how-to-guides/) in the Diátaxis framework.

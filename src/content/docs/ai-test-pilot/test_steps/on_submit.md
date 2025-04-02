@@ -46,7 +46,3 @@ You can configure additional properties to define the behavior of the fields dur
 1. **Final Validation of Required Fields**: Before submitting the document, ensure that the "customer_email" and "customer_name" fields are filled out and valid.
 2. **Automatically Set Status**: When submitting a document, automatically set the "status" field to "Submitted" to indicate the document's final state.
 3. **Calculations on Submit**: Ensure that the "total_price" field is calculated based on the "unit_price" and "quantity" before submitting the document.
-
-### Further Reading
-
-- Learn more about [how-to guides](https://diataxis.fr/how-to-guides/) in the Diátxis framework.

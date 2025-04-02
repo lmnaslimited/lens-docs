@@ -46,6 +46,3 @@ In addition to the required fields, you can configure additional properties for 
 2. **Enforcing Data Integrity**: After saving, ensure that the "total_amount" field is calculated correctly based on the values in the "unit_price" and "quantity" fields.
 3. **Making Fields Read-Only**: After a document is saved, make fields like "invoice_number" read-only to prevent further changes.
 
-### Further Reading
-
-- Learn more about [how-to guides](https://diataxis.fr/how-to-guides/) in the Diátxis framework.

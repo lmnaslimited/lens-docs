@@ -43,7 +43,3 @@ In addition to the required fields, you can configure additional properties to c
 1. **Setting Default Values**: Automatically set the "status" field to "Draft" when a new document is created.
 2. **Ensuring Required Fields**: Make sure that fields like "customer_name" or "email" are mandatory when a document is loaded.
 3. **Making Fields Read-Only**: When viewing an existing document, ensure that fields like "invoice_number" are set to read-only to prevent modification.
-
-### Further reading
-
-- Read [about how-to guides](https://diataxis.fr/how-to-guides/) in the Diátaxis framework.
