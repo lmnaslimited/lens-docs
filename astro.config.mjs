@@ -97,7 +97,6 @@ export default defineConfig({
 					label: 'Getting Started',
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'System Requirement', slug: 'ai-test-pilot/getting_started/system_requirement' },
 						{ label: 'Prerequisites', slug: 'ai-test-pilot/getting_started/prerequisites' },
 						{ label: 'How to Install?', slug: 'ai-test-pilot/getting_started/how_to_install' },
 					],

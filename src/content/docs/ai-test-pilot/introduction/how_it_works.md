@@ -3,8 +3,6 @@ title: How It Works - LENS AI Test Pilot
 description: Step-by-step guide on how to use LENS AI Test Pilot for automated web application testing.
 ---
 
-## How It Works
-
 LENS AI Test Pilot is designed to make the testing process smoother and faster by automating the creation and execution of test cases. Here’s a step-by-step guide to get you started:
 
 ### 1. **Configure the Scenario in the Test Case Configurator**

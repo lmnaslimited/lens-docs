@@ -3,8 +3,6 @@ title: On Load Action Configuration Guide
 description: A guide to understanding and configuring the "On Load" action in the Configurator.
 ---
 
-## On Load Action
-
 The "On Load" action is triggered when a new document is created or an existing document is opened. This action is used to check and set default values for fields, verify field properties like mandatory and read-only settings, and ensure that the document is set up correctly when it is loaded. 
 
 ### Purpose of the On Load Action

@@ -3,7 +3,6 @@ title: After Submit Action Configuration Guide
 description: A guide to understanding and configuring the "After Submit" action in the Configurator.
 ---
 
-## After Submit Action
 
 The "After Submit" action is triggered immediately after a document is submitted. This action is used to perform post-submission tasks such as logging data, updating related records, sending notifications, or performing additional checks. It ensures that the document undergoes any final adjustments or actions required after the submission process is complete.
 

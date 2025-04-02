@@ -3,8 +3,6 @@ title: Pre-requisites - LENS AI Test Pilot
 description: Essential setup requirements for using LENS AI Test Pilot.
 ---
 
-## Pre-requisites
-
 Before you begin using LENS AI Test Pilot, ensure the following prerequisites are met:
 
 ### 1. **Two Frappe Sites**
