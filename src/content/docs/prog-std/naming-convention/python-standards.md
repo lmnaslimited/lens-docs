@@ -65,17 +65,6 @@ Input dictionaries should be prefixed with id to indicate they hold key-value pa
         id_order_details["status"] = "Shipped"  # id_order_details is the input dictionary
   ```
 
-#### g. Constants (Uppercase with Underscore)
-
-Constants should be written in uppercase letters, with words separated by underscores (_), to distinguish them from regular variables.
-
-- **Example**:
-  ```python
-    L_ORDER_TOTAL = 5000  # Constant representing the total amount of the order
-    LA_ORDER_STATUSES = ["Pending", "Shipped", "Delivered"]  # Constant array of order statuses
-    LD_SHIPPING_DETAILS = {"method": "Express", "cost": 20}  # Constant dictionary for shipping details
-  ```
-
 ### 2. Function Naming Convention
 #### a. Function Names (fn prefix)
 

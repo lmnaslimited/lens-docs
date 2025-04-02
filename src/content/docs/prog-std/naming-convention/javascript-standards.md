@@ -61,15 +61,19 @@ Dictionaries (objects) passed as input to a function should be prefixed with id.
       idOrderDetails.status = 'Shipped';  // idOrderDetails is the input dictionary
     }
 ```
-#### g. Constants (Uppercase with Underscore)
+#### g. Constants (L-prefixed PascalCase)
 
-Constants should be written in uppercase letters, with words separated by underscores (_), to distinguish them from regular variables.
+Constants should be written in PascalCase with an `L` or `La` or `Ld` prefix based on their type:
+
+- `L` for single values  
+- `La` for arrays  
+- `Ld` for dictionaries/objects 
 
 - **Example**:
 ```js
-    const L_ORDER_TOTAL = 5000;  // Constant representing the order total
-    const LA_ORDER_STATUSES = ['Pending', 'Shipped', 'Delivered'];  // Constant array of order statuses
-    const LD_SHIPPING_DETAILS = { method: 'Express', cost: 20 };  // Constant dictionary for shipping details
+    const LOrderTotal = 5000;  // Constant representing the order total
+    const LaOrderStatuses = ['Pending', 'Shipped', 'Delivered'];  // Constant array of order statuses
+    const LdShippingDetails = { method: 'Express', cost: 20 };  // Constant dictionary for shipping details
 ```
 
 ### 2. Function Naming Convention
