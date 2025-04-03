@@ -37,13 +37,6 @@ To resolve this issue, you need to adjust the CORS configuration on the target s
 - **Step 1:** Go to the target site's configuration file, which can usually be found at `sites/{your-site}/site_config.json`.
 - **Step 2:** Add or modify the CORS settings to allow requests from your local environment.
 
-For example, you can set `cors` to `"*"` to allow requests from all origins:
-
-```json
-{
-  "cors": "*"
-}
-
 ## 3. Not Getting Doctypes in Host Site
 
 **Issue:**

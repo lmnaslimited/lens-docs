@@ -10,9 +10,9 @@ Before you begin using LENS AI Test Pilot, ensure the following prerequisites ar
 
 LENS AI Test Pilot requires two Frappe sites for the setup:
 
-- **Host Site**: This is the Frappe site where you want to perform the testing. It will act as the "target" site where your automated test scripts will run and interact with the application to validate its behavior. This site will receive the test inputs and perform the test actions.
-  
-- **Target Site**: This is the Frappe site where you will configure the Doctype (document type). The setup of your Doctype and other configurations needed for testing will occur on this site. This site essentially holds the configuration and test setup details.
+- **Host Site**: This is the Frappe site where you set up the configurations, like Doctypes and other settings needed for testing. It holds all the configurations for your tests.
+
+- **Target Site**: This is the Frappe site where you have the actual documents (Doctypes) that your automated test scripts will interact with to perform actions and check if everything works as expected.
 
 Both sites need to be properly set up and running. Ensure that the **Target Site** has the necessary Doctypes configured, and the **Host Site** is ready for testing. 
 

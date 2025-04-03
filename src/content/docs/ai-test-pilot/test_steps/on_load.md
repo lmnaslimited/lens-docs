@@ -8,7 +8,7 @@ The "On Load" action is triggered when a new document is created or an existing 
 
 ### Purpose of the On Load Action
 
-- **Default Values**: Automatically sets default values for fields when a new document is loaded.
+- **Default Values**: Checks the values that are automatically loaded for fields when a document is opened.
 - **Field Properties**: Verifies field properties such as mandatory, read-only, and hidden statuses.
 
 ### Required Fields for On Load Action
