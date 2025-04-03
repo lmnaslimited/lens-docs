@@ -16,12 +16,12 @@ title: Standardized Coding Practices for Developers and Reviewers
 - **Use while loops for indefinite iterations**: If the loop continues until a certain condition is met, use a while loop.
   
 **Example:**
-    ```python
+```python
     # Keep asking for user input until a valid response is given
-    user_input = ''
-    while user_input != 'yes':
-        user_input = input('Do you want to continue? (yes/no): ')
-    ```
+    l_user_input = ''
+    while l_user_input != 'yes':
+        l_user_input = input('Do you want to continue? (yes/no): ')
+```
 **Avoid:**
 
 Excessive nesting of loops: Try to avoid more than two levels of nesting in loops as it can make the code harder to understand and maintain.
@@ -30,10 +30,10 @@ Excessive nesting of loops: Try to avoid more than two levels of nesting in loop
 
 #### Too many nested loops can be hard to follow
 ```python
-for i in range(5):
-    for j in range(5):
+for la_i in range(5):
+    for la_la_j in range(5):
         for k in range(5):
-            print(i, j, k)
+            print(la_i, la_j, la_k)
 ```
 Using while True or similar without a clear way to exit the loop can result in the program hanging.
 
@@ -89,32 +89,36 @@ Optimize queries with EXPLAIN: Use the EXPLAIN statement to analyze the performa
 
 **Example:**
 
+```sql
 #### Calculate the total cost after tax. The tax rate is fixed at 0.1.
 l_total_cost = cost * (1 + 0.1)
+```
 
 Comment on complex logic or algorithms: If you’re implementing a complex algorithm, explain the approach and why it’s necessary.
 
 **Example:**
 
+```py
 #### Using binary search to find an element in a sorted list
-left, right = 0, len(sorted_list) - 1
-while left <= right:
-    mid = (left + right) // 2
-    if sorted_list[mid] == target:
-        return mid
-    elif sorted_list[mid] < target:
-        left = mid + 1
+l_left, l_right = 0, len(la_sorted_list) - 1
+while l_left <= l_right:
+    l_mid = (l_left + l_right) // 2
+    if la_sorted_list[l_mid] == l_target:
+        return l_mid
+    elif la_sorted_list[l_mid] < l_target:
+        l_left = l_mid + 1
     else:
-        right = mid - 1
+        l_right = l_mid - 1
+```
 
 Use TODO comments: Mark areas where future improvements, refactoring, or additional work is required.
 
 **Example:**
-
-    # TODO: Refactor this loop to improve performance when data grows
-    for item in large_data:
-        process(item)
-
+```py
+# TODO: Refactor this loop to improve performance when data grows
+for l_item in la_large_data:
+    fnProcess(l_item)
+```
 **Avoid:**
 
     Unnecessary comments: Avoid commenting every line of code, especially when the operation is obvious.
@@ -122,7 +126,7 @@ Use TODO comments: Mark areas where future improvements, refactoring, or additio
 **Example:** (Avoid):
 ```sql
     # Increment the counter by 1
-    counter += 1  # This comment is unnecessary, as the code is self-explanatory.
+    l_counter += 1  # This comment is unnecessary, as the code is self-explanatory.
 ```
 ## 4. Issue Tracker Guidelines
 #### Best Practices:
@@ -158,11 +162,11 @@ Best Practices:
 
 **Example:**
 ```python
-def calculate_total_cost(cost, tax_rate):
-    return cost * (1 + tax_rate)
+def fn_calculate_total_cost(i_cost, i_tax_rate):
+    return i_cost * (1 + i_tax_rate)
 
-def print_invoice(total_cost):
-    print(f'Total cost: ${total_cost}')
+def fn_print_invoice(i_total_cost):
+    print(f'Total cost: ${i_total_cost}')
 ```
 
 Use version control (e.g., Git): Follow a consistent branching model (e.g., Gitflow) to keep track of features, bugs, and releases.
@@ -171,8 +175,8 @@ Write tests for your code: Automated tests help ensure your code works as expect
 
 **Example:**
 ```py
-    def test_calculate_total_cost():
-        assert calculate_total_cost(100, 0.1) == 110
+    def fn_test_calculate_total_cost():
+        assert fn_calculate_total_cost(100, 0.1) == 110
 ```
 **Avoid:**
 
@@ -182,5 +186,5 @@ Write tests for your code: Automated tests help ensure your code works as expect
 
 #### Hardcoding the tax rate
 ```python
-total_cost = cost * (1 + 0.15)  # Tax rate should not be hardcoded like this
+l_total_cost = l_cost * (1 + 0.15)  # Tax rate should not be hardcoded like this
 ```
