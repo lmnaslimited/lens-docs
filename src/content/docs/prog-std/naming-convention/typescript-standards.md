@@ -60,7 +60,7 @@ Here are additional naming conventions that apply specifically to TypeScript:
 
     **Example:**
     ```ts
-    type OrderDetails = {
+    type TorderDetails = {
       orderId: number;
       totalAmount: number;
       status: string;
@@ -76,12 +76,12 @@ Here are additional naming conventions that apply specifically to TypeScript:
   - **`T, U, V`** → When three types are involved (e.g., complex data structures).  
     **Example:**
     ```ts
-    function getArray<T>(items: T[]): T[] {
+    function fnGetArray<T>(items: T[]): T[] {
       return items;
     }
 
     // More descriptive naming
-    function getKeyValueMap<K, V>(key: T, value: U): Record<T, U> {
+    function fnGetKeyValueMap<T, U>(key: T, value: U): Record<T, U> {
       return { [key]: value };
     }
     ```
@@ -104,6 +104,6 @@ Here are additional naming conventions that apply specifically to TypeScript:
 | **Category**      | **Prefix**                | **Naming Convention**                                                | **Example**                                      |
 |-------------------|---------------------------|----------------------------------------------------------------------|--------------------------------------------------|
 | **Interface Names** | `I`                       | Prefix with `I` followed by PascalCase for interfaces                | `IOrder`                                         |
-| **Type Aliases**    | PascalCase                | Type aliases should use PascalCase                                    | `OrderDetails`                                   |
-| **Generics**        | Short names like `T`, `U`, `V` | Use simple, descriptive names for generic types                       | `getArray<T>(items: T[]): T[]`                   |
+| **Type Aliases**    | PascalCase                | Type aliases should use PascalCase                                    | `TorderDetails`                                   |
+| **Generics**        | Short names like `T`, `U`, `V` | Use simple, descriptive names for generic types                       | `fnGetArray<T>(items: T[]): T[]`                   |
 | **Module Names**    | Kebab-case                | Use kebab-case for module file names                                  | `user-profile.ts`                                |
