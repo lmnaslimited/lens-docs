@@ -31,44 +31,44 @@ export default defineConfig({
 					items: [
 							{ label: 'General Story Structure', slug: 'doc-std/hls-guide/general-story-structure' },
 							{
-								label: "High-Level Solution",
+								label: "High-Level Solution Standards",
 								items: [
 									{
-										label: 'Issue Story',
+										label: 'Issue Analysis',
 										slug: 'doc-std/hls-guide/issue-story',
 									},
 									{
-										label: 'Testing Story',
+										label: 'Test Strategy',
 										slug: 'doc-std/hls-guide/testing-story',
 									},
 									{
-										label: 'Automation Story',
+										label: 'Automation Plan',
 										slug: 'doc-std/hls-guide/automation',
 									},
 									{
-										label: 'POC Story',
+										label: 'POC Analysis',
 										slug: 'doc-std/hls-guide/poc-story',
 									},
 									
 								]
 							},
 							{
-								label: "Low-Level Solution",
+								label: "Low-Level Solution Standards",
 								items: [
 									{
-										label: 'Issue Story',
+										label: 'Issue Resolution',
 										slug: 'doc-std/lls-guide/issue-story',
 									},
 									{
-										label: 'Testing Story',
+										label: 'Test Execution',
 										slug: 'doc-std/lls-guide/testing-story',
 									},
 									{
-										label: 'Automation Story',
+										label: 'Automation Execution',
 										slug: 'doc-std/lls-guide/automation',
 									},
 									{
-										label: 'POC Story',
+										label: 'POC Implementation',
 										slug: 'doc-std/lls-guide/poc',
 									},
 									
