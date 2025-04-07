@@ -44,11 +44,3 @@ Run the following command to open Cypress:
 ```
 npx cypress open
 ```
-**Step 4:** Verify Host Site  
-Go to the Host URL and check for the following Doctypes (as mentioned in the [previous configuration guide](/ai-test-pilot/configure_test_pilot/setting_up_configurator)):
-
-- Test Case Configurator
-- Site Details
-- Test Fields
-
-Make sure that these Doctypes are accessible. Then, proceed to add the necessary site details.
