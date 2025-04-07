@@ -28,7 +28,6 @@ This guide provides clear steps for setting up the Configurator to test a site w
 5. **Set "Depends On" Field**: If your test case depends on a previous test case, select the relevant field in the "Depends On" section.
 6. **Select the Site Name**: From the dropdown, choose the site you added earlier in the Site Details Doctype.
 7. **Choose the Doctype to Test**: Select the doctype that you wish to test from the dropdown menu.
-8. **View the JSON Response**: After selecting the doctype, the "More Info" tab will automatically display the JSON response with all the fields.
-9. **Save the Test Case Configurator**: Once everything is configured, save the test case.
+8. **View the JSON Response**: After selecting the doctype, save it and in the "More Info" tab will automatically display the JSON response with all the fields.
 
 ![Setting up Configurator](/lens_ai_test_pilot_docs/configuration.gif)
