@@ -105,7 +105,7 @@ Class names should follow the PascalCase convention, where each word starts with
 - **Example**:
   ```python
 
-    class Order:
+    class cl_order:
         def __init__(self, ia_order_id, i_total_amount):
             self.ia_order_id = ia_order_id
             self.i_total_amount = i_total_amount
@@ -144,15 +144,17 @@ class OrderImplementation(IOrder):
         return self.i_total_amount
 ```
  
- # Summary of Naming Conventions in ERP (Python)
+ # Summary of Naming Conventions in LENS (Python)
 
 | **Category**             | **Prefix** | **Naming Convention**                                  | **Example**                                  |
 |--------------------------|------------|--------------------------------------------------------|----------------------------------------------|
-| **Local Variables**       | l          | Temporary variables used within functions              | `l_order_total`               |
-| **Local Arrays**          | la         | Arrays holding multiple items                          | `la_order_items`             |
-| **Local Dictionaries**    | ld         | Key-value pairs or objects                             | `ld_customer_info`         |
-| **Input Parameters**      | i          | Parameters passed into functions                       | `i_customer_id`               |
-| **Input Arrays**          | ia         | Arrays passed into functions                           | `ia_order_items`             |
-| **Input Dictionaries**    | id         | Dictionaries passed into functions                     | `id_customer_info`         |
-| **Function Names**        | fn         | Descriptive function names starting with `fn`          | `fn_calculate_total_amount()` |
+| **Local Variables**       | l_          | Temporary variables used within functions              | `l_order_total`               |
+| **Local Arrays**          | la_         | Arrays holding multiple items                          | `la_order_items`             |
+| **Local Dictionaries**    | ld_         | Key-value pairs or objects                             | `ld_customer_info`         |
+| **Input Parameters**      | i_          | Parameters passed into functions                       | `i_customer_id`               |
+| **Input Arrays**          | ia_         | Arrays passed into functions                           | `ia_order_items`             |
+| **Input Dictionaries**    | id_         | Dictionaries passed into functions                     | `id_customer_info`         |
+| **Function Names**        | fn_         | Descriptive function names starting with `fn`          | `fn_calculate_total_amount()` |
 | **Special Case Variables**| N/A        | Reserved names in frameworks (e.g., frm, doc, fieldname) | `frm.doc.field_name`         |
+| **Interface Names**        | I_         | Prefix with `I` followed by PascalCase for interfaces (optional)   | `IOrder`                             |
+| **Class Names**            | cl_        | Use **PascalCase** for class names with prefix 'cl'      | `cl_order_processing`            |

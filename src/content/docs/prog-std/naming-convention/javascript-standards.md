@@ -110,11 +110,11 @@ Function names should be descriptive, reflecting the action or behavior the func
 ### 3. Class Naming Convention
 #### a. Class Names (PascalCase)
 
-Class names should follow the PascalCase convention, where each word starts with an uppercase letter and no underscores or hyphens are used.
+Class names should follow the PascalCase convention, where each word starts with 'cl' and no underscores or hyphens are used.
 
 - **Example**:
 ```js
-    class Order {
+    class clOrder {
       constructor(orderId, totalAmount) {
         this.orderId = orderId;
         this.totalAmount = totalAmount;
@@ -164,12 +164,12 @@ class OrderImplementation extends IOrder {
 |---------------------------|-------------|---------------------------------------------------------------------|--------------------------------------------------|
 | **Local Variables**        | `l`         | Temporary variables used within functions                           | `lOrderTotal`                 |
 | **Local Arrays**           | `la`        | Arrays holding multiple items                                      | `laOrderItems`               |
-| **Local Dictionaries**     | `ld`        | Key-value pairs or objects                                          | `ldCustomerInfo`,             |
-| **Input Parameters**       | `i`         | Parameters passed into functions                                    | `iCustomerID`,                  |
-| **Input Arrays**           | `ia`        | Arrays passed into functions                                        | `iaOrderItems`,                 |
-| **Input Dictionaries**     | `id`        | Dictionaries passed into functions                                  | `idCustomerInfo`,              |
-| **Function Names**         | `fn`        | Descriptive function names starting with `fn`                       | `fnCalculateTotalAmount()`,  |
-| **Constants**              | `L` with pascal  | Constants written in L prefix with Pascal Case                     | `LaMaxOrderLimit`,             |
+| **Local Dictionaries**     | `ld`        | Key-value pairs or objects                                          | `ldCustomerInfo`            |
+| **Input Parameters**       | `i`         | Parameters passed into functions                                    | `iCustomerID`                  |
+| **Input Arrays**           | `ia`        | Arrays passed into functions                                        | `iaOrderItems`                 |
+| **Input Dictionaries**     | `id`        | Dictionaries passed into functions                                  | `idCustomerInfo`              |
+| **Function Names**         | `fn`        | Descriptive function names starting with `fn`                       | `fnCalculateTotalAmount()`  |
+| **Constants**              | `L` with pascal  | Constants written in L prefix with Pascal Case                     | `LaMaxOrderLimit`             |
 | **Special Case Variables** | N/A         | Reserved names in frameworks (`frm`, `doc`, `fieldname`)           | `frm.doc.field_name`|
-| **Interface Names**        | `I`         | Prefix with `I` followed by PascalCase for interfaces (optional)   | `IOrder`,                             |
-| **Class Names**            | N/A         | Use **PascalCase** for class names                                  | `OrderProcessing`,            |
+| **Interface Names**        | `I`         | Prefix with `I` followed by PascalCase for interfaces (optional)   | `IOrder`                             |
+| **Class Names**            | `cl`         | Use **PascalCase** for class names with prefix 'cl'                                | `clOrderProcessing`            |

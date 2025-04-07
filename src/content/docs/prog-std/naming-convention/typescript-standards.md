@@ -13,7 +13,7 @@ Here are additional naming conventions that apply specifically to TypeScript:
 
     **Example:**
     ```ts
-    class Order {
+    class clOrder {
       constructor(orderId: number, totalAmount: number) {
         this.orderId = orderId;
         this.totalAmount = totalAmount;
@@ -104,6 +104,6 @@ Here are additional naming conventions that apply specifically to TypeScript:
 | **Category**      | **Prefix**                | **Naming Convention**                                                | **Example**                                      |
 |-------------------|---------------------------|----------------------------------------------------------------------|--------------------------------------------------|
 | **Interface Names** | `I`                       | Prefix with `I` followed by PascalCase for interfaces                | `IOrder`                                         |
-| **Type Aliases**    | PascalCase                | Type aliases should use PascalCase                                    | `TorderDetails`                                   |
+| **Type Aliases**    | PascalCase with prefix 'T'              | Type aliases should use PascalCase                                    | `TorderDetails`                                   |
 | **Generics**        | Short names like `T`, `U`, `V` | Use simple, descriptive names for generic types                       | `fnGetArray<T>(items: T[]): T[]`                   |
 | **Module Names**    | Kebab-case                | Use kebab-case for module file names                                  | `user-profile.ts`                                |

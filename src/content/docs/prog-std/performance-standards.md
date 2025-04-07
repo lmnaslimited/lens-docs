@@ -3,7 +3,8 @@ title: Standardized Coding Practices for Developers and Reviewers
 ---
 ## 1. Looping Best Practices
 
-- **Use `for` loops for definite iterations**: When you know the number of iterations beforehand, use a `for` loop. This is ideal when you’re working with ranges or collections.
+- **Use `for` loops for definite iterations**: When you know the number of iterations beforehand, use a `for` loop. 
+This is ideal when you’re working with ranges or collections.
   
 **Example:**
   ```python
@@ -31,8 +32,8 @@ Excessive nesting of loops: Try to avoid more than two levels of nesting in loop
 #### Too many nested loops can be hard to follow
 ```python
 for la_i in range(5):
-    for la_la_j in range(5):
-        for k in range(5):
+    for la_j in range(5):
+        for la_k in range(5):
             print(la_i, la_j, la_k)
 ```
 Using while True or similar without a clear way to exit the loop can result in the program hanging.
@@ -49,14 +50,16 @@ while True:
 
 #### Best Practices:
 
-Use parameterized queries to avoid SQL injection. This helps ensure that user input does not interfere with the SQL query logic.
+Use parameterized queries to avoid SQL injection. This helps ensure that user input 
+does not interfere with the SQL query logic.
 
 **Example:**
 ```sql
 cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 ```
 
-Limit query results when needed: If you expect a large number of results, limit the number returned to reduce memory usage and improve performance.
+Limit query results when needed: If you expect a large number of results, limit the 
+number returned to reduce memory usage and improve performance.
 
 **Example:**
 
@@ -65,7 +68,8 @@ Limit query results when needed: If you expect a large number of results, limit 
 SELECT * FROM products LIMIT 100;
 ```
 
-Optimize queries with EXPLAIN: Use the EXPLAIN statement to analyze the performance of your queries and identify potential inefficiencies.
+Optimize queries with EXPLAIN: Use the EXPLAIN statement to analyze the performance 
+of your queries and identify potential inefficiencies.
 
 **Example:**
 
@@ -74,7 +78,8 @@ Optimize queries with EXPLAIN: Use the EXPLAIN statement to analyze the performa
 
 **Avoid:**
 
-    Using SELECT * in queries: Specify the exact columns you need rather than using SELECT *. This makes the query more efficient and clearer.
+    Using SELECT * in queries: Specify the exact columns you need rather than 
+    using SELECT *. This makes the query more efficient and clearer.
 
 **Example:** (Avoid):
 
@@ -85,7 +90,8 @@ Optimize queries with EXPLAIN: Use the EXPLAIN statement to analyze the performa
 ## 3. Comments Best Practices
 #### Best Practices:
 
-    Write meaningful and concise comments: Focus on explaining why the code exists, especially for complex logic, instead of repeating the obvious.
+    Write meaningful and concise comments: Focus on explaining why the code exists, 
+    especially for complex logic, instead of repeating the obvious.
 
 **Example:**
 
@@ -94,24 +100,35 @@ Optimize queries with EXPLAIN: Use the EXPLAIN statement to analyze the performa
 l_total_cost = cost * (1 + 0.1)
 ```
 
-Comment on complex logic or algorithms: If you’re implementing a complex algorithm, explain the approach and why it’s necessary.
+Comment on complex logic or algorithms: If you’re implementing a complex 
+algorithm, explain the approach and why it’s necessary.
 
 **Example:**
 
 ```py
 #### Using binary search to find an element in a sorted list
-l_left, l_right = 0, len(la_sorted_list) - 1
-while l_left <= l_right:
-    l_mid = (l_left + l_right) // 2
-    if la_sorted_list[l_mid] == l_target:
-        return l_mid
-    elif la_sorted_list[l_mid] < l_target:
-        l_left = l_mid + 1
-    else:
-        l_right = l_mid - 1
+def fn_binary_search_leftmost(i_sorted_list, i_key, i_search_key):
+    ##### Prerequisite: The list must be sorted. Then perform binary search.
+        low = 0
+        high = len(i_sorted_list) - 1
+        result = -1
+
+        while low <= high:
+            mid = (low + high) // 2
+            mid_dict = i_sorted_list[mid]
+
+            if mid_dict[i_key] < i_search_key:
+                low = mid + 1
+            elif mid_dict[i_key] > i_search_key:
+                high = mid - 1
+            else:
+                result = mid
+                high = mid - 1  # Move towards left for leftmost occurrence
+        return result
 ```
 
-Use TODO comments: Mark areas where future improvements, refactoring, or additional work is required.
+Use TODO comments: Mark areas where future improvements, refactoring, or additional 
+work is required.
 
 **Example:**
 ```py
@@ -121,7 +138,8 @@ for l_item in la_large_data:
 ```
 **Avoid:**
 
-    Unnecessary comments: Avoid commenting every line of code, especially when the operation is obvious.
+    Unnecessary comments: Avoid commenting every line of code, especially when the 
+    operation is obvious.
 
 **Example:** (Avoid):
 ```sql
@@ -131,7 +149,8 @@ for l_item in la_large_data:
 ## 4. Issue Tracker Guidelines
 #### Best Practices:
 
-    Provide clear, detailed issue descriptions: Include what the issue is, how to reproduce it, and the expected versus actual results.
+    Provide clear, detailed issue descriptions: Include what the issue is, 
+    how to reproduce it, and the expected versus actual results.
 
 **Example:**
 
@@ -145,20 +164,23 @@ Actual result: Login button becomes unresponsive
 
 **Avoid:**
 
-    Vague issue descriptions: Do not submit issues that are unclear or lack enough detail for the team to reproduce and fix the problem.
+    Vague issue descriptions: Do not submit issues that are unclear or 
+    lack enough detail for the team to reproduce and fix the problem.
 
 **Example (Avoid):**
 
     Issue: Login doesn't work
     (This description does not help in reproducing or understanding the issue)
 
-    Duplicate issues: Always check if a similar issue already exists before creating a new one.
+    Duplicate issues: Always check if a similar issue already exists before creating 
+    a new one.
 
 ## 5. Additional Development Best Practices
 
 Best Practices:
 
-    Write modular and reusable code: Break your code into small functions or classes that perform one task, making it easier to maintain and test.
+    Write modular and reusable code: Break your code into small functions or 
+    classes that perform one task, making it easier to maintain and test.
 
 **Example:**
 ```python
@@ -169,9 +191,11 @@ def fn_print_invoice(i_total_cost):
     print(f'Total cost: ${i_total_cost}')
 ```
 
-Use version control (e.g., Git): Follow a consistent branching model (e.g., Gitflow) to keep track of features, bugs, and releases.
+Use version control (e.g., Git): Follow a consistent branching model (e.g., Gitflow) 
+to keep track of features, bugs, and releases.
 
-Write tests for your code: Automated tests help ensure your code works as expected and can handle edge cases.
+Write tests for your code: Automated tests help ensure your code works as expected 
+and can handle edge cases.
 
 **Example:**
 ```py
@@ -180,7 +204,8 @@ Write tests for your code: Automated tests help ensure your code works as expect
 ```
 **Avoid:**
 
-    Hardcoding values: Avoid embedding fixed values directly in your code. Instead, use constants or configuration files.
+    Hardcoding values: Avoid embedding fixed values directly in your code. 
+    Instead, use constants or configuration files.
 
     Example (Avoid):
 
