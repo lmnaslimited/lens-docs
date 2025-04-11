@@ -112,8 +112,16 @@ export default defineConfig({
 					label: 'Getting Started',
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Prerequisites', slug: 'ai-test-pilot/getting_started/prerequisites' },
+						// { label: 'Prerequisites', slug: 'ai-test-pilot/getting_started/prerequisites' },
 						{ label: 'How to Install?', slug: 'ai-test-pilot/getting_started/how_to_install' },
+					],
+				},
+				{
+					label: 'Configure Test Pilot',
+					items: [
+						// Each item here is one entry in the navigation menu.
+						{ label: 'Setting up Configurator', slug: 'ai-test-pilot/configure_test_pilot/setting_up_configurator' },
+						{ label: 'Adding Test Configuration', slug: 'ai-test-pilot/configure_test_pilot/adding_test_configurations' },
 					],
 				},
 				{
@@ -129,14 +137,6 @@ export default defineConfig({
 						{ label: 'On Submit', slug: 'ai-test-pilot/test_steps/on_submit' },
 						{ label: 'After Submit', slug: 'ai-test-pilot/test_steps/after_submit' },
 						{ label: 'On Validate', slug: 'ai-test-pilot/test_steps/on_validate' },
-					],
-				},
-				{
-					label: 'Configure Test Pilot',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Setting up Configurator', slug: 'ai-test-pilot/configure_test_pilot/setting_up_configurator' },
-						{ label: 'Adding Test Configuration', slug: 'ai-test-pilot/configure_test_pilot/adding_test_configurations' },
 					],
 				},
 				{
