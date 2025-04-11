@@ -13,7 +13,7 @@ This guide provides clear steps for setting up the Configurator to test a site w
 4. **Input the Site Name**: Enter the name of the site you want to test.
 5. **Enter the Authorization Key**: Provide the basic authorization key for the site.
 6. **Enter the Client Name**: Add the client name associated with the site.
-7. **Select Doctypes to Test**: From the list, choose the doctypes you want to test for this site.
+7. **Enter Doctypes to Test**: Enter the doctypes you want to test for this site.
 8. **Save the Site Detail**: Once all fields are completed, save the site details.
 
 
