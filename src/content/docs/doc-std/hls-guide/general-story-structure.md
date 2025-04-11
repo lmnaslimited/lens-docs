@@ -16,11 +16,19 @@ A well-defined requirement should **clearly describe the functionality, feature,
 
 **"As a [role], I want to [feature or change] so that [benefit or impact]."**  
 
+> **Note:**  
+> The **role** refers to the **end user who is impacted**—such as a *Sales Executive*, *Employee*, *Customer Support Agent*, etc.
+
 **For example:** 
 
 "As a Customer Support Agent, I want to generate a PDF report of user complaints so that I can easily share it with the management team for analysis."
 
----
+### Use This Format for Issue Requirement
+
+**"As a [role], I am facing [problem statement]. I need a fix so that [desired outcome or resolution]."**
+
+**Example:**  
+"As a Sales Executive, I am unable to get the weekly load report for the current year as the default 'planned production end date' range is set to the year 2024. I need the default date ranges to be always set for the current year so that I can get the report populated as soon as I execute the report without changing the date filter."
 
 ## Definition of Done  
 
