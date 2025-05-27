@@ -5,7 +5,7 @@ import starlight from '@astrojs/starlight';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://lmnaslimited.github.io',
-  	base: '/lens_ai_test_pilot_docs',
+  	base: '/lens-docs',
 	markdown: {
 		shikiConfig: {
 		  theme: "github-dark",
@@ -147,6 +147,29 @@ export default defineConfig({
 						{ label: 'FAQs', slug: 'ai-test-pilot/troubleshoot/faq' },
 					],
 				},
+			]
+		},
+		{
+			label: "Developer Cheat Sheet",
+			items: [
+					{
+						label: "Infrastructure",
+						items: [
+							{ label: 'Docker Swarm', slug: 'cheat-sheet/infrastructure/docker-swarm' },
+							{ label: 'Kubernetes', slug: 'cheat-sheet/infrastructure/kubernetes' },	
+						]
+					},
+					{
+						label: "PRISM",
+						items: [
+							{ label: 'Print Format', slug: 'cheat-sheet/prism/print-format' },
+							{ label: 'Report', slug: 'cheat-sheet/prism/report' },
+							{ label: 'Interface', slug: 'cheat-sheet/prism/interface' },
+							{ label: 'Script', slug: 'cheat-sheet/prism/script' },
+							{ label: 'Modification', slug: 'cheat-sheet/prism/modification' }
+						]
+					},
+			
 			]
 		},
 
