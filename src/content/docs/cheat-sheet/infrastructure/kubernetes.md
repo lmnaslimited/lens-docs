@@ -1,4 +1,6 @@
-
+---
+title: High-Level Solution (HLS) - Automation Story
+---
 ## Getting the pod's log in K3s
 * Displaying the logs of the pod
 * Helps to Identify the errors of the particular pod
