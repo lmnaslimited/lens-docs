@@ -1,4 +1,4 @@
- **Programming standard for virtualization** 
+ **Programming standard for visualization** 
 
 ---
 
