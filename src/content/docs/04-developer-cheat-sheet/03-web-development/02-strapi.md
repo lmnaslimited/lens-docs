@@ -3,7 +3,8 @@ title: Web Development - Strapi
 ---
 
 
-## How to Write a GraphQL Query for a Single Content Type 
+### How to Write a GraphQL Query for a Single Content Type 
+---
 Used to **fetch a single entry** (a unique object) from your LCMS.
 
 **Prerequisite:**
@@ -71,7 +72,8 @@ query Home{
 **Note:**  Queries return exactly the fields you specify — no more, no less
 
 
-## How to Write a GraphQL Query for a Collection Type
+### How to Write a GraphQL Query for a Collection Type
+---
 Used to **fetch multiple entries** (a list of objects) from your LCMS.
 
 **Prerequisite:**
@@ -150,7 +152,8 @@ query Home{
 ```
 
 
-## How to Write a GraphQL SubQuery by Combining Multiple Content Types
+### How to Write a GraphQL SubQuery by Combining Multiple Content Types
+---
 
 Used to **fetch data from multiple different content types** in a single query.
 
@@ -212,8 +215,8 @@ query Subquery{
 ```
 
 
-## How to Use Locale Argument in GraphQL Query
-
+### How to Use Locale Argument in GraphQL Query
+---
 To fetch data in a specific language by passing the locale as an argument in your query.
 
 **Prerequisite:**
@@ -273,8 +276,8 @@ query Industries($locale: I18NLocaleCode) {
 ```
 
 
-## How to Use Filters Argument in GraphQL Query
-
+### How to Use Filters Argument in GraphQL Query
+---
 To fetch data that matches specific conditions by passing the filters as an argument in your query.
 
 **Prerequisite:**
