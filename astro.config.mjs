@@ -1,6 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { generateSidebar } from './scripts/generateSidebar.js';
+
+const sidebar = generateSidebar('src/content/docs');
 
 // https://astro.build/config
 export default defineConfig({
@@ -8,7 +11,10 @@ export default defineConfig({
   	base: '/lens-docs',
 	markdown: {
 		shikiConfig: {
-		  theme: "github-dark",
+		  themes: {
+			   light: "github-light",
+			   dark: "github-dark"
+			},
 		  wrap: true,
 		},
 	  },
@@ -16,164 +22,27 @@ export default defineConfig({
 		starlight({
 			title: 'LENS Docs',
 			logo: {
-				light: "./src/assets/lmnaslogo.png",
-				dark: "./src/assets/lmnaswhite.png",
+				light: "./src/assets/icon.png",
+				dark: "./src/assets/icon.png",
 				replacesTitle: true,
 			  },
+			head: [
+				{
+				  tag: 'link',
+				  attrs: {
+					rel: 'icon',
+					href: '/lens-docs/favicon.ico',
+					type: 'image/x-icon',
+				  },
+				},
+			  ],
 			social: {
 				youtube: "https://www.youtube.com/channel/UCq5S8zxFv7e0bd23nq_hpWg",
         		github: "https://github.com/lmnaslimited",
         		"x.com": "https://x.com/lmnaslimited",
 			},
-			sidebar: [
-				{
-					label: "Documentation Standards",
-					items: [
-							{ label: 'General Story Structure', slug: 'doc-std/hls-guide/general-story-structure' },
-							{
-								label: "High-Level Solution Standards",
-								items: [
-									{
-										label: 'Issue Analysis',
-										slug: 'doc-std/hls-guide/issue-story',
-									},
-									{
-										label: 'Test Strategy',
-										slug: 'doc-std/hls-guide/testing-story',
-									},
-									{
-										label: 'Automation Plan',
-										slug: 'doc-std/hls-guide/automation',
-									},
-									{
-										label: 'POC Analysis',
-										slug: 'doc-std/hls-guide/poc-story',
-									},
-									
-								]
-							},
-							{
-								label: "Low-Level Solution Standards",
-								items: [
-									{
-										label: 'Issue Resolution',
-										slug: 'doc-std/lls-guide/issue-story',
-									},
-									{
-										label: 'Test Execution',
-										slug: 'doc-std/lls-guide/testing-story',
-									},
-									{
-										label: 'Automation Execution',
-										slug: 'doc-std/lls-guide/automation',
-									},
-									{
-										label: 'POC Implementation',
-										slug: 'doc-std/lls-guide/poc',
-									},
-									
-								]
-							},
-					
-					]
-				},
-
-				{
-					label: "Programming Standards",
-					items: [
-							{ label: 'Introduction', slug: 'prog-std/introduction' },
-							{
-								label: "Naming Convention",
-								items: [
-									{ label: 'Introduction', slug: 'prog-std/naming-convention/introduction' },
-									{ label: 'Javascript Naming Convention', slug: 'prog-std/naming-convention/javascript-standards' },
-									{ label: 'Python Naming Convention', slug: 'prog-std/naming-convention/python-standards' },
-									{ label: 'Typescript Naming Convention', slug: 'prog-std/naming-convention/typescript-standards' },
-									
-								]
-							},
-							{ label: 'Performance Standards', slug: 'prog-std/performance-standards' },
-					
-					]
-				},
-
-				{
-					label: "LENS AI Test Pilot",
-					items: [
-				{
-					label: 'Introduction',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'LENS AI Test Pilot', slug: 'ai-test-pilot/introduction/lens_ai_test_pilot' },
-						{ label: 'How it Works?', slug: 'ai-test-pilot/introduction/how_it_works' },
-					],
-				},
-				{
-					label: 'Getting Started',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						// { label: 'Prerequisites', slug: 'ai-test-pilot/getting_started/prerequisites' },
-						{ label: 'How to Install?', slug: 'ai-test-pilot/getting_started/how_to_install' },
-					],
-				},
-				{
-					label: 'Configure Test Pilot',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Setting up Configurator', slug: 'ai-test-pilot/configure_test_pilot/setting_up_configurator' },
-						{ label: 'Adding Test Configuration', slug: 'ai-test-pilot/configure_test_pilot/adding_test_configurations' },
-					],
-				},
-				{
-					label: 'Test Steps',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Parent Fields in Configurator', slug: 'ai-test-pilot/test_steps/fields_in_configurator' },
-						{ label: 'Child Fields in Configurator', slug: 'ai-test-pilot/test_steps/child_field' },
-						{ label: 'On Load', slug: 'ai-test-pilot/test_steps/on_load' },
-						{ label: 'On Change', slug: 'ai-test-pilot/test_steps/on_change' },
-						{ label: 'On Tab', slug: 'ai-test-pilot/test_steps/on_tab' },
-						{ label: 'After Save', slug: 'ai-test-pilot/test_steps/after_save' },
-						{ label: 'On Submit', slug: 'ai-test-pilot/test_steps/on_submit' },
-						{ label: 'After Submit', slug: 'ai-test-pilot/test_steps/after_submit' },
-						{ label: 'On Validate', slug: 'ai-test-pilot/test_steps/on_validate' },
-					],
-				},
-				{
-					label: 'Troubleshooting & FAQs',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'What are the Common Issues', slug: 'ai-test-pilot/troubleshoot/common_issues' },
-						{ label: 'FAQs', slug: 'ai-test-pilot/troubleshoot/faq' },
-					],
-				},
-			]
-		},
-		{
-			label: "Developer Cheat Sheet",
-			items: [
-					{
-						label: "Infrastructure",
-						items: [
-							{ label: 'Docker Swarm', slug: 'cheat-sheet/infrastructure/docker-swarm' },
-							{ label: 'Kubernetes', slug: 'cheat-sheet/infrastructure/kubernetes' },	
-						]
-					},
-					{
-						label: "PRISM",
-						items: [
-							{ label: 'Print Format', slug: 'cheat-sheet/prism/print-format' },
-							{ label: 'Report', slug: 'cheat-sheet/prism/report' },
-							{ label: 'Interface', slug: 'cheat-sheet/prism/interface' },
-							{ label: 'Script', slug: 'cheat-sheet/prism/script' },
-							{ label: 'Modification', slug: 'cheat-sheet/prism/modification' }
-						]
-					},
-			
-			]
-		},
-
-			],
+			sidebar, // ✅ Pass in the generated sidebar
+		
 		}),
 	],
 });
