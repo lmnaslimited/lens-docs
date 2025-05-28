@@ -2,7 +2,6 @@
 title: Web Development - Nextjs
 ---
 
-
 ### API Calling in the Client Side (App Router)
 ---
 Use `fetch()` to call APIs written in the App Router directly from client components.
