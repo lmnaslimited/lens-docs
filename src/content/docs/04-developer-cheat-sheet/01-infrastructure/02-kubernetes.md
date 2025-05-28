@@ -1,5 +1,5 @@
 ---
-title: High-Level Solution (HLS) - Automation Story
+title: Kubernetes
 ---
 ## Getting the pod's log in K3s
 * Displaying the logs of the pod

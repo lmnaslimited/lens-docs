@@ -17,7 +17,7 @@ This guide provides clear steps for setting up the Configurator to test a site w
 8. **Save the Site Detail**: Once all fields are completed, save the site details.
 
 
-![Setting up Configurator](/lens_ai_test_pilot_docs/sitedetails.gif)
+![Setting up Configurator](/lens-docs/sitedetails.gif)
 
 ## Step 2: Add a Test Case Configurator
 
@@ -30,4 +30,4 @@ This guide provides clear steps for setting up the Configurator to test a site w
 7. **Choose the Doctype to Test**: Select the doctype that you wish to test from the dropdown menu.
 8. **View the JSON Response**: After selecting the doctype, save it and in the "More Info" tab will automatically display the JSON response with all the fields.
 
-![Setting up Configurator](/lens_ai_test_pilot_docs/configuration.gif)
+![Setting up Configurator](/lens-docs/configuration.gif)
