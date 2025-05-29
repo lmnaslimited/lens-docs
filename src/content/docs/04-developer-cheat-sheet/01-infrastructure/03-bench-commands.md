@@ -18,7 +18,9 @@ bench export-fixtures --site dev.localhost
 ```
 
 **Sample Output**
+
 A custom_field.json file will be created in the path <custom_app>/<custom_app>/fixtures
+
 ---
 ## Bench backup Command
 * Use this command to take backup of the site.
