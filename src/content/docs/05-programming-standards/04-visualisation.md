@@ -2,8 +2,6 @@
 title: Programming Standards - Visualization
 ---
 
-# Visualisation
-
 ### Define Column width
 
 Set an explicit width for each column to ensure consistent layout and prevent unpredictable wrapping or overflow.
