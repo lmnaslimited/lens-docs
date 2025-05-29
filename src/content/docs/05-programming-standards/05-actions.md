@@ -65,12 +65,3 @@ get_datatable_options: function (iOptions) {
 ```
 ----
 
-
-
-
-
-
-
-
-
-
