@@ -230,6 +230,62 @@ log(l_index)
 
 ---
 
+## Getting Unique records
+
+- When processing datasets, it's important to eliminate duplicates early — especially when you're working with values like customer names, item codes, or IDs.  
+- Ensures uniqueness improves performance by avoiding redundant processing.
+
+ **Scenario**
+We have a `sales_order` dataset.  When we need to extract a list of **unique customers** (`customer_name`) from it.
+
+**❌ Incorrect Way:**
+
+```python
+la_columns = [
+    {"sales_order": "SAL-ORD-2025-00001", "customer_name": "ABB AG", "delivery_date": "15-06-2025", "item_code": "DTTHZ2/800/10/28/400/75", "order_value": "12.500,00", "po_date": "20-05-2025"},
+    {"sales_order": "SAL-ORD-2025-00002", "customer_name": "John", "delivery_date": "01-07-2025", "item_code": "DTTHZ3/630/20/22/450/85", "order_value": "9.800,00", "po_date": "25-05-2025"},
+    {"sales_order": "SAL-ORD-2025-00003", "customer_name": "ABB AG", "delivery_date": "20-07-2025", "item_code": "DTTHZ4/900/30/35/500/90", "order_value": "15.200,00", "po_date": "30-05-2025"},
+]
+# Wrong way: 
+def fn_get_unique(id_data_set, i_key):
+    la_unique = []
+    for it_data in id_data_set:
+        if i_key in it_data:
+            l_value = it_data[i_key]
+            if l_value not in la_unique:  # ❌ Slow linear search every time
+                la_unique.append(l_value)
+    return la_unique
+
+la_unique_customers = fn_get_unique_inefficient(la_columns, "customer_name")
+print(la_unique_customers)
+
+```
+**Sample Output:**
+```py
+['ABB AG', 'John'] 
+```
+**WHY**
+Slower and consumes more CPU time as dataset grows.
+
+**✅ Correct Way:**
+ 
+ This  uses a `set` to collect only **unique** values.
+ ```py
+ def fn_get_unique(id_data_set, i_key):
+    la_unique = list(set(it_data[i_key] for it_data in id_data_set if i_key in it_data))
+    return la_unique
+la_unique_customers = get_unique(la_columns, "customer")
+print(la_unique_customers)  
+ ```
+ **Sample Output:**
+```py
+['ABB AG', 'John'] 
+```
+**WHY**
+Fast, clean, and memory-efficient even for large datasets.
+
+---
+
 ## Avoid Hitting Database Repeatedly During Data Processing
 
 -   When processing data (e.g., extracting customer details), **do NOT query or loop over the database/dataset repeatedly** for the same data.
@@ -267,3 +323,91 @@ for l_customer in la_unique_customers:
    la_details = fn_query_customer_details([l_customer])
 ```
 The **correct way** extracts unique customers first and queries each customer only once — much more efficient!
+
+---
+
+## Count Sales Orders for a Single Customer
+
+**Description**
+- Counts how many sales orders exist for a specific customer.
+- Useful for reporting, validation, and analytics.
+- Works with a list of dictionaries, each representing a sales order.
+- Ensures accuracy even when multiple customers are present.
+- Uses a memory-efficient single-pass approach.
+
+ **❌ Incorrect Way**
+```python
+def fn_get_customer_order_count(ia_sales_orders, i_customer_name):
+    la_customer_names = [ld_order[i_customer_name] for order in ia_sales_orders]
+    return la_customer_names.count(i_customer_name)
+fn_get_customer_order_count(ia_sales_orders, "customer")
+```
+**Why it's incorrect:**
+
+- Creates a temporary list of customer names — inefficient for large datasets.
+- Requires two passes: one to create the list, another to count.
+- Doesn't scale well for systems handling thousands of records.
+
+
+** ✅ Correct Way**
+```python
+def fn_get_customer_order_count(ia_sales_orders, i_customer_name):
+    """
+    Count the number of sales orders for a given customer.
+
+    Parameters:
+        ia_sales_orders (list[dict]): List of sales order dictionaries with 'customer' keys.
+        i_customer_name (str): Customer name to count.
+
+    Returns:
+        int: Number of matching sales orders.
+    """
+    return sum(1 for ld_order in ia_sales_orders if ld_order[i_customer_name] == i_customer_name)
+fn_get_customer_order_count(ia_sales_orders, "customer")
+```
+
+**Why it's incorrect:**
+
+- Memory-efficient: Doesn't create any extra list.
+- Single-pass: Evaluates and counts in one loop.
+- Scalable: Works well even for large datasets.
+
+**Sample Input:**
+
+```python
+la_sales_orders = [
+    {
+        "sales_order": "SAL-ORD-2025-00001",
+        "customer_name": "ABB AG",
+        "delivery_date": "15-06-2025",
+        "item_code": "DTTHZ2/800/10/28/400/75",
+        "order_value": "12.500,00",
+        "po_date": "20-05-2025"
+    },
+    {
+        "sales_order": "SAL-ORD-2025-00002",
+        "customer_name": "John",
+        "delivery_date": "01-07-2025",
+        "item_code": "DTTHZ3/630/20/22/450/85",
+        "order_value": "9.800,00",
+        "po_date": "25-05-2025"
+    },
+    {
+        "sales_order": "SAL-ORD-2025-00003",
+        "customer_name": "John",
+        "delivery_date": "05-07-2025",
+        "item_code": "DTTHZ3/630/20/22/450/90",
+        "order_value": "10.200,00",
+        "po_date": "26-05-2025"
+    }
+]
+l_customer_name = "John"
+l_order_count = fn_get_customer_order_count(la_sales_orders, l_customer_name)
+print(f"Sales order count for {l_customer_name}: {l_order_count}")
+```
+
+**Sample Output**
+```
+Sales order count for John: 2
+```
+
