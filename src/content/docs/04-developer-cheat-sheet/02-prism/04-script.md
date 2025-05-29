@@ -280,6 +280,37 @@ frappe.call({
 open api key fhryryfhghgus8ghffgfhffjfjgjreg
 ```
 
+# Server Script
+
+## frappe.get_doc in server side
+Returns a document object for the given doctype and name, if no document match throw "DoesNotExistError".
+Note: for single doctype, name is not required
+
+**Basic Syntax**
+```
+frappe.get_doc(<doctype_name>, <document_name>)
+```
+**Common Use Case**
+```
+ld_task = frappe.get_doc("Task", "TASK-0023")
+frappe.msgprint(str(ld_task.title)) //ex: title is Cpq Documentation
+```
+**Sample Output**
+```
+Cpq Documentation
+```
+For single doctype
+```
+ld_system_setting = frappe.get_doc("System Setting")
+frappe.msgprint(str(ld_system_setting.theme)) //ex: theme is dark
+```
+**Sample Output**
+```
+dark
+```
+
+
+
 
 # CPQ CheatSheet
 ## Setting a watch flag for a field
