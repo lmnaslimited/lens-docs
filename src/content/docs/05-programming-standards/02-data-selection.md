@@ -178,3 +178,34 @@ ld_print_settings = frappe.get_cached_doc("Print Settings")
 }
 ```
 ---
+## Avoid Hardcoding Doctype or Field Names
+
+Hardcoding doctypes or field names can lead to errors if names change, reduce code reusability, and make maintenance harder. Using dynamic methods like `doc.get()` and `frappe.get_meta()` keeps your code safer and more flexible.
+
+**❌ Incorrect Way**
+```python
+# Hardcoded doctype and field access
+ld_doc = frappe.get_doc("Sales Invoice", "SINV-0001")
+if ld_doc.custom_customer_name == "John Doe":
+    frappe.msgprint("Customer matched")
+```
+**Why ?**
+* Breaks if `custom_customer_name` is renamed
+* Not reusable for other doctypes.
+
+
+**✅ Correct Way**
+```python
+# Dynamic and safer field access
+l_doctype = "Sales Invoice"  # could also be passed as a parameter
+l_name = "SINV-0001"
+
+ld_doc = frappe.get_doc(l_doctype, l_name)
+if ld_doc.get("custom_customer_name") == "John Doe":
+    frappe.msgprint("Customer matched")
+```
+**Sample Output**
+```
+Customer matched
+```
+---
