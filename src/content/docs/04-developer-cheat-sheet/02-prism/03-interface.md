@@ -2,10 +2,10 @@
 title: PRISM - Interface
 ---
 
-# Fixtures
+## Fixtures
 Fixtures are used to migrate specific data and settings from the custom app during its installation, so they could be available after installation
 
-### Basic Syntax
+**Basic Syntax**
 In the app's hook. py file
 ```
 fixtures = [
@@ -16,7 +16,7 @@ fixtures = [
 	]
 }]
 ```
-### Common Use Cases 
+**Common Use Cases** 
 Migrating a custom field using fixture
 ```
 fixtures = [
@@ -28,24 +28,24 @@ fixtures = [
     }]
 ```
 
-# Accessing server api Through browser url
+## Accessing server api Through browser url
 We can test the custom api directly without calling them in client / server script through browser
 
-### Pre-requisite
+**Pre-requisite**
 A Server Script of Type API with return using `frappe.response['message']` (since we using in on browser, frappe.flag wont't work) should be there
 ex: ``` frappe.response['message'] = "pong```
 
-### Basic Syntax
+**Basic Syntax**
 in browser(chrome/ Firefox/ etc)
 ```
 https://<sitename>/api/method/api_method?<parameter_name>="<your value>"
 ```
-### Common Use Cases 
+**Common Use Cases** 
 Without Argument
 ```
 https://lenscx.docker.localhost/api/method/ping
 ```
-### Sample Output
+**Sample Output**
 ```json
 {
   "message": "pong"
@@ -65,4 +65,28 @@ https://lenscx.docker.localhost/api/method/ping?message="hello"
 {
   "message": "\"hello\""
 }
+```
+## 1.Base64 Auth Key via Terminal
+
+Use this command to create a base64-encoded string for HTTPs Basic Authentication through terminal. This is commonly used when interacting with APIs that require credentials passed in an `Authorization` header.
+
+### Basic Syntax
+
+```bash
+echo -n "api_key:api_secret" | base64
+```
+#### Example: 
+```bash
+echo -n "bc0a2c2d2acb0f9:20ebfe67fbf273b" | base64
+```
+#### Output:
+```bash
+YmMwYTJjMmQyYWNiMGY5OjIwZWJmZTY3ZmJmMjczYg==
+```
+
+### Common Use Cases
+ When calling an API endpoint that requires Basic Authentication:
+
+```bash
+curl -H "Authorization: Basic YmMwYTJjMmQyYWNiMGY5OjIwZWJmZTY3ZmJmMjczYg==" https://api.example.com/data
 ```

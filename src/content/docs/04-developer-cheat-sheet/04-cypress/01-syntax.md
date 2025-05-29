@@ -286,3 +286,40 @@ cy.get('[data-fieldname="customer_name"] > .form-group > .control-input-wrapper 
   **Output:**  
 If the readonly field shows the expected text:
 ```✓ Assertion Passed: expected element to have text  'ABB AG'```
+
+---
+## Difference Between `have.value` and `have.text` in  Assertions
+ You can assert values using `.should('have.value')` or `.should('have.text')` depending on the type of HTML element you're targeting.
+
+ `.should('have.value'):`
+-  **Used for**: Form elements like `<input>`, `<textarea>`, and `<select>`
+- **Checks**: The value **inside the `value` attribute** of the element.
+
+**Example:**
+```javascript
+cy.get('[data-fieldname="transaction_date"] input:visible')
+  .should('have.value', '25-05-2025');
+```
+**Output:**
+```
+Passes if the date input field holds `25-05-2025` in the `value` attribute.
+```
+
+`.should('have.text'):`
+-   **Used for**: Display elements like `<div>`, `<span>`, `<p>`, or custom read-only fields
+-   **Checks**: The **visible inner text** of the element .
+
+**Example:**
+```javascript
+cy.get('[data-fieldname="status"] .control-value')
+  .should('have.text', 'Submitted');
+```
+**Output:**
+```
+Passes if the visible text content inside the field is `Submitted`.
+```
+
+**Note**:  
+>If you're unsure whether to use `.value` or `.text`, inspect the element in the browser — if it has a `value` attribute (like `<input value="xyz">`), use `.have.value`. Otherwise, if it's just displayed text (like `<div>xyz</div>`), use `.have.text`.
+
+---

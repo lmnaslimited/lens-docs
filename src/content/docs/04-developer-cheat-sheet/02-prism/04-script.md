@@ -194,24 +194,24 @@ frappe.db.get_value(
 }
 ```
 
-# Doctype's MetaDate
+## Doctype's MetaDate
 
 use `get_meta` to get specific Doctype's information along with the custom field and property setter
 
-### Basic Syntax
+**Basic Syntax**
 This method can only be used on Server Side
 ```python
 frappe.get_meta('<doctype_name>')
 ```
 
-### Common Use Cases 
+**Common Use Cases**
 ```python
 ld_ToDo_meta = frappe.get_meta("ToDo")
 frappe.msgprint(str(ld_ToDo_meta.fields)) #printing the meta information of the fields
 
 #Note: str() should be used to flaten the object, otherwise it will be printed as [Object][Object]
 ```
-### Sample Output
+**Sample Output**
 ```
 {
   "message": [
@@ -242,10 +242,10 @@ frappe.msgprint(str(ld_ToDo_meta.fields)) #printing the meta information of the 
       ]}
 ```
 
-# Get value of password field
+## Get value of password field
 When used get_value() for password field, the return value is asterisk(encrypted), so use `get_password` method to retrieve the actual value of password type field
 
-### Basic Syntax
+**Basic Syntax**
 in client
 ```
 frappe.call({
@@ -257,7 +257,7 @@ frappe.call({
 	}
 })
 ```
-### Common Use Cases 
+**Common Use Cases** 
 
  - getting the open api key from raven settings doctype
  ```
@@ -275,18 +275,49 @@ frappe.call({
 	}
 })
  ```
-### Sample Output
+**Sample Output**
 ```
 open api key fhryryfhghgus8ghffgfhffjfjgjreg
 ```
 
+# Server Script
+
+## frappe.get_doc in server side
+Returns a document object for the given doctype and name, if no document match throw "DoesNotExistError".
+Note: for single doctype, name is not required
+
+**Basic Syntax**
+```
+frappe.get_doc(<doctype_name>, <document_name>)
+```
+**Common Use Case**
+```
+ld_task = frappe.get_doc("Task", "TASK-0023")
+frappe.msgprint(str(ld_task.title)) //ex: title is Cpq Documentation
+```
+**Sample Output**
+```
+Cpq Documentation
+```
+For single doctype
+```
+ld_system_setting = frappe.get_doc("System Setting")
+frappe.msgprint(str(ld_system_setting.theme)) //ex: theme is dark
+```
+**Sample Output**
+```
+dark
+```
+
+
+
 
 # CPQ CheatSheet
-# Setting a watch flag for a field
+## Setting a watch flag for a field
 In client script you use `fieldName(frm)` to implement onChange of specific field. similarly, you can achieve the same in vue js using `watch()`
 Note: only use it on core, not on CRM Form Script
 
-### Basic Syntax
+**Basic Syntax**
 ```
 watch(fieldName, (NewValue, OldValue) =>{
 //your logic
@@ -294,7 +325,7 @@ watch(fieldName, (NewValue, OldValue) =>{
 { immediate: false } //to avoid initial undefined error onmount
 )
 ```
-### Common Use Cases 
+**Common Use Cases** 
 
  - On Change of tabs from Activity to Note, 
  ```javascript
@@ -306,23 +337,23 @@ watch(fieldName, (NewValue, OldValue) =>{
 	{immediate: false}
 )
  ```
-### Sample Output
+**Sample Output**
 ```
 previous selected tab Activity
 current selected tab Note
 ```
-# Custom Button in CPQ
+## Custom Button in CPQ
 use CRM Form Script (client script for CPQ) to add custom button in the both ListView or Individual View
 
-### Pre-requisite
+**Pre-requisite**
 Go to CRM Form Script, create a new CRM Form Script with Name "Custom Button", Doctype: "CRM Deal", Apply To: "Form" and enable the script
 
-### Basic Syntax
+**Basic Syntax**
 ```
 action:[{"label": <label>, "onClick": () => {//your logic}
 }]
 ```
-### Common Use Cases 
+**Common Use Cases** 
 
  - Create a View Quotation button on Deal 
  ```
@@ -333,7 +364,7 @@ action:[{"label": <label>, "onClick": () => {//your logic}
  }
  }
  ```
-### Sample Output
+**Sample Output**
  - Open the Existing Deal Document, you will see the "View Quotation" button at top right corner
  - On clicking the "View Quotation" button
  ```
@@ -341,18 +372,18 @@ action:[{"label": <label>, "onClick": () => {//your logic}
  The button "View Quotation" is clicked
  ```
 
-# Navigating pages using router
+## Navigating pages using router
 To navigate between pages like from **Deal** to **Quotation** in **CPQ** using a **Frappe form script**, you can use `router()` which is similar to set_route() in frappe
 
-### Pre-requisite
+**Pre-requisite**
 Include the `router` param in the `setupForm` function
 
-### Basic Syntax
+**Basic Syntax**
 ```
 router.push({"name": <doctype_name>, "params": {"name": <id>}
 })
 ```
-### Common Use Cases 
+**Common Use Cases** 
 
  - navigate to the quotation created for the Specific Deal (ex: CRM-DEAL-0003) 
  ```
@@ -368,5 +399,127 @@ router.push({"name": <doctype_name>, "params": {"name": <id>}
 }
 }
  ```
-### Sample Output
+**Sample Output**
 On clicking the View Quotation button in the CRM-DEAL-0003 will take you to the Quotation
+
+## ref  in Vue js
+Use `ref()` to create a value, where Vue wraps it in a reactive object so it can track changes and trigger updates in the UI when used in templates.
+
+**Pre-requisite**
+```javascript
+import { ref } from 'vue'
+```
+**Basic Syntax**
+```javascript
+ref(<intial_value>)
+//`intial_value` can be any type: number, string, boolean, array, object, etc.
+```
+**Common Use Cases **
+```javascript
+<template>
+<Button 
+	:label="__('Create')"
+	:loading="IsLoading" //When you use a `ref` variable in the template, Vue automatically unwraps `.value`, so you can use it directly.
+	@click="fnHandleClick" />
+</template>
+<script setup>
+const IsLoading = ref(false)
+function fnHandleClick(){
+	IsLoading.value = true  //To access or update it: use `.value`
+	.....
+	//after successfull created
+	IsLoading.value = false 
+}
+</script>
+```
+**Sample Output**
+When you clicked the "Create" button an spinner animation appear, after successfully creation, the button come back to normal
+
+## reactive in Vue.js
+
+ - `reactive()` makes an object "watchable" so Vue knows when its data
+   changes.
+ - the difference between ref() and reactive() is that reactive only work with object or array, so you can't use it for single primitive like reactive(5) or reactive(false)
+
+**Pre-requisite**
+```javascript
+import { reactive } from 'vue'
+```
+ **Basic Syntax**
+```javascript
+reactive({
+	"name":"",
+	"items":[]
+	})
+```
+**Common Use Cases **
+```javascript
+<template>
+<FormControl 
+	:label="__('Design Template')"
+	type="text"
+	:placeholder="design_template"
+	@change="(value)=> fnHandleUpdate("design_template", value)"
+	/>
+</template>
+<script setup>
+const Design = reactive({"design_template":"", "direct_material": ""})
+function fnHandleUpdate(iField, iValue){
+	Design[iField] = iValue
+	console.log(`${iField} is set to ${iValue}`)
+}
+</script>
+```
+**Sample Output**
+```
+Design Template is set to Step Up
+```
+
+##  Frappe Resource API
+`createResource()` from frappe-ui is an build in reactive object that is used for `async` data fetching and processing with build in loading state, cache, error handling and watcher
+**Pre-requisite**
+```javascript
+import { createResource } from 'frappe-ui'
+```
+ **Basic Syntax**
+```javascript
+createResource({
+	url: <method_path>,
+	params: {<filters, fields>},
+	cache: ['<cache_name>', <variable_of_createResouce>],
+	auto: true,
+	onSuccess(data){}, //on successful response
+	transform(data){}, //transform data before setting it
+	onError(error){}, //error can occur from failed request and validate function
+	makeParams(){}, //generate params from function
+	validate(params){}, //validate parameters before making request
+})
+```
+**Common Use Cases **
+```
+const LaFieldLayout = createResource({
+	url: "crm.fcrm.doctype.crm_fields_layout.crm_fields_layout.get_fields_layout",
+	params:{ doctype: "Item", type: "Quick Entry"},
+	cache: ["tabs", LaFieldLayout],
+	auto: true,
+	onSuccess(iaTabs){
+		//the return structure of this endpoint will be like
+		//[{secions:[columns:[fields:[fieldName: "", fieldType: ""]]]}, {}]
+		iaTabs.forEach((idTab) => {
+			idTab.sections.forEach((idSection) => {
+				idSection.columns.forEach((idColumn) => {
+					idColumn.fields.forEach((idField) => {
+						if(idField.fieldType == "Table"){
+							console.log("Field name", idField.fieldName)
+						}
+					})
+				})
+			})
+		})
+	}
+})
+```
+**Sample Output**
+```
+Field name Item Attribute
+```
