@@ -410,4 +410,72 @@ print(f"Sales order count for {l_customer_name}: {l_order_count}")
 ```
 Sales order count for John: 2
 ```
+---
 
+## frappe utility functions for date 
+
+Frappe provides utility functions for handling dates and times efficiently, enabling developers to work with business logic involving delivery dates, document validity, weekly schedules, etc.
+
+**Key functions:**
+-  frappe.utils.getdate(date_str)
+ - frappe.utils.date_diff(end_date, start_date)
+-  getdate().isocalendar() – for getting ISO week/year/day-of-week.
+
+**1. getdate:**
+Converts a string or datetime into a Python date object. Ensures consistent format for all date operations within Frappe apps.
+
+ **❌ Incorrect Way:**
+ Using raw strings or datetime objects without conversion:
+```py
+l_date = "2025-05-29"
+print(l_date) 
+```
+ **✅ Correct Way:**
+ Use getdate() to standardize all date inputs
+ ```python
+l_date_obj = frappe.utils.getdate("2025-05-04")
+print("getdate:", l_date_obj)
+ ```
+ **Sample Output:**
+ ```
+ getdate: 2025-05-04
+ ```
+**2. date_diff:**
+Calculates the number of days between two dates. Accepts both date strings or Python date objects.
+
+ **❌ Incorrect Way:**
+Manually calculating days difference without converting strings to date objects:
+```py
+l_diff = ("2025-06-01" - "2025-05-29").days  
+```
+**✅ Correct Way:**
+Use `date_diff()` to safely compute days difference with proper date conversion.
+```python
+l_date_1 = "2025-05-25"
+l_date_2 = "2025-05-20"
+#use abs to prevent negative result (ex: -5)
+l_date_difference = abs(frappe.utils.date_diff(l_date_2, l_date_1))
+print("date_diff:", l_date_difference)
+```
+**Sample Output:**
+```
+date_diff: 5
+```
+**3. isocalendar:**
+Returns a tuple `(ISO year, ISO week number, ISO weekday)` for a given Python `date` object. Helps in week-based date processing.
+
+ **❌ Incorrect Way:**
+Attempting to manually calculate week numbers or weekdays, leading to errors or complex code.
+```py
+l_week_num = (l_date_obj.day - 1) // 7 + 1 
+```
+**✅ Correct Way:**
+Use the built-in `.isocalendar()` method on a date object to get accurate ISO calendar details.
+```python
+la_iso_calendar = frappe.utils.getdate("2025-05-29").isocalendar()
+print("isocalendar:", (la_iso_calendar[0], la_iso_calendar[1], la_iso_calendar[2]))
+```
+**Sample Output:**
+```
+isocalendar: (2025, 22, 4)
+```
