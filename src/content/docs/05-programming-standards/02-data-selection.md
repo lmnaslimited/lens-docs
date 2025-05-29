@@ -133,3 +133,48 @@ if frappe.db.exists("User Session Defaults", l_user):
 }
 ```
 ---
+## Use Caching for Expensive or Repeated Queries
+When reading frequently used documents that don't change often (like configuration or settings), it's more efficient to use `frappe.get_cached_doc()` instead of repeatedly fetching from the database.
+
+**❌ Incorrect Way**
+```python
+# Fetching from DB every time
+ld_Print_settings = frappe.get_doc("Print Settings")
+```
+**Why ?**
+* Hits the database every time.
+* Slower, especially if used repeatedly across multiple requests.
+* Wastes server resources for data that rarely changes.
+
+
+**✅ Correct Way**
+```python
+# Uses cached version of the document
+ld_print_settings = frappe.get_cached_doc("Print Settings")
+```
+> **Note** 
+> - Reads from in-memory cache if available.
+> - Automatically revalidates the cache if the document changes via `.save()` or `frappe.db.set_value()`.
+> - Reduces DB load and improves performance.
+
+**Sample Output**
+```
+{
+    "doctype": "Print Settings",
+    "name": "Print Settings",
+    "letter_head": "Default Letter Head",
+    "print_timeline": 1,
+    "repeat_header_footer": 1,
+    "compact_item_print": 0,
+    "line_break_for_hierarchy": 0,
+    "with_letterhead": 1,
+    "print_style": "Modern",
+    "pdf_page_size": "A4",
+    "pdf_orientation": "Portrait",
+    "created_by": "Administrator",
+    "modified_by": "Administrator",
+    "creation": "2024-01-15 10:30:00",
+    "modified": "2024-05-01 16:12:00"
+}
+```
+---
