@@ -5,9 +5,11 @@ title: Programming Standards - Visualization
 # Visualisation
 
 ### Define Column width
+
 Set an explicit width for each column to ensure consistent layout and prevent unpredictable wrapping or overflow.
 **Why:**  
-Defining column width improves readability, maintains alignment across rows, and ensures a uniform appearance — especially in wide reports or when exporting to PDF/Excel. It also helps prevent labels or values from overlapping into adjacent columns.
+Prevents layout shifts and wrapping in table columns.
+**✅ Correct Way**
 ```python
  la_columns = [
         {
@@ -18,10 +20,11 @@ Defining column width improves readability, maintains alignment across rows, and
         },
     ]
 ``` 
+---
 ### Static Key Column
  Key columns (e.g., primary identifiers) should remain fixed when scrolling horizontally.
 **Why:**
-Keeping key columns static ensures users always retain context while scrolling through wide tables. Without this, it becomes difficult to associate data in far-right columns with their respective rows, increasing the risk of misinterpretation and user error.
+Keeping key columns static ensures users retain context while scrolling, preventing misinterpretation of data in wide tables.
 ```javascript
 L_STYLE.innerHTML = `
 .dt-instance-1 .dt-cell--col-0 {
@@ -38,24 +41,41 @@ L_STYLE.innerHTML = `
         left: 30px; /* Adjust this value to match the width of col-1 */
     }`;
 ```
+---
+### Mandatory Fields Should Have Default Values
+**Why:** Prevents empty report load and improves user experience.
+
+**❌ Incorrect way**
+```javascript
+{
+  "fieldname": "from_date",
+  "label": __("From Date"),
+  "fieldtype": "Date"
+}
+```
+**✅ Correct Way**
+ ```javascript
+ {
+  "fieldname": "from_date",
+  "label": __("From Date"),
+  "fieldtype": "Date",
+  "default": frappe.datetime.month_start()
+}
+```
+---
 ### Use Charts for Large Datasets
 Use visual summaries (charts) when the dataset exceeds a manageable number of rows or when trends are more important than individual records.
 **Why:**  
 Charts help users grasp patterns, exceptions, and trends quickly — especially when tabular data grows too large to scan efficiently.
+ ✅ Correct Way
 ```python
- la_columns = [
-        {
-            "fieldname": "weekly_capacity",
-            "label": _("Weekly Capacity"),
-            "fieldtype": "Int",
-            "width": 50,// ✅ Correct Way
-        },
-    ]
+
 ``` 
+---
 ### Avoid break in label
 Use single-line, non-breaking labels for fields to maintain visual consistency and avoid misalignment in report headers.
 **Why:**
-Line breaks (`<br>`) in labels cause uneven row heights, cluttered headers, and poor alignment — especially when exporting or rendering in tight layouts. Use CSS styles to manage label overflow gracefully.
+Multi-line labels reduce readability and cause inconsistent UI.
 **❌ Incorrect Way**
 ```python
 {"fieldname": "sales_order", 
@@ -75,6 +95,7 @@ Line breaks (`<br>`) in labels cause uneven row heights, cluttered headers, and 
 "label_style": "white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"  // ✅ Correct Way
 }
 ``` 
+----
 ### Enable rows checkbox
 Use checkboxes to allow selection of multiple rows in a report, enabling batch actions or easier comparisons.
 **Why:**  
@@ -87,3 +108,15 @@ Enabling row checkboxes improves usability for tasks that require selecting mult
     });
   },
  ```
+ ---
+ ### Use Meaningful Colors in Charts
+
+Apply distinct, consistent colors to represent categories or metrics in charts.
+**Why:**  
+Color helps users quickly differentiate data series and understand visual trends. Using random or similar colors confuses interpretation, especially in stacked or multi-series charts.
+
+ ✅ Correct Way
+```javascript
+colors: ["#1abc9c", "#e74c3c", "#3498db", "#f39c12"]
+```
+---
