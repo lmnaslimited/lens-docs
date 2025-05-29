@@ -1,14 +1,15 @@
 ---
 title: Programming Standards - Visualization
 ---
-
 # Visualisation
 
 ### Define Column width
 
 Set an explicit width for each column to ensure consistent layout and prevent unpredictable wrapping or overflow.
+
 **Why:**  
 Prevents layout shifts and wrapping in table columns.
+
 **✅ Correct Way**
 ```python
  la_columns = [
@@ -23,6 +24,7 @@ Prevents layout shifts and wrapping in table columns.
 ---
 ### Static Key Column
  Key columns (e.g., primary identifiers) should remain fixed when scrolling horizontally.
+
 **Why:**
 Keeping key columns static ensures users retain context while scrolling, preventing misinterpretation of data in wide tables.
 ```javascript
@@ -43,6 +45,7 @@ L_STYLE.innerHTML = `
 ```
 ---
 ### Mandatory Fields Should Have Default Values
+
 **Why:** Prevents empty report load and improves user experience.
 
 **❌ Incorrect way**
@@ -53,6 +56,7 @@ L_STYLE.innerHTML = `
   "fieldtype": "Date"
 }
 ```
+
 **✅ Correct Way**
  ```javascript
  {
@@ -65,8 +69,10 @@ L_STYLE.innerHTML = `
 ---
 ### Use Charts for Large Datasets
 Use visual summaries (charts) when the dataset exceeds a manageable number of rows or when trends are more important than individual records.
+
 **Why:**  
 Charts help users grasp patterns, exceptions, and trends quickly — especially when tabular data grows too large to scan efficiently.
+
  ✅ Correct Way
 ```python
 
@@ -74,8 +80,10 @@ Charts help users grasp patterns, exceptions, and trends quickly — especially 
 ---
 ### Avoid break in label
 Use single-line, non-breaking labels for fields to maintain visual consistency and avoid misalignment in report headers.
+
 **Why:**
 Multi-line labels reduce readability and cause inconsistent UI.
+
 **❌ Incorrect Way**
 ```python
 {"fieldname": "sales_order", 
@@ -84,6 +92,7 @@ Multi-line labels reduce readability and cause inconsistent UI.
  "options": "Sales Order",
  "width": 140},
 ```
+
  ✅ Correct Way
 ```python
  {  
@@ -98,8 +107,10 @@ Multi-line labels reduce readability and cause inconsistent UI.
 ----
 ### Enable rows checkbox
 Use checkboxes to allow selection of multiple rows in a report, enabling batch actions or easier comparisons.
+
 **Why:**  
 Enabling row checkboxes improves usability for tasks that require selecting multiple entries (e.g., bulk processing, exporting, linking). It provides a familiar and intuitive UI pattern, especially for users dealing with large datasets.
+
  ✅ Correct Way
 ```javascript
   get_datatable_options: function (iOptions) {    // ✅ Correct Way
@@ -112,6 +123,7 @@ Enabling row checkboxes improves usability for tasks that require selecting mult
  ### Use Meaningful Colors in Charts
 
 Apply distinct, consistent colors to represent categories or metrics in charts.
+
 **Why:**  
 Color helps users quickly differentiate data series and understand visual trends. Using random or similar colors confuses interpretation, especially in stacked or multi-series charts.
 
@@ -120,3 +132,182 @@ Color helps users quickly differentiate data series and understand visual trends
 colors: ["#1abc9c", "#e74c3c", "#3498db", "#f39c12"]
 ```
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
