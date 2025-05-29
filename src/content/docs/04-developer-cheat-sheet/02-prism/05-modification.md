@@ -6,7 +6,7 @@ title: Modifications and Customizations
 
 This helps the viewer identify at a glance which document types are connected to this DocType and can quickly create new related documents.
 
-### useCase
+**UseCase**
 
 Want to link the **Task** Doctype in the **Test Plan** Doctype.
 
@@ -25,7 +25,7 @@ Want to link the **Task** Doctype in the **Test Plan** Doctype.
 
 This helps maintain a consistent and clear view of the columns in a child table.
 
-### useCase
+**UseCase**
 
 Want to set up the **Test Plan Script** child table to display specific columns by default.
 
@@ -43,7 +43,7 @@ Want to set up the **Test Plan Script** child table to display specific columns 
 
 This helps to export the child table in CSV format.
 
-### useCase
+**UseCase**
 
 Want to download the **Test Plan Script** child table (Test Plan Script is attached to the **Test Plan** Doctype).
 
@@ -63,7 +63,7 @@ Once enabled, you can download the child table data as a CSV from the form view.
 
 A **Dynamic Link** field allows you to reference documents from any Doctype dynamically based on the value of another field.
 
-### useCase
+**UseCase**
 
 To choose any Doctype and dynamically fetch the relevant document from that Doctype.
 
@@ -92,7 +92,7 @@ This setup allows users to first select a Doctype and then pick a specific docum
 
 Instead of a child table with an **Add Row** button, this allows selecting multiple values in a single field.
 
-### useCase
+**UseCase**
 
 To multi-select entries from the **Test Plan Script** child table in a parent Doctype.
 
@@ -114,7 +114,7 @@ You should have a parent Doctype with the **Test Plan Script** child table alrea
 
 This helps to provide a naming pattern that will be incremented automatically.
 
-### useCase:
+**UseCase**
 
 Want to set the naming format as **TP-001** for the **Test Plan** Doctype.
 
@@ -135,7 +135,7 @@ This will generate names like `TP-0001`, `TP-0002`, etc.
 
 This allows you to display a specific field as the title in the form view, instead of the default ID.
 
-### useCase
+**UseCase**
 
 You want to show the **Subject** field as the title in the form view of the **Test Plan** Doctype.
 
@@ -154,7 +154,7 @@ This will make the form display the value of the **Subject** field as the docume
 
 This helps to track changes made to a document over time, including who made the changes and when.
 
-### useCase
+**UseCase**
 
 You want to track if any user has changed a value in the **Test Plan** document and identify who made the change.
 
