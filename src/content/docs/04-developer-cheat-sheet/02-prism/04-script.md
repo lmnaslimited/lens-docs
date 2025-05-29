@@ -881,3 +881,98 @@ const LaFieldLayout = createResource({
 ```
 Field name Item Attribute
 ```
+## Classes and Objects
+
+## Constructor
+A **constructor** is a special method in a class that gets called automatically when a new instance of the class is created. It is used to **initialize the object** with values or set up initial logic.**Basic Syntax:**
+```ts
+class ClassName {
+    constructor(parameter1: Type, parameter2: Type) {
+        // Initialization code here
+    }
+}
+```
+You can access the constructor via the `new` keyword:
+```
+const obj = new  ClassName(value1, value2);
+```
+**Use Case**
+We use constructors in **base and derived classes** to **pass and initialize shared data** like `action` and `actionData`.```ts
+class clActionOnLoad extends clAction {
+    constructor(iAction: string, iaActionData: TTactionsData) {
+        super(iAction, iaActionData); // Calls the constructor of the base class
+    }
+    // overrides and method calls
+}
+```
+**WHY**
+-   You pass data like `action` and `actionData` to the base class once.
+-   You avoid repeating initialization logic in every subclass.
+-   Subclasses can still add their own logic **after calling `super()`**.
+
+## Interface
+An **interface**  is a syntactic contract that defines the **structure of an object or class**. It ensures that a class or object adheres to a particular shape by specifying what properties and methods it must have.**Basic Syntax:**
+```javascript
+interface InterfaceName {
+    propertyName: type;
+    methodName(): returnType;
+}
+```
+**Use Case:**
+We use the **interface** in the `types.ts` file to **define the structure** that any class or object must follow. In this case, the `ifActionHandler` interface acts as a **contract** for all action handlers, ensuring they have the necessary properties and methods.
+```javascript
+interface ifActionHandler {
+    action: string;
+    actionData: TTactionsData;
+    actionRow: TactionData;
+    executeAction(): void;
+    checkFieldValue(): void;
+    checkFieldProperties(): void;
+    dataType: ifDataType;
+}
+```
+Use this interface in an **abstract class**:
+```
+abstract class clAction implements ifActionHandler {
+    // Must implement all properties and methods from the interface
+}
+```**WHY:**
+-   By using the interface in the `types.ts`, you define a **standard structure** for all actions.
+-   Every class that implements this interface will be forced to follow that structure.
+-   This helps in maintaining **consistency**, improving **type safety**, and enabling **scalable code architecture**.
+
+## Factory class
+	
+Use a factory class when you need to **dynamically create instances** of different classes based on a runtime condition (e.g., a string key), **without hardcoding class instantiations**.**Use Case:**
+Dynamically create and return the correct `clAction` subclass based on the action type string at runtime (e.g., `"Onload"`, `"Add Row"`, etc.).
+```javascript
+// Factory class to create action instances dynamically based on action type
+class clActionFactory {
+  private static actionsMap: {
+    [key: string]: new (iAction: string, iaActionData: TTactionsData) => clAction
+  } = {
+    "Onload": clActionOnLoad,
+    "On Change": clActionOnChange,
+    "On Tab": clActionOnTab,
+    "Add Row": clActionAddRow,
+    "Edit Details": clActionEditDetails,
+    "Expand Section": clActionExpandSection,
+  };
+  // Factory method to return the correct action class instance at runtime
+  static createAction(
+    type: string,                         // Action type string (e.g., "Add Row")
+    iAction: string,
+    iaActionData: TTactionsData
+  ): clAction {
+    const ActionClass = this.actionsMap[type];
+    if (!ActionClass) {
+      throw new Error(`Action type '${type}' is not registered.`);
+    }
+    // Return a new instance of the action class
+    return new ActionClass(iAction, iaActionData);
+  }
+}
+```
+-   Easily create instances of different classes based on a string key without hardcoding logic.
+-   Easily register new actions by adding to `actionsMap`
+-   Keeps instantiation logic centralized.
