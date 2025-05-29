@@ -153,7 +153,7 @@ Please log in!
 ```
 
 
-### `generateMetadata()` 
+### generateMetadata()
 ---
 
 Used to **dynamically set page metadata** like title, description, and social tags for better SEO and sharing.
@@ -212,8 +212,8 @@ Then the page `<head>` includes:
 
 
 
-
-## `generateViewport()` 
+## generateViewport()
+---
 
 Used to **dynamically set the `<meta name="viewport">` tag**, which controls how your site is displayed on different screen sizes and devices.
   
@@ -269,7 +269,8 @@ The page `<head>` includes:
 
 
 
-## `useState()` 
+## useState()
+---
 
 Used to **add state management to functional React components**, allowing components to hold and update local state.
 
@@ -322,7 +323,8 @@ function Counter() {
 
 
 
-## `useEffect()` 
+## useEffect()
+---
 
 The `useEffect` hook is used to **handle side effects** in functional React components. Common use cases include **data fetching**, **event listeners**, **DOM manipulation**, and **timers**, etc.
 
@@ -380,6 +382,7 @@ function Logger() {
 
 
 ## Dynamic Layouts (App Router)
+---
 
 Used to **define custom layout structures for specific route segments** . This allows you to apply different headers, sidebars, or page structures depending on the route.
 
