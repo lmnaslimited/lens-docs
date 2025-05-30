@@ -82,7 +82,6 @@ filters: [
 ![Selection Criteria](/lens-docs/field-structure.png)
 
 
-
 ### Field Type Appropriateness:
 ---
 
@@ -126,22 +125,24 @@ Helps users by pre-filling the field with a sensible value for reducing effort.
 **Output:**
 Users see a date field where they can only pick a valid date from a calendar and the field is pre-filled with today’s date.
     
-
 #### Select Field
 
 **Usecase:**  
 The sales engineer needs to filter by the status of a quotation (e.g., Open, Closed).
 
-**Standard:**  
+**Standard:**
+
 -   **Use the  `Select`  fieldtype.**  
-    This only allows users to choose from a predefined list of valid options, ensuring data consistency and preventing invalid entries.
+    Only allows selection from predefined options.
     
 -   **Always define an explicit options list.**  
-    This restricts input to values relevant to the business process.
+    Restricts input to valid business values.
     
--   **If options change dynamically, use  `get_query`  or custom JavaScript.**  
-    This dynamically generates the options list based on context (such as user role or workflow state), so the dropdown always displays the current valid choices.
-   
+-   **Set a default value.**  
+    Ensures the field is never empty.
+    
+-   **If options are dynamic, use  `get_query`  or custom JavaScript.**  
+    Updates the options list based on context.
 
 **❌ Incorrect Way**
 
@@ -150,17 +151,18 @@ The sales engineer needs to filter by the status of a quotation (e.g., Open, Clo
   fieldname: "status",
   fieldtype: "Data", // Wrong: 'Data' allows any text, so users can enter invalid or inconsistent statuses (e.g., "open", "OPENED", "done", "pending", etc.).
   label: "Status"
-  // Wrong: No options are provided, so there is no restriction on what users can enter.
+  // Wrong: No options are provided, so there is no restriction on what users can enter. 
+ // Wrong: No default value
 }
 ```
 
  **✅  Correct Way**
-
 ```js
 {
   fieldname: "status",
   fieldtype: "Select", // Right: 'Select' restricts input to predefined options.
   label: "Status",
+  default:  "Open",  // Right: Defaults to "Open".
   options: ["Open", "Closed", "Pending"], // Right: Only valid statuses can be selected, ensuring consistent reporting and filtering.
   description: "Select the current status of the quotation" 
 }
@@ -168,7 +170,6 @@ The sales engineer needs to filter by the status of a quotation (e.g., Open, Clo
 
 **Output:**
 Users see a dropdown menu where they can only select a valid status from the predefined list.
-
 
 #### Link Field
 
@@ -207,7 +208,6 @@ The sales engineer wants to filter quotations by customer.
 
 **Output:**
 Users see a searchable dropdown where they can only select an existing customer from the list.
-
 
 #### Data Field
 
@@ -278,7 +278,7 @@ The sales engineer wants to filter quotations that require express delivery (Yes
 }
 ```
 **Output:**  
-Users see a checkbox with a clear, question-style label. This makes it easy to understand and answer whether express delivery is required.
+Users see a checkbox with a clear, question-style label.
 
 #### MultiSelect Field
 
@@ -291,7 +291,10 @@ The sales engineer wants to filter quotations by multiple tags (e.g., Priority, 
     This allows users to select multiple values from a predefined list, supporting flexible filtering and categorization.
     
 -   **Always define an explicit options list.**  
-    Restricts input to valid tags or categories relevant to the business process.
+    Restricts input to valid tags.
+    
+ -   **Set a default value if appropriate.**  
+    Ensures the field is not empty if required.
     
 -   **Do not use  `MultiSelect`  for single-choice data.**  
     Use only when multiple selections are needed; otherwise, use  `Select`.
@@ -313,14 +316,15 @@ The sales engineer wants to filter quotations by multiple tags (e.g., Priority, 
   fieldname: "tags",
   fieldtype: "MultiSelect", // Right: 'MultiSelect' allows users to select multiple tags from a predefined list.
   label: "Tags",
-  options: ["Priority", "VIP", "Repeat Customer", "International"], // Right: Only valid tags can be selected, ensuring consistent categorization and filtering.
-  description: "Select one or more tags for this quotation"
+  options: ["Priority", "VIP", "Repeat Customer",
+  "International"], // Right: Only valid tags can be selected, 
+   default:  ["Priority"],  // Right: Defaults to "Priority" selected.ensuring consistent categorization and filtering.
+   description: "Select one or more tags for this quotation"
 }
 ```
 
 **Output:**  
-Users see a multi-select dropdown and can pick one or more valid tags, ensuring consistent tagging for better filtering and reporting.
-
+Users see a multi-select dropdown with valid tags, defaulting to "Priority".
 
 #### Text Field
 
@@ -330,16 +334,16 @@ The sales engineer wants to add remarks or comments to a quotation, which may re
 **Standard:**
 
 -   **Use the  `Text`  or  `Small Text`  fieldtype.**  
-    This allows users to enter longer, multi-line, or unstructured text, suitable for remarks, comments, or descriptions.
+    Allows longer, multi-line, or unstructured text.
     
 -   **Do not use  `Data`  for long or multi-line text.**  
-    The  `Data`  fieldtype is intended for short, single-line input only.
+    `Data`  is for short, single-line input only.
 
 **❌ Incorrect Way**
 ```js
 {
   fieldname: "remarks",
-  fieldtype: "Data", // Wrong: 'Data' is for short, single-line input and not suitable for lengthy or multi-line comments.
+  fieldtype: "Data", // Wrong: Not suitable for lengthy or multi-line comments.
   label: "Remarks"
   // Wrong: Users may run out of space or be unable to format their input properly.
 }
@@ -356,4 +360,44 @@ The sales engineer wants to add remarks or comments to a quotation, which may re
 ```
 
 **Output:**  
-Users see a multi-line text box where they can enter detailed remarks or comments, ensuring all necessary information can be captured without restriction.
+Users see a multi-line text box for detailed remarks or comments.
+
+
+## Mandates & Defaults
+
+**Use Case:**  
+A sales engineer must always specify the "Region" for a quotation, and it should default to "North" if not selected.
+
+**Standard:**
+
+-   **Mandatory fields must be explicitly marked.**  
+    The field cannot be left blank and is clearly indicated as required (usually with a red asterisk or similar UI marker).
+    
+-   **Mandatory fields must have default values.**  
+    This prevents form submission failures and reduces the chance of accidental omissions.
+
+**❌ Incorrect Way**
+```js
+{
+  fieldname: "region",
+  fieldtype: "Select",
+  label: "Region"
+  // Wrong: The field is not marked as mandatory, so users can leave it blank.
+  // Wrong: No default value is set, so the field could be empty even if it is later made mandatory.
+}
+```
+
+**✅ Correct Way**
+```js
+{
+  fieldname: "region",
+  fieldtype: "Select",
+  label: "Region", // The UI will indicate this field is required by providing a red asterik.
+  options: ["North", "South", "East", "West"],
+  reqd: 1, // Right: Explicitly marks the field as mandatory.
+  default: "North" // Right: Sets a default value ensuring the field is never empty.
+}
+```
+
+**Output:**  
+Users see a "Region" field that is clearly marked as mandatory (typically with an asterisk or highlight). "North" is pre-selected as the default value.
