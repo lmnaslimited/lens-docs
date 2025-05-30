@@ -10,6 +10,17 @@ Set an explicit width for each column to ensure consistent layout and prevent un
 **Why:**  
 Prevents layout shifts and wrapping in table columns.
 
+**❌ Incorrect way**
+```python
+ la_columns = [
+        {
+            "fieldname": "weekly_capacity",
+            "label": _("Weekly Capacity"),
+            "fieldtype": "Int",
+        },
+    ]
+``` 
+
 **✅ Correct Way**
 ```python
  la_columns = [
@@ -27,15 +38,22 @@ Prevents layout shifts and wrapping in table columns.
 
 **Why:**
 Keeping key columns static ensures users retain context while scrolling, preventing misinterpretation of data in wide tables.
+
+**❌ Incorrect way**
 ```javascript
 L_STYLE.innerHTML = `
 .dt-instance-1 .dt-cell--col-0 {
         display: flex;
-        text-align: right;    // ❌ Incorrect way
+        text-align: right;   
         z-index: 2;
         left: 0px; /* Adjust this value to match the width of col-1 */
     },
-     .dt-instance-1 .dt-cell--col-1 {
+```
+
+**✅ Correct Way**
+```javascript
+L_STYLE.innerHTML = `
+.dt-instance-1 .dt-cell--col-0 {
         display: flex;
         text-align: right;
         position: sticky;    // ✅ Correct Way
@@ -53,17 +71,19 @@ L_STYLE.innerHTML = `
 {
   "fieldname": "from_date",
   "label": __("From Date"),
-  "fieldtype": "Date"
+  "fieldtype": "Date",
+  "required": 1
 }
 ```
 
 **✅ Correct Way**
  ```javascript
- {
+{
   "fieldname": "from_date",
   "label": __("From Date"),
   "fieldtype": "Date",
-  "default": frappe.datetime.month_start()
+  "required": 1,
+  "default": frappe.datetime.month_start()    //✅ Correct Way
 }
 ```
 ---
@@ -86,16 +106,17 @@ Multi-line labels reduce readability and cause inconsistent UI.
 
 **❌ Incorrect Way**
 ```python
-{"fieldname": "sales_order", 
+{
+"fieldname": "sales_order", 
 "label": _("Sales<br>Order"), //❌ Incorrect Way
 "fieldtype": "Link",
- "options": "Sales Order",
- "width": 140},
+"options": "Sales Order",
+"width": 140},
 ```
 
  ✅ Correct Way
 ```python
- {  
+{  
 "fieldname": "sales_order",  
 "label": __("Sales Order"), // ✅ Correct Way
 "fieldtype": "Link",  
@@ -119,7 +140,7 @@ Enabling row checkboxes improves usability for tasks that require selecting mult
     });
   },
  ```
- ---
+
  ### Use Meaningful Colors in Charts
 
 Apply distinct, consistent colors to represent categories or metrics in charts.
@@ -132,4 +153,93 @@ Color helps users quickly differentiate data series and understand visual trends
 colors: ["#1abc9c", "#e74c3c", "#3498db", "#f39c12"]
 ```
 ---
+
+### Apply Conditional Formatting for Threshold Violations
+
+**Why:** Visually alerts users when values exceed limits like weekly capacity.
+
+**❌ Incorrect Way**
+```javascript
+if (idData[col] > weekly_capacity) {
+  // no formatting
+}
+```
+ **✅ Correct Way**
+```javascript
+if (idData[idColumn.fieldname] > idData["weekly_capacity"]) {
+  $lValue.addClass("bg-danger text-white");
+}
+```
+### Set Chart Height Explicitly
+
+**Why:** Prevents layout issues and ensures consistent chart visibility.
+
+**❌ Incorrect Way**
+```javascript
+svg.frappe-chart.chart {
+  /* no height set */
+}
+```
+**✅ Correct Way**
+```javascript
+svg.frappe-chart.chart {
+  height: 320px;
+}
+```
+### Customize Tooltip for Better Readability
+**Why:** Improves clarity in charts by preventing tooltip overflow and misalignment.
+
+**❌ Incorrect Way**
+```javascript
+.graph-svg-tip.comparison {
+  /* default styles lead to overflow or misalignment */
+}
+```
+**✅ Correct Way**
+```javascript
+.graph-svg-tip.comparison {
+  text-align: left;
+  padding: 0px;
+  pointer-events: none;
+  top: -130px !important;
+  width: 350px !important;
+}
+```
+### Use Tree Grid for Hierarchical 
+
+**Why:** Enables users to visualize nested  structures intuitively.
+
+**❌ Incorrect Way**
+```javascript
+frappe.query_reports['BOM Analysis'] = {
+  // no tree config
+}
+```
+**✅ Correct Way**
+```javascript
+frappe.query_reports['BOM Analysis'] = {
+  tree: true,
+  name_field: "quotation",
+  parent_field: "parent_quotation",
+  initial_depth: 1,
+}
+```
+### Visual Percent Change Indicators with Color Coding
+**Why:** Quickly highlights variance between primary BOM and comparison BOM.
+
+**❌ Incorrect Way**
+```javascript
+if (val1 < val2) {
+  // No formatting or visual clue
+}
+```
+**✅ Correct Way**
+```javascript
+if (val1 < val2) {
+  $value = $(value).css("color", "red");
+  $value.addClass("text-danger");
+  $value.text("(+" + percent + "%)" + $(value).text());
+}
+```
+ ---
 
