@@ -133,6 +133,178 @@ https://res.cloudinary.com/demo/image/upload/c_crop,g_face,w_300,h_300,e_cartoon
 https://res.cloudinary.com/demo/image/upload/c_fill,w_400,h_300,r_20,q_auto,f_auto/sample.jpg
 
 
+---
+title: Overlay Image with Position
+---
+**Description:**
+* Overlaying another image onto a base image
+* Helps add logos, icons, or watermarks at specific coordinates
+
+**Prerequisite :**
+Upload both base image and overlay image to Cloudinary
+
+**Syntax**
+https://res.cloudinary.com/<cloud_name>/image/upload/l_<overlay_public_id>,g_north_west,x_<x_offset>,y_<y_offset>/<base_public_id>
+
+**Parameters & Options**
+
+| Parameter | Description |
+|----------|-------------|
+| `l_` | Overlay image layer |
+| `g_` | Gravity (position origin) |
+| `x_` | Horizontal offset |
+| `y_` | Vertical offset |
+
+**Sample Output :**
+https://res.cloudinary.com/demo/image/upload/l_logo,g_south_east,x_10,y_20/sample.jpg
+**Output Description:**
+`sample.jpg` will be displayed with  `logo` overlays at bottom right corner, 10px from right, 20px from bottom.
+
+
+
+---
+title: Blur Image
+---
+**Description:**
+* Apply a blur effect to the image
+* Helps to create focus on foreground content
+
+**Prerequisite :**
+Uploaded image with visible background content
+
+**Syntax**
+https://res.cloudinary.com/<cloud_name>/image/upload/e_blur:<intensity>/<public_id>
+
+**Parameters & Options**
+
+| Parameter | Description |
+|----------|-------------|
+| `e_blur` | Blur effect |
+| `<intensity>` | Integer from 1–200 to define blur strength |
+
+**Sample Output :**
+https://res.cloudinary.com/demo/image/upload/e_blur:200/sample.jpg
+**Output Description:**
+Applies a strong blur to the image.
+
+
+
+---
+title: Remove Background
+---
+**Description:**
+* Automatically remove image background
+* Useful for isolating subjects
+
+**Prerequisite :**
+Cloudinary add-on: Remove Background (requires subscription)
+
+**Syntax**
+https://res.cloudinary.com/<cloud_name>/image/upload/e_background_removal/<public_id>
+
+**Parameters & Options**
+
+| Parameter | Description |
+|----------|-------------|
+| `e_background_removal` | Applies background removal AI |
+
+**Sample Output :**
+https://res.cloudinary.com/demo/image/upload/e_background_removal/sample.jpg
+
+**Output Description :**
+Image with background removed, leaving subject only.
+
+
+
+
+---
+title: Text Overlay
+---
+**Description:**
+* Overlay custom text on an image
+* Useful for captions, watermarks, banners
+
+**Prerequisite :**
+Use correct encoding for space and special characters (e.g., %20 for space)
+
+**Syntax**
+https://res.cloudinary.com/<cloud_name>/image/upload/l_text:<font><size>:<text>,co<color>,g_<gravity>,x_<x>,y_<y>/<public_id>
+
+**Parameters & Options**
+
+| Parameter | Description |
+|----------|-------------|
+| `l_text:` | Adds text as overlay |
+| `<font>_<size>` | Font family and size |
+| `<text>` | Encoded text |
+| `co_` | Color |
+| `g_` | Gravity/position |
+| `x_, y_` | Offsets |
+
+**Sample Output :**
+https://res.cloudinary.com/demo/image/upload/l_text:arial_30:Hello%20World,co_white,g_south,y_20/sample.jpg
+
+**Output Description :**
+"Hello World" in white, positioned 20px above bottom of sample.jpg
+
+
+
+
+---
+title: Image Format (Auto)
+---
+**Description:**
+* Serve the best image format for faster loading
+* Browser-based automatic format like WebP, AVIF, JPEG
+
+**Prerequisite :**
+Image should be publicly accessible
+
+**Syntax**
+https://res.cloudinary.com/<cloud_name>/image/upload/f_auto/<public_id>
+
+**Parameters & Options**
+
+| Parameter | Description |
+|----------|-------------|
+| `f_auto` | Automatically selects best image format for browser |
+
+**Sample Output :**
+https://res.cloudinary.com/demo/image/upload/f_auto/sample.jpg
+
+**Output Description :**
+Image converted as WebP/AVIF/JPEG based on browser support.
+
+
+
+
+---
+title: Fetch External Image with Transformations
+---
+## title
+* Apply transformations to external images
+* Avoid uploading to Cloudinary manually
+
+**Prerequisite :**
+Ensure the external image URL is publicly accessible and encoded
+
+**Syntax**
+https://res.cloudinary.com/<cloud_name>/image/fetch/<transformation>/<encoded_external_image_url>
+
+**Parameters & Options**
+
+| Parameter | Description |
+|----------|-------------|
+| `image/fetch` | Cloudinary delivery type to fetch external image |
+| `<transformation>` | Any valid transformation string (e.g., `w_400,h_300,c_fill`) |
+| `<encoded_url>` | URL-encoded link to the external image |
+
+**Sample Output :**
+https://res.cloudinary.com/demo/image/fetch/w_400,h_300,c_fill/https%3A%2F%2Fexample.com%2Fimage.jpg
+
+**Output Description :**
+Image is fetched from external source and resized to 400x300 using fill mode.
+
 
 
 

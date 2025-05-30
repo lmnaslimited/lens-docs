@@ -65,7 +65,7 @@ When processing a sales order with multiple items, not every item will have all 
 
 **❌ Incorrect Way**
 ```python
-la_data
+la_data = []
 for ld_sales_order in la_sales_order:
 	ld_row = {}  # Only declared once, outside the loop
 	for ld_item in ld_sales_order.items:
@@ -73,8 +73,10 @@ for ld_sales_order in la_sales_order:
 	    ld_row["customer_nmae"] = ld_sales_order.customer_name
 	    ld_row["delivery_date"] = ld_item.delivery_date
 	    ld_row["item_code"] = ld_item.item_code
-	    ld_row["order_value"] = ld_item.order_value
+        ld_row["order_value"] = ld_item["order_value"]
 	    ld_row["po_date"] = ld_sales_order.po_date
+	    if "description" in ld_item:
+		    ld_row["description"] = ld_item.description
 
 	    la_data.append(ld_row)  # Appends the same dictionary object every time
 
@@ -88,13 +90,19 @@ for ld_sales_order in la_sales_order:
 
 
 
-| Sales Order        | Customer Name | Delivery Date | Item Code               | Order Value | PO Date    |
-| ------------------ | ------------- | ------------- | ----------------------- | ----------- | ---------- |
-| SAL-ORD-2025-00002 | John          | 01-07-2025    | DTTHZ3/630/20/22/450/85 | 9.800,00    | 25-05-2025 |
-| SAL-ORD-2025-00002 | John          | 01-07-2025    | DTTHZ3/630/20/22/450/85 | 9.800,00    | 25-05-2025 |
+| No | Sales Order          | Customer Name | Delivery Date | Item Code | Order Value | PO Date    | Note (Description)   |
+|----|---------------------|---------------|---------------|-----------|-------------|------------|----------------------|
+| 1  | SAL-ORD-2025-00001  | ABB AG        | 2024-01-05    | ITEM-001  | 100         | 2024-01-01 | First item           |
+| 2  | SAL-ORD-2025-00001  | ABB AG        | 2024-01-06    | ITEM-002  | 150         | 2024-01-01 | First item ❌        |
+| 3  | SAL-ORD-2025-00002  | John          | 2024-02-10    | ITEM-003  | 300         | 2024-02-01 | Special instructions |
+
 
 **✅ Correct Way**
 ```python	
+def fn_clear_line_items(id_field):
+	#clearing only line items
+	id_field["delivery_date"] = id_field["item_code"] = id_field["order_value"] = id_field["description"] = ""
+	return id_field
 la_data = []
 for ld_sales_order in la_sales_order:
 	for ld_item in ld_sales_order.items:
@@ -105,15 +113,19 @@ for ld_sales_order in la_sales_order:
             "delivery_date": "",  
             "item_code": "", 
             "order_value": "", 
-            "po_date": ld_sales_order.po_date # from sales order header
+            "po_date": ld_sales_order.po_date # from sales order header,
+            "description": ""
         }
 
         # Step 2: Assign actual values
         ld_row["delivery_date"] = ld_item.delivery_date
         ld_row["item_code"] = ld_item.item_code
         ld_row["order_value"] = ld_item.order_value
+        ld_row["description"] = ld_item.description
         # Step 3: Append the populated row to the data list
         la_data.append(ld_row)
+        # Step 4: Clear line item fields to prevent data carryover in next iteration
+        ld_row = fn_clear_line_items(ld_row)
 
 ```
 **WHY**
@@ -121,10 +133,11 @@ for ld_sales_order in la_sales_order:
 -   Prevents **carry-over bugs** from reused fields or dictionaries.
 -   Makes the code **explicit and easier to maintain**, especially when fields are optional or filled conditionally.
 
-| Sales Order        | Customer Name | Delivery Date | Item Code               | Order Value | PO Date    |
-| ------------------ | ------------- | ------------- | ----------------------- | ----------- | ---------- |
-| SAL-ORD-2025-00001 | ABB AG        | 15-06-2025    | DTTHZ2/800/10/28/400/75 | 12.500,00   | 20-05-2025 |
-| SAL-ORD-2025-00002 | John          | 01-07-2025    | DTTHZ3/630/20/22/450/85 | 9.800,00    | 25-05-2025 |
+| No | Sales Order          | Customer Name | Delivery Date | Item Code | Order Value | PO Date    | Note (Description)   |
+|----|---------------------|---------------|---------------|-----------|-------------|------------|----------------------|
+| 1  | SAL-ORD-2025-00001  | ABB AG        | 2024-01-05    | ITEM-001  | 100         | 2024-01-01 | First item           |
+| 2  | SAL-ORD-2025-00001  | ABB AG        | 2024-01-06    | ITEM-002  | 150         | 2024-01-01 |                      |
+| 3  | SAL-ORD-2025-00002  | John          | 2024-02-10    | ITEM-003  | 300         | 2024-02-01 | Special instructions |
 
 ---
 
@@ -226,13 +239,13 @@ Use Case: A company wants to generate monthly reports for a specific customer.
 | Scales with Data     |        ✅     |   ❌                      |
 ---
 
-## Getting Unique records
+## Extracting Unique Values from a Dataset
 
 - When processing datasets, it's important to eliminate duplicates early — especially when you're working with values like customer names, item codes, or IDs.  
 - Ensures uniqueness improves performance by avoiding redundant processing.
 
  **Scenario**
-We have a `sales_order` dataset.  When we need to extract a list of **unique customers** (`customer_name`) from it.
+You have a dataset containing multiple sales orders. Each sales order includes customer details. Your goal is to **extract a unique list of customers** from this sales order dataset for further use
 
 **❌ Incorrect Way:**
 
@@ -252,7 +265,7 @@ def fn_get_unique(id_data_set, i_key):
                 la_unique.append(l_value)
     return la_unique
 
-la_unique_customers = fn_get_unique_inefficient(la_columns, "customer_name")
+la_unique_customers = fn_get_unique(la_columns, "customer_name")
 print(la_unique_customers)
 
 ```
@@ -261,7 +274,10 @@ print(la_unique_customers)
 ['ABB AG', 'John'] 
 ```
 **WHY**
-Slower and consumes more CPU time as dataset grows.
+
+ - Slower and consumes more CPU time as dataset grows.
+ - As dataset size grows, the repeated `value not in unique_values`
+   check causes slow performance (O(n²) complexity).
 
 **✅ Correct Way:**
  
@@ -270,7 +286,7 @@ Slower and consumes more CPU time as dataset grows.
  def fn_get_unique(id_data_set, i_key):
     la_unique = list(set(it_data[i_key] for it_data in id_data_set if i_key in it_data))
     return la_unique
-la_unique_customers = get_unique(la_columns, "customer")
+la_unique_customers = fn_get_unique(la_columns, "customer_name")
 print(la_unique_customers)  
  ```
  **Sample Output:**
@@ -278,7 +294,8 @@ print(la_unique_customers)
 ['ABB AG', 'John'] 
 ```
 **WHY**
-Fast, clean, and memory-efficient even for large datasets.
+-   Sets guarantee uniqueness and provide fast membership checks (O(1) average).
+-   This method scales well for large datasets.
 
 ---
 
