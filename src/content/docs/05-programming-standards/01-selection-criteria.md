@@ -459,3 +459,45 @@ A sales engineer filters quotations by "Customer." The customer list should only
 
 **Output:**  
 Users see only active customers in the dropdown. The "Region" filter appears only after a customer is selected.
+
+
+### Validation
+---
+**Use Case:**  
+A sales engineer must select a date range for filtering quotations. The "From Date" should not be after the "To Date".
+
+**Standard:**
+
+-   **Validate filter inputs.**  
+    Ensure user inputs are logical and follow business rules.
+    
+-   **Use  `frappe.throw`  for filter validation.**  
+    Immediately alert users to incorrect input and prevent further action.
+
+**❌ Incorrect Way**
+```js
+frappe.ui.form.on('Quotation', {
+  refresh: function(frm) {
+    frm.fields_dict.from_date.$input.on('change', function() {
+      // Wrong: No validation, so users can select an invalid date range.
+    });
+  }
+});
+```
+
+**✅ Correct Way**
+```js
+frappe.ui.form.on('Quotation', {
+  refresh: function(frm) {
+    frm.fields_dict.to_date.$input.on('change', function() {
+      if (frm.doc.from_date && frm.doc.to_date && frm.doc.from_date > frm.doc.to_date) {
+        frappe.throw("From Date cannot be after To Date.");
+        frm.set_value('to_date', '');
+      }
+    });
+  }
+});
+```
+
+**Output:**  
+If a user selects a "From Date" that is after the "To Date," an error message appears and the invalid input is cleared, ensuring only valid date ranges are used for filtering.
