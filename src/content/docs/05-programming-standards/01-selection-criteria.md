@@ -80,3 +80,280 @@ filters: [
 | **Checkbox**     | Möchten Sie eine Expresslieferung?          | Auswählen, wenn Expressbearbeitung erforderlic ist.|
 
 ![Selection Criteria](/lens-docs/field-structure.png)
+
+
+
+### Field Type Appropriateness:
+---
+
+#### Date Field
+
+**Usecase:**  
+The sales engineer wants to filter quotations by the date they were created.
+
+**Standard:**  
+
+ - **Use  `Date`  fieldtype**
+This ensures the field only accepts valid date values and provides a user-friendly calendar picker, improving data quality and user experience.
+
+  - **Set default to `Today()` or meaningful predefined dates.**
+Helps users by pre-filling the field with a sensible value for reducing effort.
+
+
+**❌ Incorrect Way**
+
+```js
+{
+  fieldname: "quotation_date",
+  fieldtype: "Data", // Wrong: 'Data' allows any text, so users can enter invalid date formats (e.g., "tomorrow", "12/34/5678", or even "hello").
+  label: "Quotation Date"
+  //  Wrong: No calendar picker is provided, so user experience is poor and data may be inconsistent format.
+}
+```
+
+ **✅  Correct Way**
+
+```js
+{
+  fieldname: "quotation_date",
+  fieldtype: "Date", // Right: 'Date' enforces valid date input and provides a calendar picker for the user.
+  label: "Quotation Date",
+  default: Today() // Right: Sets the default value to today's date for user convenience.
+  description: "Select the date this quotation was created" 
+}
+```
+
+**Output:**
+Users see a date field where they can only pick a valid date from a calendar and the field is pre-filled with today’s date.
+    
+
+#### Select Field
+
+**Usecase:**  
+The sales engineer needs to filter by the status of a quotation (e.g., Open, Closed).
+
+**Standard:**  
+-   **Use the  `Select`  fieldtype.**  
+    This only allows users to choose from a predefined list of valid options, ensuring data consistency and preventing invalid entries.
+    
+-   **Always define an explicit options list.**  
+    This restricts input to values relevant to the business process.
+    
+-   **If options change dynamically, use  `get_query`  or custom JavaScript.**  
+    This dynamically generates the options list based on context (such as user role or workflow state), so the dropdown always displays the current valid choices.
+   
+
+**❌ Incorrect Way**
+
+```js
+{
+  fieldname: "status",
+  fieldtype: "Data", // Wrong: 'Data' allows any text, so users can enter invalid or inconsistent statuses (e.g., "open", "OPENED", "done", "pending", etc.).
+  label: "Status"
+  // Wrong: No options are provided, so there is no restriction on what users can enter.
+}
+```
+
+ **✅  Correct Way**
+
+```js
+{
+  fieldname: "status",
+  fieldtype: "Select", // Right: 'Select' restricts input to predefined options.
+  label: "Status",
+  options: ["Open", "Closed", "Pending"], // Right: Only valid statuses can be selected, ensuring consistent reporting and filtering.
+  description: "Select the current status of the quotation" 
+}
+```
+
+**Output:**
+Users see a dropdown menu where they can only select a valid status from the predefined list.
+
+
+#### Link Field
+
+**Usecase:**  
+The sales engineer wants to filter quotations by customer.
+
+**Standard:**
+
+-   **Use the  `Link`  fieldtype.**  
+    This ensures users can only select from existing records in another DocType, maintaining referential integrity.
+    
+-   **Set the  `options`  property to the target DocType.**  
+    This restricts the field to valid references (e.g., only existing customers).
+
+**❌ Incorrect Way**
+```js
+{
+  fieldname: "customer",
+  fieldtype: "Data", // Wrong: 'Data' allows any text, so users can enter non-existent or misspelled customer names.
+  label: "Customer"
+  // Wrong: No link to existing records, so there is no validation or search functionality.
+}
+```
+
+**✅ Correct Way**
+```js
+{
+  fieldname: "customer",
+  fieldtype: "Link", // Right: 'Link' ensures only valid records from another DocType can be selected.
+  label: "Customer",
+  options: "Customer", // Right: Restricts selection to existing customers only.
+  description: "Select the customer for this quotation"
+  // Optionally, add a get_query function to filter the customer list based on context.
+}
+```
+
+**Output:**
+Users see a searchable dropdown where they can only select an existing customer from the list.
+
+
+#### Data Field
+
+**Usecase:**  
+The sales engineer wants to filter quotations by a custom reference code that can be any text or alphanumeric value.
+
+**Standard:**
+
+-   **Use the  `Data`  fieldtype.**  
+    This allows users to enter short, free-form text or alphanumeric values.
+    
+-   **Do not use  `Data`  for structured data types.**  
+    Avoid using  `Data`  for dates, numbers, select options, or links to other DocTypes—use the appropriate fieldtype instead.
+   
+**❌ Incorrect Way**
+```js
+{
+  fieldname: "reference_code",
+  fieldtype: "Select", // Wrong: 'Select' restricts input to predefined options, which is not suitable for free-form codes.
+  label: "Reference Code"
+}
+```
+
+**✅ Correct Way**
+```js
+{
+  fieldname: "reference_code",
+  fieldtype: "Data", // Right: 'Data' allows for any short text or alphanumeric input, suitable for custom codes.
+  label: "Reference Code",
+  description: "Enter the custom reference code for the quotation"
+}
+```
+**Output:**  
+Users see a text input where they can enter any alphanumeric reference code.
+
+#### Check Field
+
+**Usecase:**  
+The sales engineer wants to filter quotations that require express delivery (Yes/No).
+
+**Standard:**
+
+-   **Use the  `Check`  fieldtype.**  
+    This provides a checkbox for boolean values, allowing users to indicate yes/no or true/false choices clearly.
+    
+-   **Do not use  `Check`  for non-boolean data.**  
+    Only use for binary options—never for text, numbers, or multiple choices.
+ -   **Label should be phrased as a question.**  
+    This makes it clear to the user what checking the box means (e.g., "Would you like to have express delivery?").
+
+**❌ Incorrect Way**
+```js
+{
+  fieldname: "express_delivery",
+  fieldtype: "Data", // Wrong: 'Data' allows any text, so users could enter "yes", "no" or anything else, which will not be considered a boolean value.
+  label: "Express Delivery"
+  // Wrong: The label is not phrased as a question, so the intent is unclear.
+}
+```
+
+**✅ Correct Way**
+```js
+{
+  fieldname: "express_delivery",
+  fieldtype: "Check", // Right: 'Check' provides a checkbox for a clear yes/no choice.
+  label: "Would you like to have express delivery?", // Right: Question-style label clarifies the user's choice.
+  description: "Tick if express delivery is required for this quotation"
+}
+```
+**Output:**  
+Users see a checkbox with a clear, question-style label. This makes it easy to understand and answer whether express delivery is required.
+
+#### MultiSelect Field
+
+**Usecase:**  
+The sales engineer wants to filter quotations by multiple tags (e.g., Priority, VIP, Repeat Customer, International).
+
+**Standard:**
+
+-   **Use the  `MultiSelect`  fieldtype.**  
+    This allows users to select multiple values from a predefined list, supporting flexible filtering and categorization.
+    
+-   **Always define an explicit options list.**  
+    Restricts input to valid tags or categories relevant to the business process.
+    
+-   **Do not use  `MultiSelect`  for single-choice data.**  
+    Use only when multiple selections are needed; otherwise, use  `Select`.
+
+**❌ Incorrect Way**
+
+```js
+{
+  fieldname: "tags",
+  fieldtype: "Data", // Wrong: 'Data' allows any text, so users could enter anything leading to inconsistent.
+  label: "Tags"
+  // Wrong: No options are provided, so there is no restriction or guidance for users.
+}
+```
+
+**✅ Correct Way**
+```js
+{
+  fieldname: "tags",
+  fieldtype: "MultiSelect", // Right: 'MultiSelect' allows users to select multiple tags from a predefined list.
+  label: "Tags",
+  options: ["Priority", "VIP", "Repeat Customer", "International"], // Right: Only valid tags can be selected, ensuring consistent categorization and filtering.
+  description: "Select one or more tags for this quotation"
+}
+```
+
+**Output:**  
+Users see a multi-select dropdown and can pick one or more valid tags, ensuring consistent tagging for better filtering and reporting.
+
+
+#### Text Field
+
+**Usecase:**  
+The sales engineer wants to add remarks or comments to a quotation, which may require multi-line or lengthy input.
+
+**Standard:**
+
+-   **Use the  `Text`  or  `Small Text`  fieldtype.**  
+    This allows users to enter longer, multi-line, or unstructured text, suitable for remarks, comments, or descriptions.
+    
+-   **Do not use  `Data`  for long or multi-line text.**  
+    The  `Data`  fieldtype is intended for short, single-line input only.
+
+**❌ Incorrect Way**
+```js
+{
+  fieldname: "remarks",
+  fieldtype: "Data", // Wrong: 'Data' is for short, single-line input and not suitable for lengthy or multi-line comments.
+  label: "Remarks"
+  // Wrong: Users may run out of space or be unable to format their input properly.
+}
+```
+
+**✅ Correct Way**
+```js
+{
+  fieldname: "remarks",
+  fieldtype: "Text", // Right: 'Text' allows for multi-line, lengthy, and unstructured input, suitable for comments or remarks.
+  label: "Remarks",
+  description: "Enter any additional comments or notes for this quotation"
+}
+```
+
+**Output:**  
+Users see a multi-line text box where they can enter detailed remarks or comments, ensuring all necessary information can be captured without restriction.
