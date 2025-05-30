@@ -322,65 +322,6 @@ function Counter() {
 
 
 
-
-## useEffect()
----
-
-The `useEffect` hook is used to **handle side effects** in functional React components. Common use cases include **data fetching**, **event listeners**, **DOM manipulation**, and **timers**, etc.
-
->  `useEffect` **works only on the client side** so be sure to add `"use client";` directive at the top of your component file.
-
-  
-**Basic Syntax:**
-```js
-"use client";
-
-import { useEffect } from 'react';
-
-useEffect(() => {
-  // side effect logic here
-  return () => {
-    // optional cleanup logic
-  };
-}, [dependencies]);
-```
-
-| Argument       | Type       | Description                                                                                         |
-|----------------|------------|---------------------------------------------------------------------------------------------------|
-| `callback`     | `function` | The effect function containing side-effect logic. Can optionally return a cleanup function.       |
-| `dependencies` | `array`    | An array of dependencies that trigger the effect to re-run when their values change. Use `[]` to run once on mount. |
-
-
-
-**Common Use Case:**
-Log a message to the console when the component mounts:
-```js
-"use client";
-
-import React, { useEffect } from 'react'
-
-function Logger() {
-  useEffect(() => {
-    console.log("Component mounted");
-
-    return () => {
-      console.log("Component unmounted");
-    };
-  }, []);
-
-  return <p>Check your console</p>
-}
-```
-**Sample Output :**
-
--   On component mount:  
-    `Component mounted`
-    
--   On component unmount:
-    `Component unmounted`
-
-
-
 ## Dynamic Layouts (App Router)
 ---
 
@@ -404,6 +345,7 @@ app/
 **Common Use Case:**
 For example, to create a layout for the `/blog` route, add a new `layout` file inside the `blog` folder.
 
+**RootLayout**
 ```js
 // app/layout.tsx
 import React from 'react'
@@ -421,6 +363,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
+**BlogLayout**
 ```js
 // app/blog/layout.tsx
 import React from 'react'
@@ -435,5 +378,4 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-When a user visits `/blog`, the `BlogLayout` **is nested inside** the `RootLayout`.
-
+When a user visits `/blog`, the `RootLayout` renders first, and inside its `<main>`, the `BlogLayout` renders its own structure with the corresponding page content.

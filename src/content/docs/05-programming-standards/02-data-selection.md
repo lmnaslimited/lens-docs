@@ -3,7 +3,7 @@ title: Programming Standards - Data Selection
 ---
 
 ## Efficient Data Retrieval
-When working with data, always prefer using the built-in ORM (Object Relational Mapper) methods such as `frappe.get_list` or `frappe.get_all` along with `filters` and `fields`.
+When working with data, always prefer using the built-in ORM (Object Relational Mapper) methods such as `frappe.get_list` or `frappe.get_value` along with `filters` and `fields`.
 > **Note** Advisable to use frappe models for better performance
 
 **❌ Incorrect Way**
@@ -42,7 +42,7 @@ la_active_employees = frappe.get_list(
 Use Frappe’s ORM methods for most database tasks. It keeps your app safe, clean, and easy to maintain. Only use raw SQL when absolutely needed.
 
 >**Note** Avoid raw SQL unless the use case demands complex queries or performance tuning that ORM cannot handle.
->
+
 **When is raw SQL acceptable?**
 
 -   When you need to run **complex queries** that cannot be expressed using the ORM.
@@ -86,8 +86,7 @@ ld_filters = {
 ld_sos = frappe.get_list(
     "Sales Order",
     filters=[
-        ["po_date", ">=", ld_filters['from_date']],
-        ["po_date", "<=", ld_filters['to_date']],
+        ["po_date", "between", [ld_filters["from_date"], ld_filters["to_date"]]],
         ["docstatus", "!=", 2]
     ],
     fields=["name"]
@@ -104,12 +103,12 @@ ld_sos = frappe.get_list(
 ---
 ## Conditional Data Access
 When working with Frappe ORM methods like `get_doc`, `get_value`, or `db.get`, it’s important to first check whether the data exists or is actually needed. This helps you avoid unnecessary errors.
-
+Conditional checks should be applied especially before insert operations, but may not be needed in other cases like simple reads.
 **❌ Incorrect Way**
 ```python
 # Directly retrieving without verifying if the record exists — NOT recommended
 l_user = frappe.session.user
-ld_user_defaults = frappe.get_doc("User Session Defaults", l_user).as_dict()
+ld_user_defaults = frappe.get_value("User Session Defaults", {"user": l_user}, ["from_date", "to_date"])
 ```
 **Why ?**
 * **Risk of Runtime Errors**: If the record doesn’t exist, it throws `DoesNotExistError`
@@ -121,7 +120,7 @@ ld_user_defaults = frappe.get_doc("User Session Defaults", l_user).as_dict()
 # Check before fetching to ensure safety and efficiency
 l_user = frappe.session.user
 if frappe.db.exists("User Session Defaults", l_user):
-    ld_user_defaults = frappe.get_doc("User Session Defaults", l_user).as_dict()
+    ld_user_defaults = frappe.get_value("User Session Defaults", {"user": l_user}, ["from_date", "to_date"])
 ```
 **Sample Output**
 ```
@@ -135,10 +134,11 @@ if frappe.db.exists("User Session Defaults", l_user):
 ---
 ## Use Caching for Expensive or Repeated Queries
 When reading frequently used documents that don't change often (like configuration or settings), it's more efficient to use `frappe.get_cached_doc()` instead of repeatedly fetching from the database.
+If the document is not found in the cache, it will be retrieved from the database, and the retrieved document will be stored in the cache for future access
 
 **❌ Incorrect Way**
 ```python
-# Fetching from DB every time
+# It is not suitable in this context since it will hit db everytime
 ld_Print_settings = frappe.get_doc("Print Settings")
 ```
 **Why ?**
@@ -180,14 +180,16 @@ ld_print_settings = frappe.get_cached_doc("Print Settings")
 ---
 ## Avoid Hardcoding Doctype or Field Names
 
-Hardcoding doctypes or field names can lead to errors if names change, reduce code reusability, and make maintenance harder. Using dynamic methods like `doc.get()` and `frappe.get_meta()` keeps your code safer and more flexible.
+Hardcoding doctypes or field names can lead to errors if names change, reduce code reusability, and make maintenance harder. By assigning repeated doctypes and fieldnames as variable we can keeps our code safer and more flexible..
 
 **❌ Incorrect Way**
 ```python
-# Hardcoded doctype and field access
-ld_doc = frappe.get_doc("Sales Invoice", "SINV-0001")
-if ld_doc.custom_customer_name == "John Doe":
-    frappe.msgprint("Customer matched")
+# Hardcoded doctype and field access repeated multiple times
+la_customer_name = frappe.get_value("Sales Invoice", "SINV-0001", "custom_customer_name")
+la_invoice_status = frappe.get_value("Sales Invoice", "SINV-0001", "status")
+
+if la_customer_name == "John Doe" and la_invoice_status == "Paid":
+    frappe.msgprint("Customer matched and invoice is paid")
 ```
 **Why ?**
 * Breaks if `custom_customer_name` is renamed
@@ -196,16 +198,20 @@ if ld_doc.custom_customer_name == "John Doe":
 
 **✅ Correct Way**
 ```python
-# Dynamic and safer field access
-l_doctype = "Sales Invoice"  # could also be passed as a parameter
+# Assign repeated doctype and field names as variables for safety and flexibility
+l_doctype = "Sales Invoice"  # could be passed as parameter
 l_name = "SINV-0001"
+l_field_customer_name = "custom_customer_name"
+l_field_status = "status"
 
-ld_doc = frappe.get_doc(l_doctype, l_name)
-if ld_doc.get("custom_customer_name") == "John Doe":
-    frappe.msgprint("Customer matched")
+la_customer_name = frappe.get_value(l_doctype, l_name, l_field_customer_name)
+la_invoice_status = frappe.get_value(l_doctype, l_name, l_field_status)
+
+if la_customer_name == "John Doe" and la_invoice_status == "Paid":
+    frappe.msgprint("Customer matched and invoice is paid")
 ```
 **Sample Output**
 ```
-Customer matched
+Customer matched and invoice is paid
 ```
 ---

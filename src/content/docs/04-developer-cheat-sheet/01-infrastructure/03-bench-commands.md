@@ -2,23 +2,25 @@
 title: Bench Commands
 ---
 
-## Fixtures Bench command
+## Bench fixtures Command
 Generate a `.json` file containing the data and settings you want to migrate
 
 **Pre-requisite**
 defined the fixtures in hook file of the custom app
 
-**Basic Syntax**
+**Command Syntax**
 ```
 bench export-fixtures --site <sitename>
 ```
-**Common Use Cases**
+**Use Cases**
 ```
 bench export-fixtures --site dev.localhost
 ```
 
 **Sample Output**
+
 A custom_field.json file will be created in the path <custom_app>/<custom_app>/fixtures
+
 ---
 ## Bench backup Command
 * Use this command to take backup of the site.
@@ -35,11 +37,12 @@ bench --site <site-name> backup
 | `--with-files`  | Backup along with public and private files |
 
 **Use Case**
+
 **1) Without Flag**
 ```
 bench --site lenstest.lmnas.com backup
 ```
-**Output**
+**Sample Output**
 ```
 Backup encryption is turned on. Please note the backup encryption key.
 Backup Summary for lenstest.lmnas.com at 2025-05-29 11:18:07.105285
@@ -47,11 +50,12 @@ Config  : ./lenstest.lmnas.com/private/backups/20250529_111752-lenstest_lmnas_co
 Database: ./lenstest.lmnas.com/private/backups/20250529_111752-lenstest_lmnas_com-database-enc.sql.gz         40.0MiB
 Backup for Site lenstest.lmnas.com has been successfully completed
 ```
+
 **2) With Flag**
 ```
 bench --site lenstest.lmnas.com backup --with-files
 ```
-**Output**
+**Sample Output**
 ```
 Backup encryption is turned on. Please note the backup encryption key.
 Backup Summary for lenstest.lmnas.com at 2025-05-29 11:21:50.643478
@@ -77,15 +81,16 @@ bench --site <site-name> restore <path/to/backup-files>
 | `--force`     |    flag            | Ignore warnings |
 | `--with-public-files`  | option | Restores the public files of the site|
 | `--with-private-files`  | option |Restores the private files of the site |
-| `--encryption-key`  | option | Pass Backup encryption key if the backup file is encrypted |
+| `--encryption-key`  | option | Pass Backup encryption key if the backup file is encrypted (Only use this when you find `enc` in the backup file names) |
 
 **Use Case**
-**1) Without --force Flag**
+
+**1) Without force Flag**
 ```
 bench --site lenstest.lmnas.com restore ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-database.sql.gz
 
 ```
-**Output**
+**Sample Output**
 ```
 $ bench --site lenstest.lmnas.com restore ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-database.sql.gz
 MySQL root password:
@@ -102,14 +107,14 @@ Backing up the newly restored database...
 Backup complete
 Site restored successfully.
 ```
-**2) With --force Flag**
+**2) With force Flag**
 ```
 bench --site lenstest.lmnas.com --force restore \
   ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-database.sql.gz \
   --with-public-files ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-files.tar \
   --with-private-files ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-private-files.taz
 ```
-**Output**
+**Sample Output**
 ```
 MySQL root password:  
 
@@ -125,7 +130,7 @@ bench --site lenstest.lmnas.com --force restore \
   --with-private-files ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-private-files-enc.tar \
   --encrypted-key hgsdajhvfjwtef7363jkhajkfgj
 ```
-**Output**
+**Sample Output**
 ```
 Provide encryption key for decryption. Decrypting using the provided key
 MySQL root password:  
@@ -147,7 +152,7 @@ bench --site <site-name> migrate
 ```
 bench --site lenstest.lmnas.com migrate
 ```
-**Output**
+**Sample Output**
 ```
 Migrating lenstest.lmnas.com
 Updating DocTypes for frappe        : [========================================] 100%
