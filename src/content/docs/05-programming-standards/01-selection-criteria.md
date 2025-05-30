@@ -82,7 +82,7 @@ filters: [
 ![Selection Criteria](/lens-docs/field-structure.png)
 
 
-### Field Type Appropriateness:
+### Field Type Appropriateness
 ---
 
 #### Date Field
@@ -364,6 +364,7 @@ Users see a multi-line text box for detailed remarks or comments.
 
 
 ## Mandates & Defaults
+---
 
 **Use Case:**  
 A sales engineer must always specify the "Region" for a quotation, and it should default to "North" if not selected.
@@ -404,6 +405,7 @@ Users see a "Region" field that is clearly marked as mandatory (typically with a
 
 
 ## Dynamic & Conditional Behavior
+---
 
 **Use Case:**  
 A sales engineer filters quotations by "Customer." The customer list should only show active customers, and the "Region" filter should appear only if a customer is selected.
