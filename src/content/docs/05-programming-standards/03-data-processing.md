@@ -562,3 +562,132 @@ def fn_get_territory_details(it_sales_order_list):
 -   **Clean and readable**: Separates utility logic from business logic.
 
 ---
+
+
+## Use Case Scenario
+
+A company stores **1000+ sales orders**, each linked to a customer by a unique **customer**. The sales orders are sorted by **customer**. When a support agent wants to find all orders for a particular customer quickly, the system uses **binary search** to find the **first order** by that customer and then collects all matching orders efficiently.
+
+```python
+def fn_binary_search_sales_order(ia_orders, i_target_order):
+    low = 0
+    high = len(ia_orders) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        mid_order = ia_orders[mid]['sales_order']
+        if mid_order == i_target_order:
+            return ia_orders[mid]  # Found
+        elif mid_order < i_target_order:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return None  # Not found
+
+def find_sales_order(ia_sales_orders, i_target_order_id):
+    # Step 1: Sort orders by sales_order (if not sorted already)
+    la_sorted_orders = sorted(ia_sales_orders, key=lambda x: x['sales_order'])
+    # Step 2: Use binary search on sorted list
+    return fn_binary_search_sales_order(la_sorted_orders, i_target_order_id)
+
+l_target_order_id = "SAL-ORD-2025-00456"
+ld_result = find_sales_order(la_sales_orders, l_target_order_id)
+if result:
+    print("Sales Order Found:")
+    for l_key, l_val in ld_result.items():
+        print(f"{l_key}: {l_val}")
+else:
+    print(f"Sales order {l_target_order_id} not found.")
+```
+
+
+**How Binary Search Works:**
+
+| Step | Low | High | Mid | Mid Value | Compare (SO-00456) | Action                 |
+| ---- | --- | ---- | --- | --------- | ------------------ | ---------------------- |
+| 1    | 0   | 999  | 499 | SO-00500  | 00456 < 00500      | Move left → high = 498 |
+| 2    | 0   | 498  | 249 | SO-00250  | 00456 > 00250      | Move right → low = 250 |
+| 3    | 250 | 498  | 374 | SO-00375  | 00456 > 00375      | Move right → low = 375 |
+| 4    | 375 | 498  | 436 | SO-00437  | 00456 > 00437      | Move right → low = 437 |
+| 5    | 437 | 498  | 467 | SO-00468  | 00456 < 00468      | Move left → high = 466 |
+| 6    | 437 | 466  | 451 | SO-00452  | 00456 > 00452      | Move right → low = 452 |
+| 7    | 452 | 466  | 459 | SO-00460  | 00456 < 00460      | Move left → high = 458 |
+| 8    | 452 | 458  | 455 | SO-00456  | ✅ Match found      | Stop                   |
+
+---
+
+## Charts in Reports
+
+Charts in reports help visualize complex datasets, making trends and comparisons easier to understand at a glance.
+
+**Charts are commonly used to:**
+
+-   Track sales, capacity, or inventory over time (weeks, months, quarters).
+-   Compare different categories or groups.    
+-   Show planned vs actual metrics.    
+-   Highlight key performance indicators (KPIs).
+
+**❌ Incorrect Way:**
+
+-   Hardcoding chart height and Y-axis markers without adjusting to data scale.    
+-   Mixing stacked bars and line charts without using `type: "axis-mixed"`.      
+-   Overloading stacked bars with too many datasets causing clutter.   
+-   Ignoring consistent colors and label formatting.
+
+```python
+ld_chart_data = {
+    "data": {
+        "labels": ["22", "23", "24"],  # Week numbers as strings, but unsorted or incomplete
+        "datasets": [
+            {"name": "Power A", "chartType": "bar", "values": [10, 20, None]},  # Missing data
+            {"name": "Weekly Capacity", "chartType": "line", "values": [40, 45, 42]},
+        ]
+    },
+    "chartOptions": {"height": 40},  # Too small height for mixed data
+    "yMarkers": [{"label": "Target", "value": "100"}],  # Marker does not reflect real data max
+    "barOptions": {"stacked": True},  # No type axis-mixed, so line and bar axes clash
+}
+```
+----------
+
+**✅Correct Way:**
+
+-   Use `type: "axis-mixed"` when combining line and bar charts.    
+-   Dynamically calculate max Y-axis values and adjust `yMarkers` accordingly.   
+-   Ensure all labels (e.g., weeks) are continuous and sorted.    
+-   Use flexible chart height or set based on content.   
+-   Limit datasets for readability and use consistent colors.
+
+```python
+ld_chart_data = {
+    "type": "axis-mixed",
+    "data": {
+        "labels": ["3", "4", "5"],
+        "datasets": [
+            {"name": "Power A", "chartType": "bar", "values": [10, 20, 15]},
+            {"name": "Power B", "chartType": "bar", "values": [15, 10, 25]},
+            {"name": "Weekly Capacity", "chartType": "line", "values": [40, 45, 42]},
+        ]
+    },
+    "chartOptions": {"height": 250},
+    "yMarkers": [
+        {
+            "label": "Max Capacity",
+            "value": "55",
+            "options": {"labelPos": "left"}
+        }
+    ],
+    "barOptions": {"stacked": True},
+    "colors": ["#db2777", "#ffa3ef", "#0891b2"],
+}
+```
+**Sample Output:**
+
+![alt text](chart.png)
+
+-   **X-axis labels**: Week numbers 3, 4, 5.
+-   **2 stacked bar series**: "Power A" and "Power B" shown as stacked bars. 
+-   **1 line series**: "Weekly Capacity" drawn over the bars.
+-   **Horizontal marker**: at value `55`, labeled `Max Capacity` on the Y-axis.
+-   **Y-axis scale**: Automatically scales to cover up to `55`.
+
+---
