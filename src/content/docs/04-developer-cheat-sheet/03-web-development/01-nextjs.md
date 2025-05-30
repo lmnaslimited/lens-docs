@@ -345,6 +345,7 @@ app/
 **Common Use Case:**
 For example, to create a layout for the `/blog` route, add a new `layout` file inside the `blog` folder.
 
+**RootLayout**
 ```js
 // app/layout.tsx
 import React from 'react'
@@ -362,6 +363,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
+**BlogLayout**
 ```js
 // app/blog/layout.tsx
 import React from 'react'
@@ -376,5 +378,4 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-When a user visits `/blog`, the `BlogLayout` **is nested inside** the `RootLayout`.
-
+When a user visits `/blog`, the `RootLayout` renders first, and inside its `<main>`, the `BlogLayout` renders its own structure with the corresponding page content.
