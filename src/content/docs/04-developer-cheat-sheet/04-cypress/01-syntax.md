@@ -166,7 +166,7 @@ cy.get('.section-head').each(($el) => {
       // If collapsed click to expand the section
       cy.wrap($el).click({ force: true });
     }
-  }
+  }]
 });
 ```
 | Parameter        | Type / Used In | Description                                                                     |
