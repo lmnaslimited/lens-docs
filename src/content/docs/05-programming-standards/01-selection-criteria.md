@@ -2,81 +2,81 @@
 title: Programming Standards - Selection Criteria
 ---
 
-## Field Representation & Type Appropriateness
-
-**Use Case:** A sales engineer is trying to find a specific quotation using the **Quotation Report** by specifying parameters such as Material Type, Quotation Date, and Express Delivery. 
+### Field Representation
+---
+**Use Case:** A sales engineer is trying to find a specific quotation using the **Sales Table Report**, by specifying values like Material Type, Quotation Date, and Express Delivery.
 
 **Standards:**
 
--   Field must have a label
+-   **Every field must have a clear and descriptive label.**  
+    This ensures that users immediately understand what information is required.
     
--   Internationalization support (`label: __("...")`)
+-   **Internationalization support via  `__()`.**  
+    Use the translation function for all labels and descriptions to support users in their preferred language (if preferred).
     
--   Use tooltips or descriptions
-    
--   Choose appropriate fieldtype
-    
+-   **Tooltips or descriptions are mandatory.**  
+    Provide concise guidance to help users enter the correct information, reducing confusion.
         
-**Description**
 
-- Labels should clearly describe what the field is for, and tooltips or descriptions should offer quick guidance. 
-- Use `__()` to translate labels and descriptions if the customer uses a specific language.
--   Match field types to the data: use `Date` for dates, `Check` for true/false, and `Select` for fixed options etc...
-- Avoid using the generic `Data` type when a more specific one is available.    
-
- **❌ Incorrect Way**
+**❌ Incorrect Way**
 
 ```js
 filters: [
   {
     fieldname: "material",
-    fieldtype: "Data",  // Should be select type using generic data type
-    label: "",          // No label
-    // Missing translation: label and description should use __("...")
+    fieldtype: "Select", 
+    label: "",  // No label — the user won’t know what this field is for
+    // Missing description — no guidance on what this field does
+    // Options were not provided for Select datatype
   },
   {
-    fieldname: "delivery",
-    fieldtype: "Data",  // should be date type 
-    // No tooltip or description
+    fieldname: "delivary_date", // Typo: should be "delivery_date"
+    fieldtype: "Date",
+    label: "Delivery Date",
+    // Missing description — no guidance on what this field does
+  },
+  {
+    fieldname: "express_delivery",
+    fieldtype: "Check",
+    label: "Express Delivery",  // Not phrased as a question and not translated
+    description: "Tick if you want your order to be processed with express delivery." 
   }
 ]
 ```
 
- **✅ Correct Way**
+ **✅  Correct Way**
 
 ```js
 filters: [
   {
-    fieldname: "material_type",
-    fieldtype: "Select", // Using appropriate fieldtype
-    label: "Material Type", // Clear label
-    options: ["Aluminium", "Steel", "Brass"], // Specific options
-    description: "Select the base material for the product", // Helpful text
+    fieldname: "material_type", 
+    fieldtype: "Select",  
+    label: "Material Type",     // Clearly indicates the purpose of this field
+    description: "Select the base material for the product" // Provides a tooltip to help the user understand the field's purpose
+    options: ["Steel", "Aluminum", "Plastic", "Copper", "Other"] // Always provide options for Select fields so users can only choose valid, available values
   },
   {
-    fieldname: "delivery_date",
-    fieldtype: "Date", // Proper type
-    label: "Requested Delivery Date",
-    description: "The date customer expects delivery",
+    fieldname: "delivery_date", 
+    fieldtype: "Date",      
+    label: "Requested Delivery Date", // Clearly indicates which date is needed
+    description: "The date the customer expects delivery" // Clarifies what the user should input here
   },
   {
-    fieldname: "express_delivery", 
-    fieldtype: "Check", // Not using generic 'Data'
-	label: __("Express Delivery?"), // Translatable label
-    description: __("Tick if express processing is required")
+    fieldname: "express_delivery",
+    fieldtype: "Check",            
+    label: __("Would you prefer Express Delivery?"), // Question-style label is best for checkboxes, as it prompts a clear yes/no response and is translated to the customer's language
+    description:  __("Select the base material for the product") // Explains what checking the box means
   }
 ]
-
 ```
 
-**Output**
+**Output:**
 
-User sees a clearly structured form:
 
--   **Material Type** dropdown with options
-    
--   **Calendar picker** for delivery date
-    
--   **Checkbox** for express delivery option 
+| **Field UI**     | **Label Shown**                               | **Tooltip (on hover or below)**               |
+|------------------|-----------------------------------------------|-----------------------------------------------|
+| **Dropdown**     | Material Type                              | Select the base material for the product    |
+| **Calendar**     | Requested Delivery Date                     | The date the customer expects delivery     |
+| **Checkbox**     | Möchten Sie eine Expresslieferung?          | Auswählen, wenn Expressbearbeitung erforderlic ist.|
 
 ![Selection Criteria](/lens-docs/field-structure.png)
