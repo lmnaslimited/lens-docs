@@ -401,3 +401,59 @@ A sales engineer must always specify the "Region" for a quotation, and it should
 
 **Output:**  
 Users see a "Region" field that is clearly marked as mandatory (typically with an asterisk or highlight). "North" is pre-selected as the default value.
+
+
+## Dynamic & Conditional Behavior
+
+**Use Case:**  
+A sales engineer filters quotations by "Customer." The customer list should only show active customers, and the "Region" filter should appear only if a customer is selected.
+
+**Standard:**
+
+-   **Avoid excessive filters**  
+    Only show filters that are relevant to the user's context to reduce clutter.
+    
+-   **Use `get_query` for dynamic data**  
+    Dynamically fetch dropdown values, e.g., only show **active customers**.
+    
+-   **Use `depends_on` for conditional visibility**  
+    Show or hide fields based on the user's selection (e.g., show "Region" only if a customer is selected).
+
+**❌ Incorrect Way**
+```js
+{
+  fieldname: "customer",
+  fieldtype: "Link",
+  label: "Customer",
+  options: "Customer"
+  // Wrong: Shows all customers, including inactive ones.
+  // Wrong: "Region" filter is always visible, even if no customer is selected.
+}
+```
+
+**✅ Correct Way**
+```js
+{
+  fieldname: "customer",
+  fieldtype: "Link",
+  label: "Customer",
+  options: "Customer",
+  get_query: function() {
+    return {
+      filters: {
+        status: "Active" // Only show active customers
+      }
+    };
+  }
+},
+{
+  fieldname: "region",
+  fieldtype: "Select",
+  label: "Region",
+  options: ["North", "South", "East", "West"],
+  depends_on: "eval:doc.customer" // Show "Region" only if a customer is selected
+}
+```
+
+**Output:**  
+Users see only active customers in the dropdown. The "Region" filter appears only after a customer is selected.
