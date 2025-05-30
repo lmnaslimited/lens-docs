@@ -501,3 +501,47 @@ frappe.ui.form.on('Quotation', {
 
 **Output:**  
 If a user selects a "From Date" that is after the "To Date," an error message appears and the invalid input is cleared, ensuring only valid date ranges are used for filtering.
+
+
+### User Experience
+---
+
+**Use Case:**  
+When a sales engineer selects "Express Delivery," the system should automatically set the "Priority" field to "High."
+
+**Standard:**
+
+-   **Comment custom logic inline.**  
+    Always add clear comments explaining any custom or non-obvious logic in your code. This improves maintainability and helps other developers understand your intent.
+
+**❌ Incorrect Way**
+```js
+frappe.ui.form.on('Quotation', {
+  express_delivery: function(frm) {
+    if (frm.doc.express_delivery) {
+      frm.set_value('priority', 'High'); // No comment explaining why this is set
+    }
+  }
+});
+```
+
+**✅ Correct Way**
+```js
+frappe.ui.form.on('Quotation', {
+  express_delivery: function(frm) {
+    // Check if the Express Delivery checkbox is selected
+    if (frm.doc.express_delivery) {
+      // If express delivery is selected, automatically set priority to 'High'
+      // This ensures urgent orders are flagged for faster processing in downstream workflows
+      frm.set_value('priority', 'High');
+    } else {
+      // If express delivery is not selected, reset priority to default (if needed)
+      // This prevents non-express orders from being incorrectly marked as high priority
+      frm.set_value('priority', 'Normal');
+    }
+  }
+});
+```
+
+**Output:**  
+Other developers can quickly understand why the "Priority" is set to "High" when "Express Delivery" is selected.
