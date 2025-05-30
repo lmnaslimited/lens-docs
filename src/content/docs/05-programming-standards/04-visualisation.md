@@ -205,6 +205,41 @@ svg.frappe-chart.chart {
   width: 350px !important;
 }
 ```
+### Use Tree Grid for Hierarchical 
 
+**Why:** Enables users to visualize nested  structures intuitively.
+
+**❌ Incorrect Way**
+```javascript
+frappe.query_reports['BOM Analysis'] = {
+  // no tree config
+}
+```
+**✅ Correct Way**
+```javascript
+frappe.query_reports['BOM Analysis'] = {
+  tree: true,
+  name_field: "quotation",
+  parent_field: "parent_quotation",
+  initial_depth: 1,
+}
+```
+### Visual Percent Change Indicators with Color Coding
+**Why:** Quickly highlights variance between primary BOM and comparison BOM.
+
+**❌ Incorrect Way**
+```javascript
+if (val1 < val2) {
+  // No formatting or visual clue
+}
+```
+**✅ Correct Way**
+```javascript
+if (val1 < val2) {
+  $value = $(value).css("color", "red");
+  $value.addClass("text-danger");
+  $value.text("(+" + percent + "%)" + $(value).text());
+}
+```
  ---
 
