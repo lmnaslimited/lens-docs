@@ -13,7 +13,7 @@ defined the fixtures in hook file of the custom app
 bench export-fixtures --site <sitename>
 ```
 **Use Cases**
-```
+```bash
 bench export-fixtures --site dev.localhost
 ```
 
@@ -39,11 +39,11 @@ bench --site <site-name> backup
 **Use Case**
 
 **1) Without Flag**
-```
+```bash
 bench --site lenstest.lmnas.com backup
 ```
 **Sample Output**
-```
+```bash
 Backup encryption is turned on. Please note the backup encryption key.
 Backup Summary for lenstest.lmnas.com at 2025-05-29 11:18:07.105285
 Config  : ./lenstest.lmnas.com/private/backups/20250529_111752-lenstest_lmnas_com-site_config_backup-enc.json 282.0B
@@ -52,11 +52,11 @@ Backup for Site lenstest.lmnas.com has been successfully completed
 ```
 
 **2) With Flag**
-```
+```bash
 bench --site lenstest.lmnas.com backup --with-files
 ```
 **Sample Output**
-```
+```bash
 Backup encryption is turned on. Please note the backup encryption key.
 Backup Summary for lenstest.lmnas.com at 2025-05-29 11:21:50.643478
 Config  : ./lenstest.lmnas.com/private/backups/20250529_112132-lenstest_lmnas_com-site_config_backup-enc.json 282.0B
@@ -86,12 +86,12 @@ bench --site <site-name> restore <path/to/backup-files>
 **Use Case**
 
 **1) Without force Flag**
-```
+```bash
 bench --site lenstest.lmnas.com restore ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-database.sql.gz
 
 ```
 **Sample Output**
-```
+```bash
 $ bench --site lenstest.lmnas.com restore ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-database.sql.gz
 MySQL root password:
 Restoring Database for Site lenstest.lmnas.com...
@@ -108,14 +108,14 @@ Backup complete
 Site restored successfully.
 ```
 **2) With force Flag**
-```
+```bash
 bench --site lenstest.lmnas.com --force restore \
   ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-database.sql.gz \
   --with-public-files ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-files.tar \
   --with-private-files ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-private-files.taz
 ```
 **Sample Output**
-```
+```bash
 MySQL root password:  
 
 App frappe already installed  
@@ -123,7 +123,7 @@ App frappe already installed
 Site localhost has been restored with files
 ```
 **3) With encrypted backup**
-```
+```bash
 bench --site lenstest.lmnas.com --force restore \
   ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-database-enc.sql.gz \
   --with-public-files ./sites/lenstest.lmnas.com/private/backups/20250529_020517-lenstest_lmnas_com-files-enc.tar \
@@ -131,7 +131,7 @@ bench --site lenstest.lmnas.com --force restore \
   --encrypted-key hgsdajhvfjwtef7363jkhajkfgj
 ```
 **Sample Output**
-```
+```bash
 Provide encryption key for decryption. Decrypting using the provided key
 MySQL root password:  
 
@@ -149,11 +149,11 @@ Site localhost has been restored with files
 bench --site <site-name> migrate
 ```
 **Use Case**
-```
+```bash
 bench --site lenstest.lmnas.com migrate
 ```
 **Sample Output**
-```
+```bash
 Migrating lenstest.lmnas.com
 Updating DocTypes for frappe        : [========================================] 100%
 Updating DocTypes for payments      : [========================================] 100%
@@ -164,5 +164,49 @@ Updating Dashboard for erpnext
 Updating customizations for Address
 Updating customizations for Contact
 Queued rebuilding of search index for lenstest.lmnas.com
+```
+---
+## Enabling scheduler in bench
+* Commands to manage the scheduler and background jobs statuses for the sites on your bench.
+* Run this command inside the backend container of your application.
+
+**Command Syntax**
+```
+bench --site <site-name> enable-scheduler
+```
+**Use Case**
+```bash
+bench --site lenstest.lmnas.com enable-scheduler
+```
+**Sample Output**
+```bash
+Enabling scheduler for lenstest.lmnas.com
+Scheduler enabled
+```
+---
+## Disable scheduler in bench
+* Commands to stop the scheduler and background jobs statuses for the sites on your bench.
+* Run this command inside the backend container of your application.
+
+**Command Syntax**
+```
+bench --site <site-name> disable-scheduler
+```
+**Use Case**
+```bash
+bench --site lenstest.lmnas.com disable-scheduler
+```
+**Sample Output**
+```bash
+Disabling scheduler for lenstest.lmnas.com
+Scheduler disabled
+```
+---
+## Enabling server script in Version-15 bench
+> **Note:** Starting from version 15, Server Scripts are disabled by default.
+
+**Command Syntax**
+```bash
+bench set-config -g server_script_enabled 1
 ```
 ---
