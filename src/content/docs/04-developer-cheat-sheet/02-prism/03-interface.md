@@ -6,7 +6,7 @@ title: PRISM - Interface
 Fixtures are used to migrate specific data and settings from the custom app during its installation, so they could be available after installation
 
 **Basic Syntax**
-In the app's hook. py file
+In the app's hook.py file
 ```
 fixtures = [
 {
@@ -32,7 +32,7 @@ fixtures = [
 We can test the custom api directly without calling them in client / server script through browser
 
 **Pre-requisite**
-A Server Script of Type API with return using `frappe.response['message']` (since we using in on browser, frappe.flag wont't work) should be there
+A Server Script of type API should be used, with a return value set via frappe.response['message'] (since it's being accessed from the browser, frappe.flags won't be effective).
 ex: ``` frappe.response['message'] = "pong```
 
 **Basic Syntax**
@@ -54,7 +54,7 @@ https://lenscx.docker.localhost/api/method/ping
 With Argument : if you have used `frappe.form_dict.get("<variable>")`
 ex script in ping API:
  ```python
-input = frappe.form_dict.get("message")
+meta = frappe.form_dict.get("message")
 frappe.response['message'] = meta```
 ```
 ```

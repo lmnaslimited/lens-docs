@@ -552,54 +552,6 @@ Dropdown list for item_group is updated.
 ```
 
 
-## Doctype's MetaDate
-
-use `get_meta` to get specific Doctype's information along with the custom field and property setter
-
-**Basic Syntax**
-This method can only be used on Server Side
-```python
-frappe.get_meta('<doctype_name>')
-```
-
-**Common Use Cases**
-```python
-ld_ToDo_meta = frappe.get_meta("ToDo")
-frappe.msgprint(str(ld_ToDo_meta.fields)) #printing the meta information of the fields
-
-#Note: str() should be used to flaten the object, otherwise it will be printed as [Object][Object]
-```
-**Sample Output**
-```
-{
-  "message": [
-    {
-      "name": "jv5ncgrirp",
-      "docstatus": 0,
-      "parent": "ToDo",
-      "parentfield": "fields",
-      "parenttype": "DocType",
-      "idx": 1,
-      "fieldname": "description_and_status",
-      "fieldtype": "Section Break",
-      "hidden": 0,
-      .......},
-      {
-      "name": "jv511449u4",
-      "docstatus": 0,
-      "parent": "ToDo",
-      "parentfield": "fields",
-      "parenttype": "DocType",
-      "idx": 2,
-      "fieldname": "status",
-      "label": "Status",
-      "fieldtype": "Select",
-      "options": "Open\nClosed\nCancelled",
-      ....},
-      ....
-      ]}
-```
-
 ## Get value of password field
 When used get_value() for password field, the return value is asterisk(encrypted), so use `get_password` method to retrieve the actual value of password type field
 
@@ -667,6 +619,53 @@ frappe.msgprint(str(ld_system_setting.theme)) //ex: theme is dark
 dark
 ```
 
+## Doctype's MetaData
+
+use `get_meta` to get specific Doctype's information along with the custom field and property setter
+
+**Basic Syntax**
+This method can only be used on Server Side
+```python
+frappe.get_meta('<doctype_name>')
+```
+
+**Common Use Cases**
+```python
+ld_ToDo_meta = frappe.get_meta("ToDo")
+frappe.msgprint(str(ld_ToDo_meta.fields)) #printing the meta information of the fields
+
+#Note: str() should be used to flaten the object, otherwise it will be printed as [Object][Object]
+```
+**Sample Output**
+```
+{
+  "message": [
+    {
+      "name": "jv5ncgrirp",
+      "docstatus": 0,
+      "parent": "ToDo",
+      "parentfield": "fields",
+      "parenttype": "DocType",
+      "idx": 1,
+      "fieldname": "description_and_status",
+      "fieldtype": "Section Break",
+      "hidden": 0,
+      .......},
+      {
+      "name": "jv511449u4",
+      "docstatus": 0,
+      "parent": "ToDo",
+      "parentfield": "fields",
+      "parenttype": "DocType",
+      "idx": 2,
+      "fieldname": "status",
+      "label": "Status",
+      "fieldtype": "Select",
+      "options": "Open\nClosed\nCancelled",
+      ....},
+      ....
+      ]}
+```
 
 
 
