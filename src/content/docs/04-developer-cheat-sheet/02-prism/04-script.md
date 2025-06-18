@@ -1,6 +1,7 @@
 ---
 title: PRISM - Script
 ---
+# Client Side
 
 # Using ''frappe.call'' with Various Built-in Methods 
 
@@ -282,20 +283,23 @@ laArray.forEach(function(ldItem, lIndex) {
 | lIndex  |  number  |  Index of the current item       |
 
 
-**Common Patterns or Use Cases**
-```
-laSalesOrder.items.forEach(function(ldItem, lIndex) {
-    console.log(`Item ${lIndex + 1}:`, ldItem.item_code);
-    console.log("Amount:", ldItem.qty * idItem.rate);
-});
-```
+**Use Cases**
 
-**Sample Output**
+A company sells equipment, and each item in a Sales Order Item has its qty. We want to calculate the total qty of all items and show it in a custom field total_qty on the Sales Order form.
+
+We will use forEach() to iterate over the items table and add up the individual warranty months.
+
 ```
-Item 1: DTTHZ2N 1200/10/400/6/75
-Amount: 10000
-Item 2: DTTHZ2N 800/10/400/6/50
-Amount: 17000
+let lTotalQty = 0;
+
+frm.doc.items.forEach(ldItem => {
+    if (ldItem.qty) {
+        lTotalQty += ldItem.qty;
+    }
+});
+
+// Set the total in a custom field on the main form
+frm.set_value('total_qty', lTotalQty);
 ```
 
 ### 2. map() – Transform Sales Order Items
@@ -313,7 +317,10 @@ const laResult = laArray.map(function(ldItem) {
 | --------- | ------- | ---------------------- |
 | ldItem  |  object  |  current item from the array       |
 
-**Common Patterns or Use Cases**
+**Use Cases**
+
+You want to list all item_codes from the sales order to display in a summary section.
+
 ```
 const LAitemCodes = salesOrder.items.map(function(ldItem) {
     return ldItem.item_code;
@@ -340,16 +347,22 @@ const LAresult = laArray.find(function(ldItem) {
 | --------- | ------- | ---------------------- |
 | ldItem  |  object  |  current item from the array       |
 
-**Common Patterns or Use Cases**
+**Use Cases**
+
+The sales manager wants to be alerted if any item in the Sales Order has a quantity greater than 10, which might need special approval or handling.
+
+We’ll use find() to quickly detect the first such item.
+
 ```
-const LAresult = salesOrder.items.find(function(ldItem) {
-    return ldItem.qty > 1;
-});
-console.log("First Matching Item:", LAresult);
+let ldHighQtyItem = frm.doc.items.find(item => item.qty > 10);
+
+if (ldHighQtyItem) {
+    console.log("First Item with Quantity > 10:", ldHighQtyItem.item_code);
+}
 ```
 **Sample Output:**
 
-First Matching Item: { item_code: "DTTHZ2N 800/10/400/6/50", qty: 2, rate: 8500 }
+First Item with Quantity > 10: DTTHZ2N 800/10/400/6/50
 
 ### 4. filter() – Filter Matching Items
 
@@ -366,19 +379,21 @@ const LDresult = laArray.filter(function(ldItem) {
 | --------- | ------- | ---------------------- |
 | ldItem  |  object  |  current item from the array       |
 
-**Common Patterns or Use Cases**
+**Use Cases**
+
+You want to extract all items that belong to the item group "Transformers" to apply some logic — for example warranty rules.
+
 ```
-// Get items with rate > 9000
-const LAfilteredItems = salesOrder.items.filter(function(ldItem) {
-    return ldItem.rate > 9000;
+let laTransformerItems = frm.doc.items.filter(item => item.item_group === 'Transformers');
+
+// You can now use laTransformerItems for further logic
+console.log("Transformer Items:", laTransformerItems);
+
+laTransformerItems.forEach(ldItem => {
+    ldItem.warranty_months = 24;  // Set a default warranty
 });
-console.log("All Filtered Items:", LAfilteredItems);
 ```
-**Sample Output:**
-```
-All Filtered Items: [{ item_code: "DTTHZ2N 1200/10/400/6/75", qty: 1, rate: 10000 },
-					{ item_code: "DTTHZ2N 2000/12/440/5/25", qty: 1, rate: 18000},]
-```
+
 
 ### 5. reduce() – Calculate Total Value
 
@@ -397,7 +412,10 @@ const LDresult = laArray.reduce(function(lAccumulator, ldItem) {
 | ldItem  |  object  |  Current item in the array       |
 | lInitialValue  |  number  |  Starting value (e.g. 0)       |
 
-**Common Patterns or Use Cases**
+**Use Cases**
+
+You want to calculate the total value of a Sales Order for quote submission.
+
 ```
 //Calculate total amount of sales order
 const LtotalAmount = salesOrder.items.reduce(function(lAcc, ldItem) {
@@ -590,7 +608,8 @@ frappe.call({
 open api key fhryryfhghgus8ghffgfhffjfjgjreg
 ```
 
-# Server Script
+
+# Server Side
 
 ## frappe.get_doc in server side
 Returns a document object for the given doctype and name, if no document match throw "DoesNotExistError".
