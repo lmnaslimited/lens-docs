@@ -85,8 +85,59 @@ frappe.call({
     ]
 }
 ```
+---
+### **Using `frappe.client.get_list` with `frappe.call` – Fetch Filtered List of Documents with Specific Fields**
+
+-   `frappe.client.get_list` is used to retrieve a list of documents from a specific Doctype based on filters.
+- You can specify **which fields to return** and **which records to include** using filters.
 
 
+**Command Syntax**
+
+```js
+frappe.call({
+    method: "frappe.client.get_list",
+    args: {
+        doctype: "<doctype_name>",
+        filters: { <field_name>: <value> },
+        fields: ["<field_name1>", "<field_name2>"]
+    },
+    callback: function(r) {
+        console.log(r.message);
+    }
+});
+```
+
+**Parameters & Options**
+| Parameter | Type   | Description                                                                               |
+| --------- | ------ | ----------------------------------------------------------------------------------------- |
+| `doctype` | string |  Doctype (e.g., `"Sales Order"`)                                           |
+| `filters` | object | Conditions to filter documents (e.g., `{ "status": "Draft" }`)                            |
+| `fields`  | array  | Specific fields to return from the matching documents (e.g., `["name", "customer_name"]`) |
+
+**Common Patterns or Use Cases**
+
+```js
+frappe.call({
+    method: "frappe.client.get_list",
+    args: {
+        doctype: "Sales Order",
+        filters: { "name": "SAL-ORD-2025-00015" },
+        fields: ["customer_name"]
+    },
+    callback: function(ldResponse) {
+        if (ldResponse.message) {
+            const lCustomer = ldResponse.message;
+            console.log("Customer:", lCustomer);
+        } 
+    }
+});
+
+```
+**Sample Output :**
+```
+Customer: [{ customer_name: "Global" }]
+```
 ---
 
 ### Using the frappe.client.get_value method with `frappe.call` – Fetch Specific field
@@ -294,7 +345,7 @@ let lTotalQty = 0;
 
 frm.doc.items.forEach(ldItem => {
     if (ldItem.qty) {
-        lTotalQty += ldItem.qty;
+        lTotalQty = lTotalQty + ldItem.qty;
     }
 });
 
@@ -349,20 +400,19 @@ const LAresult = laArray.find(function(ldItem) {
 
 **Use Cases**
 
-The sales manager wants to be alerted if any item in the Sales Order has a quantity greater than 10, which might need special approval or handling.
-
-We’ll use find() to quickly detect the first such item.
+A sales rep is creating a Sales Order. The system should check if a specific promotional item (e.g., item_code: "PROMO-123") is included — to apply special pricing or show a reminder.
 
 ```
-let ldHighQtyItem = frm.doc.items.find(item => item.qty > 10);
+let lPromoItem = frm.doc.items.find(idItem => idItem.item_code === "PROMO-123");
 
-if (ldHighQtyItem) {
-    console.log("First Item with Quantity > 10:", ldHighQtyItem.item_code);
+if (lPromoItem) {
+    frappe.msgprint("You’ve added the promotional item! Don’t forget to apply the special discount.");
 }
 ```
-**Sample Output:**
-
-First Item with Quantity > 10: DTTHZ2N 800/10/400/6/50
+**Sample Output**
+```
+A popup message displaying "You’ve added the promotional item! Don’t forget to apply the special discount."
+```
 
 ### 4. filter() – Filter Matching Items
 
@@ -492,7 +542,7 @@ frm.refresh_field("items");
 A new row appears in the child table with DTTHZ2N 2000/12/440/6/75.
 
 ### Accessing Specific Row by cdt and cdn
-**Description:** Get a specific child table row being modified (e.g. in on_change).
+Use `locals[cdt][cdn]` to access or update a specific row in a child table — typically within **child table event handlers** like `fielname`, `{fieldname}_add`, etc.
 
 **Common Syntax**
 ```
@@ -507,17 +557,29 @@ console.log(lRow.item_code);
 
 **Common Patterns or Use Cases**
 ```
-items_add(frm, cdt, cdn) {
-    let lRow = locals[cdt][cdn];
-    lRow.qty = 1;
-    frm.refresh_field("items");
-}
+frappe.ui.form.on("Sales Order Item", {
+    rate(frm, cdt, cdn) {
+        let ldRow = locals[cdt][cdn];
+        if (ldRow.qty === 0) {
+            ldRow.qty = 1;
+            frm.refresh_field("items"); //items is the field name of child table in parent doctype
+        }
+    }
+});
+
 ```
 
 **Sample Output:**
 ```
 Row is updated to quantity 1.
 ```
+**Where This Is Applicable**
+| Scenario                                                  | Use `cdt` & `cdn`? | Explanation                                          |
+| --------------------------------------------------------- | ------------------ | ---------------------------------------------------- |
+| Inside `frappe.ui.form.on("Child Doctype", { ... })`      |  Yes              | You get `cdt` & `cdn` as arguments to access the row |
+| Inside `on_change`, `on_add`, `on_remove` for child table |  Yes              | Ideal for updating specific fields in the row        |
+| Inside parent Doctype events like `refresh`, `validate`   |  No               | Use `frm.doc.items` instead (an array of rows)       |
+
 
 ### Modifying Child Table Field Properties
 **Description:**  Dynamically change a child table column’s properties like reqd, hidden, or read_only.
