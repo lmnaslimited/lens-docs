@@ -246,6 +246,46 @@ frappe.db.get_value(
 }
 ```
 
+### Using `frm.call` – Call Server-Side API Method from Client-Side
+* Used to call a Python API method from the client-side script.
+* Allows real-time interaction with backend logic, fetching data, or performing operations.
+
+**Command Syntax**
+
+```js
+frm.call({
+    method: "method.path", //api name: get_quote_from_salesorder
+    args: {
+        key1: value1,
+        key2: value2
+    },
+    callback: function(ldResponse) {
+        // handle response
+    }
+});
+``` 
+
+**Parameters & Options**
+| Parameter | Type    | Description         |
+| --------- | ------- | ------------------- |
+| `method`  |  string  |  API method name (server-side script)     |
+| `args`  |  object  |  Arguments as key-value pairs       |
+| `callback`  |  function  |  response is received from the server     |
+
+**Common Patterns or Use Cases**
+```js
+frm.call({
+    method: "get_quote_from_salesorder", // API method name
+    args: {
+        source_name: frm.doc.name 
+    },
+    callback: function(ldResponse) {
+        if (ldResponse.message) {
+            //code here
+        }
+    }
+});
+```
 
 ### Using frappe.set_intro – Display an Introductory Message in a Form
 * Shows a small descriptive message at the top of the form.
@@ -258,13 +298,13 @@ frappe.db.get_value(
 frappe.set_intro(message);
 ```
 
-*Parameters & Options*
+**Parameters & Options**
 | Parameter | Type    | Description            |
 | --------- | ------- | ---------------------- |
 | message  |  string  |  Displaying text       |
 
 
-*Common Patterns or Use Cases*
+**Common Patterns or Use Cases**
 
 ```js
 frappe.ui.form.on('Sales Order', {
@@ -274,7 +314,7 @@ frappe.ui.form.on('Sales Order', {
 });
 ```
 
-*Sample Output :*
+**Sample Output :**
 ![alt text](set_intro.png)
 
 
@@ -288,7 +328,7 @@ frappe.ui.form.on('Sales Order', {
 frappe.df.set_property(fieldname, property, value, frm);
 ```
 
-*Parameters & Options*
+**Parameters & Options**
 | Parameter | Type    | Description         |
 | --------- | ------- | ------------------- |
 | fieldname  |  string  |  Fieldname      |
@@ -297,7 +337,7 @@ frappe.df.set_property(fieldname, property, value, frm);
 | frm  |  object  |  Form object (usually passed as frm)    |
 
 
-*Common Patterns or Use Cases*
+**Common Patterns or Use Cases**
 
 ```js
 frappe.ui.form.on('Sales Order', {
@@ -311,9 +351,176 @@ frappe.ui.form.on('Sales Order', {
 });
 ```
 
-*Sample Output :*
+**Sample Output :**
 ![alt text](mandatory.png)
 
+
+### Using `frm.set_value` – Set a Field Value in the Form
+* Used to set or update the value of a field programmatically.
+* Triggers related events like `on_change`, validation, and linked field logic.
+
+**Command Syntax**
+
+```js
+frm.set_value(fieldname, value);
+```
+or
+
+```js
+frm.set_value({
+    fieldname1: value1,
+    fieldname2: value2
+});
+```
+
+**Parameters & Options**
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| fieldname  |  string  |  Name of the field to update       |
+| value  |  any  |  New value to set for the field       |
+
+*Common Patterns or Use Cases*
+```js
+frappe.ui.form.on('Quotation', {
+    refresh: function(frm) {
+        frm.set_value('project_name', 'Test Set Value');
+        //or
+        frm.set_value({
+            party_name: "ABC Corp",
+            company: "LMNAs Cloud Solutions" //hidden field
+        });
+    }
+});
+```
+**Sample Output :**
+![alt text](image.png)
+
+### Using `add_fetch` – Auto Fetch Field Value from Linked Doctype
+* Automatically pulls a value from a linked document's field and sets it in the current form.
+* Used in `frappe.ui.form.on()` to map one field to another when a link field is selected.
+
+**Command Syntax**
+
+```js
+frm.add_fetch(link_field, source_fieldname, target_fieldname);
+```
+**Parameters & Options**
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| link_field  |  string  |  Link field in the form       |
+| source_fieldname  |  string  |  Field to fetch from the linked doctype       |
+| target_fieldname  |  string  |  Field in the current form to set the value       |
+
+**Common Patterns or Use Cases**
+```js
+frappe.ui.form.on('Quotation', {
+    customer(frm) {
+        frm.add_fetch('party_name', 'll_packaging', 'packaging');
+    }
+});
+```
+**Sample Output :**
+![alt text](image-1.png)
+
+### Using `get_query` – Filter Link Field Options Dynamically (Field-Level)
+* Used to define dynamic filters for Link fields at the field level.
+* Placed inside `frappe.ui.form.on()` for the specific field.
+* Returns filter conditions for dropdown value
+
+**Common Syntax**
+```js
+frm.fields_dict[fieldname].get_query = function(doc) {
+    return {
+        filters: {
+            key: value
+        }
+    };
+};
+```
+**Parameters & Options**
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| fieldname  |  string  |  Name of the Link field to filter       |
+| doc  |  object  |  Current form document context (frm.doc)       |
+| filters  |  object  |  Key-value pairs used to filter link options       |
+
+**Common Patterns or Use Cases**
+```js
+frm.fields_dict['item_code'].get_query = function(doc) {
+    return {
+        filters: {
+            item_group: doc.item_group //item_group: 'DTTHZ2N'
+        }
+    };
+};
+```
+### Using `frappe.model.with_doc` – Access a Full Document in the Client Script
+* `frappe.model.with_doc` is used to **fetch and access the complete document** from the database by specifying its **doctype** and **name**.
+* Useful when you want to **use values from another document** that is not currently open in the form.
+
+
+**Command Syntax**
+
+```js
+frappe.model.with_doc(doctype, name).then(doc => {
+    // code here
+});
+```
+**Parameters & Options**
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| doctype  |  string  |  Name of the Doctype to fetch      |
+| name  |  string  |  The unique name (ID) of the document       |
+
+**Common Patterns or Use Cases**
+```js
+frappe.ui.form.on('Quotation', {
+    onload: function(frm) {
+        if (frm.doc.party_name) {
+            frappe.model.with_doc('Customer', frm.doc.party_name).then(ldCustomerDoc => {
+                frappe.msgprint(`Customer Territory: ${ldCustomerDoc.territory}`);
+            });
+        }
+    }
+});
+```
+**Sample Output :**
+![alt text](image-2.png)
+
+### Using `frappe.model.set_value` – Set the Value of a Field in a Child Doctype Row
+
+- Sets or updates the value of a specific field in a child table row.
+- Useful for dynamically updating fields inside child tables based on conditions or user input.
+
+## Command Syntax
+
+```js
+frappe.model.set_value(doctype, docname, fieldname, value);
+```
+
+**Parameters & Options**
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| doctype  |  string  |  Name of the Child DocType      |
+| docname  |  string  |  Name of the child document (child row)       |
+| fieldname  |  string  |  Field name whose value you want to set      |
+| value  |  any  |  The value to set for the field      |
+
+**Common Patterns or Use Cases**
+```js
+frappe.ui.form.on('Sales Order', {
+    refresh: function(frm) {
+        // Set the 'status' field to 'Draft' on form refresh
+        frappe.model.set_value(frm.doc.doctype, frm.doc.name, 'status', 'Draft');
+
+        // Set rate of first item in items table to 1000
+        if (frm.doc.items && frm.doc.items.length > 0) {
+            let ld_first_item = frm.doc.items[0];
+            frappe.model.set_value(ld_first_item.doctype, ld_first_item.name, 'rate', 1000);
+        }
+    }
+});
+```
 
 ## JavaScript Array Methods
 
