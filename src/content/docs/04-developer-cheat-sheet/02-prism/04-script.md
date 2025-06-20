@@ -454,6 +454,59 @@ frm.fields_dict['item_code'].get_query = function(doc) {
     };
 };
 ```
+### Using `set_query` – Filter Link Field Options Dynamically (Global or Field-Level)
+
+* Used to apply dynamic filters to Link fields.
+* Can be used for fields in the main form or in child tables.
+* More flexible than `get_query`.
+
+---
+
+### Common Syntax
+
+```js
+frm.set_query(fieldname, doctype, function(doc) {
+    return {
+        filters: {
+            key: value
+        }
+    };
+});
+```
+**Common Patterns or Use Cases**
+```js
+# Syntax for Parent form field
+frappe.ui.form.on('Sales Order', {
+    setup: function(frm) {
+        frm.set_query('customer', null, function(doc) {
+            return {
+                filters: {
+                    customer_group: 'Commercial'
+                }
+            };
+        });
+    }
+});
+```
+```js
+// Syntax for Child form field
+frappe.ui.form.on('Sales Order', {
+    setup: function(frm) {
+        frm.set_query('item_code', 'items', function(doc) {
+            return {
+                filters: {
+                    item_group: 'DTTHZ2N'
+                }
+            };
+        });
+    }
+});
+```
+**Best Practice**
+* Use set_query in the setup event.
+* Use get_query only if you want to write the filter directly on the field.
+* Avoid hardcoding values unless they are fixed.
+
 ### Using `frappe.model.with_doc` – Access a Full Document in the Client Script
 * `frappe.model.with_doc` is used to **fetch and access the complete document** from the database by specifying its **doctype** and **name**.
 * Useful when you want to **use values from another document** that is not currently open in the form.
@@ -910,7 +963,7 @@ dark
 * Retrieves a list of records from a specific DocType.
 * Returns a list of dictionaries with selected fields (or just names if no fields specified).
 * Lightweight and efficient – ideal for read-only queries.
-
+* Useful for querying main table fields and child table fields.
 
 **Command Syntax**
 
@@ -934,6 +987,35 @@ la_orders = frappe.get_all(
     order_by='transaction_date desc',
     limit=5
 )
+```
+or
+```py
+# Get customer from current document
+l_customer_name = doc.customer  # e.g., "ABB AG"
+
+# Fetch Sales Orders with fields from main and child tables
+la_sales_orders = frappe.get_list(
+    "Sales Order",
+    filters={"customer": l_customer_name},
+    fields=[
+        "name",
+        "customer",
+        "territory",
+        # Sales Order Item (Child Table)
+        "`tabSales Order Item`.item_code",
+        "`tabSales Order Item`.qty",
+        "`tabSales Order Item`.rate"
+    ]
+    order_by="transaction_date desc",
+    limit=10
+)
+
+# Display each Sales Order with child item details
+for ld_so in la_sales_orders:
+    frappe.msgprint(f"""
+        SO: {ld_so.name} | Customer: {ld_so.customer}
+        Item: {ld_so.item_code} | Qty: {ld_so.qty} | Rate: {ld_so.rate}
+    """)
 ```
 
 **Sample Output:**
@@ -1044,6 +1126,12 @@ ld_sales_order.save()
   ]
 }
 ```
+**Best Practice (doc.save())**
+
+| Avoid This |  Why It Matters |
+|--------------|-------------------|
+| `doc.save(ignore_permissions=True)` | It skips permission checks. This can cause security issues. Use it only when really needed. |
+| Calling `doc.save()` inside a loop | It runs validations and writes to the database many times. This makes the code slow. Save once after the loop. |
 
 ### Using `doc.insert()` – Insert a New Document into the Database
 * Inserts a brand-new document into the database.
