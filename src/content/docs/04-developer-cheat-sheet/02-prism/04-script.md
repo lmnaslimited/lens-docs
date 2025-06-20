@@ -906,6 +906,175 @@ frappe.msgprint(str(ld_system_setting.theme)) //ex: theme is dark
 ```
 dark
 ```
+### Using `frappe.get_all` – Fetch Multiple Records from a Doctype
+* Retrieves a list of records from a specific DocType.
+* Returns a list of dictionaries with selected fields (or just names if no fields specified).
+* Lightweight and efficient – ideal for read-only queries.
+
+
+**Command Syntax**
+
+```python
+frappe.get_all(doctype, filters=None, fields=None, limit=None, order_by=None)
+```
+**Parameters & Options:**
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| doctype  |  string  |  Name of the DocType to fetch records from.     |
+| filters  |  dict/list  |  List of specified fields to fetch |
+| limit  |  int  |  Limits number of results. Optional. |
+| order_by  |  string  |  Sort order (e.g., "creation desc"). Optional. |
+
+**Common Pattern or Use Cases**
+```py
+la_orders = frappe.get_all(
+    'Sales Order',
+    filters={'customer': 'ABB AG'},
+    fields=['name', 'transaction_date'],
+    order_by='transaction_date desc',
+    limit=5
+)
+```
+
+**Sample Output:**
+```
+[{'name': 'SAL-ORD-2025-00014', 'transaction_date': datetime.date(2025, 5, 29)}, 
+{'name': 'SAL-ORD-2025-00010', 'transaction_date': datetime.date(2025, 2, 18)}, 
+{'name': 'SAL-ORD-2025-00011', 'transaction_date': datetime.date(2025, 2, 18)}, 
+{'name': 'SAL-ORD-2025-00008', 'transaction_date': datetime.date(2025, 2, 5)}, 
+{'name': 'SAL-ORD-2025-00007', 'transaction_date': datetime.date(2025, 2, 4)}]
+```
+
+### Using `frappe.get_list` – Fetch Records from a Doctype (Server Script)
+
+* Retrieves a list of records from a specified doctype.
+* Supports filtering, sorting, field selection, and limits.
+* Commonly used in server scripts to extract data based on conditions.
+
+**Command Syntax**
+```py
+frappe.get_list(doctype, filters=None, fields=None, order_by=None, limit=None)
+```
+**Parameters & Options:**
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| doctype  |  string  |  Name of the DocType to fetch records from.     |
+| filters  |  dict/list  |  List of specified fields to fetch |
+| limit  |  int  |  Limits number of results. Optional. |
+| order_by  |  string  |  Sort order (e.g., "creation desc"). Optional. |
+
+**Common Pattern or Use Cases**
+```py
+# Get customer from current document
+l_customer_name = doc.customer # l_customer_name = "ABB AG"
+
+# Fetch Sales Orders for this customer
+la_sales_orders = frappe.get_list(
+    "Sales Order",
+    filters={"customer": l_customer_name},
+    fields=["name", "transaction_date", "grand_total"],
+    order_by="transaction_date desc"
+)
+
+# Display each Sales Order
+for ld_so in la_sales_orders:
+    frappe.msgprint(f"Sales Order: {ld_so.name} | Date: {ld_so.transaction_date} | Total: ₹{ld_so.grand_total}")
+```
+
+**Sample Output:**
+```
+Sales Order: SAL-ORD-2024-0003 | Date: 2024-12-01 | Total: ₹75,000  
+Sales Order: SAL-ORD-2024-0022 | Date: 2024-10-15 | Total: ₹52,000  
+Sales Order: SAL-ORD-2025-0001 | Date: 2025-08-30 | Total: ₹19,500  
+```
+
+#### frappe.get_all vs frappe.get_list
+| frappe.get_all                                      | frappe.get_list                                      |
+|-----------------------------------------------------|------------------------------------------------------|
+| Faster; optimized for raw data access               | Slightly slower due to permission and hook handling  |
+| Does not check permissions by default               | Checks user permissions by default                   |
+| Skips `get_list` hooks                              | Runs `get_list` hooks if defined                     |
+| Only fetches database (DocType) fields              | Can fetch custom fields and computed properties      |
+| Cannot access child tables or property setters      | Can access child tables and custom properties        |
+| Best for internal scripts and background jobs       | Best for user-facing features and API responses      |
+| Supports filters, fields, limit, and order_by       | Supports filters, fields, limit, and order_by        |
+| Use `ignore_permissions=True` to override access    | Automatically respects permissions                   |
+| Does not load DocType metadata                      | Loads and applies DocType metadata                   |
+| Lightweight and fast                                | More feature-rich and secure                         |
+
+### Using `doc.save()` – Save a Document on the Server Side
+* Saves the document to the database.
+* Triggers validations and standard lifecycle events like `before_save`, `validate`, `on_update`, and `after_save`.
+
+---
+
+**Command Syntax**
+
+```python
+doc.save()
+```
+
+**Common Pattern or Use Cases**
+```py
+# Create and save a new document
+ld_sales_order = frappe.new_doc("Sales Order")
+ld_sales_order.customer = "Test Customer"
+ld_sales_order.append("items", {
+    "item_code": "DTTHZ2N/1000/22/440/6/95",
+    "qty": 2
+})
+ld_sales_order.save()
+```
+**Sample Output:**
+```
+{
+  "name": "SO-0004",
+  "doctype": "Sales Order",
+  "customer": "Test Customer",
+  "delivery_date": "2025-06-20",
+  "items": [
+    {
+      "item_code": "DTTHZ2N/1000/22/440/6/95",
+      "qty": 2,
+      "doctype": "Sales Order Item",
+      "parent": "SO-0004",
+      "parenttype": "Sales Order",
+      "parentfield": "items"
+    }
+  ]
+}
+```
+
+### Using `doc.insert()` – Insert a New Document into the Database
+* Inserts a brand-new document into the database.
+* Used only for new records (not for updates).
+* Triggers standard lifecycle events like `before_insert`, `validate`, and `after_insert`.
+
+---
+
+**Command Syntax**
+
+```python
+doc.insert()
+```
+**Common Pattern or Use Cases**
+```py
+ld_customer = frappe.new_doc("Customer")
+ld_customer.customer_name = "Test User"
+ld_customer.customer_group = "Commercial"
+ld_customer.territory = "India"
+ld_customer.insert()
+```
+**Sample Output:**
+```py
+{
+  "name": "TEST USER",
+  "doctype": "Customer",
+  "customer_name": "Test User",
+  "customer_group": "Commercial",
+  "territory": "India",
+}
+```
 
 ## Doctype's MetaData
 
