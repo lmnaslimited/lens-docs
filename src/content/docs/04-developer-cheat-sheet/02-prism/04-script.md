@@ -930,10 +930,7 @@ frappe.call({
 open api key fhryryfhghgus8ghffgfhffjfjgjreg
 ```
 
-# **Using `frappe.client.get_list` with `frappe.call` – Fetch Filtered List of Documents with Specific Fields**
-
-`frappe.client.get_list` is used to retrieve a **list of documents** from a specific **Doctype** based on provided **filters**.
-
+# **Using `frappe.client.get_list` with `frappe.call` – For accessing the child table**
 
 * Specify which **fields** to return
 * Select which records to include using **filters**
