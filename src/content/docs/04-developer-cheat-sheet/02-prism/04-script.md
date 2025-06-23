@@ -941,16 +941,19 @@ open api key fhryryfhghgus8ghffgfhffjfjgjreg
 
 ```javascript
 frappe.call({
-    method: "frappe.client.get_list",
+    method: 'frappe.client.get_list',
     args: {
-        doctype: "<doctype_name>",
-        filters: { <field_name>: <value> },
-        fields: ["<field_name1>", "<field_name2>"]
+        doctype: '<Child Table Doctype>',
+        parent: '<Parent Doctype>',
+        filters: { parent: '<Parent Document Name>' },
+        fields: ['<Field1>', '<Field2>'] // specify fields you want to retrieve
     },
-    callback: function(r) {
-        console.log(r.message);
+    callback: function(response) {
+        // handle the response here
+        console.log(response.message);
     }
 });
+
 ```
 
 
