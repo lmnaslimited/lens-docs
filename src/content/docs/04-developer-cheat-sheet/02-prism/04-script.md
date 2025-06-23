@@ -930,6 +930,71 @@ frappe.call({
 open api key fhryryfhghgus8ghffgfhffjfjgjreg
 ```
 
+# **Using `frappe.client.get_list` with `frappe.call` – For accessing the child table**
+
+* Specify which **fields** to return
+* Select which records to include using **filters**
+
+
+
+##  **Command Syntax**
+
+```javascript
+frappe.call({
+    method: 'frappe.client.get_list',
+    args: {
+        doctype: '<Child Table Doctype>',
+        parent: '<Parent Doctype>',
+        filters: { parent: '<Parent Document Name>' },
+        fields: ['<Field1>', '<Field2>'] // specify fields you want to retrieve
+    },
+    callback: function(response) {
+        // handle the response here
+        console.log(response.message);
+    }
+});
+
+```
+
+
+
+##  **Parameters & Options**
+
+| Parameter | Type   | Description                                                                |
+| --------- | ------ | -------------------------------------------------------------------------- |
+| doctype   | string | The **Doctype** to retrieve records from (e.g., `"Sales Order"`)           |
+| filters   | object | Conditions to filter the records (e.g., `{ "status": "Draft" }`)           |
+| fields    | array  | List of fields to retrieve from each document (e.g., `["name", "status"]`) |
+
+
+
+## Common Patterns or Use Cases for (Child Table) 
+
+* Automatically fetch all organizations linked to that Git user.
+
+* Show them in a message or set them in another field.
+
+
+
+
+```javascript
+ frappe.call({
+    method: 'frappe.client.get_list',
+    args: {
+        doctype: 'Git User Organizations',  // Child Table Doctype
+        parent: 'Git User',                 // Parent Doctype
+        filters: { parent: frm.doc.custom_git_username },  // Parent Document Name
+        fields: ['git_organization']        // Fields to Retrieve
+    },
+    callback: function(r) {
+        if (r.message && r.message.length > 0) {
+            // Example: Set the first organization name in a form field
+            frm.set_value('organization_name', response.message[0].git_organization);
+    }
+    
+    }
+});
+```
 
 # Server Side
 
@@ -1437,11 +1502,14 @@ class ClassName {
 }
 ```
 You can access the constructor via the `new` keyword:
-```
+
+```ts
 const obj = new  ClassName(value1, value2);
 ```
 **Use Case**
-We use constructors in **base and derived classes** to **pass and initialize shared data** like `action` and `actionData`.```ts
+We use constructors in **base and derived classes** to **pass and initialize shared data** like `action` and `actionData`.
+
+```ts
 class clActionOnLoad extends clAction {
     constructor(iAction: string, iaActionData: TTactionsData) {
         super(iAction, iaActionData); // Calls the constructor of the base class
@@ -1456,6 +1524,7 @@ class clActionOnLoad extends clAction {
 
 ## Interface
 An **interface**  is a syntactic contract that defines the **structure of an object or class**. It ensures that a class or object adheres to a particular shape by specifying what properties and methods it must have.**Basic Syntax:**
+
 ```javascript
 interface InterfaceName {
     propertyName: type;
@@ -1464,6 +1533,7 @@ interface InterfaceName {
 ```
 **Use Case:**
 We use the **interface** in the `types.ts` file to **define the structure** that any class or object must follow. In this case, the `ifActionHandler` interface acts as a **contract** for all action handlers, ensuring they have the necessary properties and methods.
+
 ```javascript
 interface ifActionHandler {
     action: string;
@@ -1476,11 +1546,13 @@ interface ifActionHandler {
 }
 ```
 Use this interface in an **abstract class**:
-```
-abstract class clAction implements ifActionHandler {
+
+```javascript
+abstract class abstract class clAction implements ifActionHandler {
     // Must implement all properties and methods from the interface
 }
-```**WHY:**
+```
+**WHY:**
 -   By using the interface in the `types.ts`, you define a **standard structure** for all actions.
 -   Every class that implements this interface will be forced to follow that structure.
 -   This helps in maintaining **consistency**, improving **type safety**, and enabling **scalable code architecture**.
@@ -1523,58 +1595,6 @@ class clActionFactory {
 
 
 
-# **Using `frappe.client.get_list` with `frappe.call` – Fetch Filtered List of Documents with Specific Fields**
 
-`frappe.client.get_list` is used to retrieve a **list of documents** from a specific **Doctype** based on provided **filters**.
-
-
-* Specify which **fields** to return
-* Select which records to include using **filters**
-
-
-
-##  **Command Syntax**
-
-```javascript
-frappe.call({
-    method: "frappe.client.get_list",
-    args: {
-        doctype: "<doctype_name>",
-        filters: { <field_name>: <value> },
-        fields: ["<field_name1>", "<field_name2>"]
-    },
-    callback: function(r) {
-        console.log(r.message);
-    }
-});
-```
-
-
-
-##  **Parameters & Options**
-
-| Parameter | Type   | Description                                                                |
-| --------- | ------ | -------------------------------------------------------------------------- |
-| doctype   | string | The **Doctype** to retrieve records from (e.g., `"Sales Order"`)           |
-| filters   | object | Conditions to filter the records (e.g., `{ "status": "Draft" }`)           |
-| fields    | array  | List of fields to retrieve from each document (e.g., `["name", "status"]`) |
-
-
-
-## Common Patterns or Use Cases for (Child Table) 
-
-```javascript
-frappe.call({
-    method: 'frappe.client.get_list',
-    args: {
-        doctype: 'Git User Organizations',       // Child Table Doctype
-        parent: 'Git User',                      // Parent Doctype
-        filters: { parent: frm.doc.custom_git_username },  // Parent Document Name
-        fields: ['git_organization']             // Fields to Retrieve
-    },
-    callback: function(r) {
-        console.log(r.message);                  // Display the fetched records
-    }
-});
 
 
