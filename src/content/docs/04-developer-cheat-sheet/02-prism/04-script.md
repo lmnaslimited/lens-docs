@@ -1520,3 +1520,61 @@ class clActionFactory {
 -   Easily create instances of different classes based on a string key without hardcoding logic.
 -   Easily register new actions by adding to `actionsMap`
 -   Keeps instantiation logic centralized.
+
+
+
+# **Using `frappe.client.get_list` with `frappe.call` – Fetch Filtered List of Documents with Specific Fields**
+
+`frappe.client.get_list` is used to retrieve a **list of documents** from a specific **Doctype** based on provided **filters**.
+
+
+* Specify which **fields** to return
+* Select which records to include using **filters**
+
+
+
+##  **Command Syntax**
+
+```javascript
+frappe.call({
+    method: "frappe.client.get_list",
+    args: {
+        doctype: "<doctype_name>",
+        filters: { <field_name>: <value> },
+        fields: ["<field_name1>", "<field_name2>"]
+    },
+    callback: function(r) {
+        console.log(r.message);
+    }
+});
+```
+
+
+
+##  **Parameters & Options**
+
+| Parameter | Type   | Description                                                                |
+| --------- | ------ | -------------------------------------------------------------------------- |
+| doctype   | string | The **Doctype** to retrieve records from (e.g., `"Sales Order"`)           |
+| filters   | object | Conditions to filter the records (e.g., `{ "status": "Draft" }`)           |
+| fields    | array  | List of fields to retrieve from each document (e.g., `["name", "status"]`) |
+
+
+
+## Common Patterns or Use Cases for (Child Table) 
+
+```javascript
+frappe.call({
+    method: 'frappe.client.get_list',
+    args: {
+        doctype: 'Git User Organizations',       // Child Table Doctype
+        parent: 'Git User',                      // Parent Doctype
+        filters: { parent: frm.doc.custom_git_username },  // Parent Document Name
+        fields: ['git_organization']             // Fields to Retrieve
+    },
+    callback: function(r) {
+        console.log(r.message);                  // Display the fetched records
+    }
+});
+
+
