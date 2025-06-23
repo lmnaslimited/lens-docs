@@ -967,21 +967,31 @@ frappe.call({
 
 ## Common Patterns or Use Cases for (Child Table) 
 
+* Automatically fetch all organizations linked to that Git user.
+
+* Show them in a message or set them in another field.
+
+
+
+
 ```javascript
-frappe.call({
+ frappe.call({
     method: 'frappe.client.get_list',
     args: {
-        doctype: 'Git User Organizations',       // Child Table Doctype
-        parent: 'Git User',                      // Parent Doctype
+        doctype: 'Git User Organizations',  // Child Table Doctype
+        parent: 'Git User',                 // Parent Doctype
         filters: { parent: frm.doc.custom_git_username },  // Parent Document Name
-        fields: ['git_organization']             // Fields to Retrieve
+        fields: ['git_organization']        // Fields to Retrieve
     },
     callback: function(r) {
-        console.log(r.message);                  // Display the fetched records
+        if (r.message && r.message.length > 0) {
+            // Example: Set the first organization name in a form field
+            frm.set_value('organization_name', response.message[0].git_organization);
+    }
+    
     }
 });
 ```
-
 
 # Server Side
 
