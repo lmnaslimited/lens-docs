@@ -170,6 +170,31 @@ This will enable automatic logging of changes in the document's timeline.
 ![Modifications](/lens-docs/track_changes.png)
 
 
+## How to Give Permission to Guest Role in Frappe
 
+This enables public users (who are not logged in) to submit form entries or data via a web form or API without requiring authentication.
 
+**Use Case**
 
+Allow unauthenticated (Guest) users to create Appointment records through the website.
+
+### Steps
+1. Go to:  
+   `Settings → Role → Role List`
+
+2. Search for and open the **"Guest"** role.
+
+3. In the Guest role document, click on **"Role Permissions Manager"** at the top.
+
+4. Click **"Add a New Rule"**.
+
+5. In the dialog:
+   - **Doctype:** `Appointment`  
+   - **Level:** `0` (default)  
+   - **Permissions to Check:**
+     - `Create`
+     - `Read`
+6. Click **Save**.
+
+### Note
+The **Guest** role is used for unauthenticated users (like website visitors). Avoid giving `Write`, `Delete`, or `Submit` permissions unless absolutely necessary for security reasons.
