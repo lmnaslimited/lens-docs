@@ -521,6 +521,107 @@ frappe.ui.form.on('Sales Order', {
     }
 });
 ```
+## Using HTML Templates in JavaScript – Render Dynamic HTML with JS
+- Helps inject structured HTML layouts (like tables, cards, alerts) dynamically in Frappe forms or pages.
+- Useful for rendering data-driven UI like logs, summaries, or visual indicators.
+
+**Pre-requiste**
+You need to have a field of type HTML
+
+## Command Syntax
+
+```js
+const ldTemplate = `<div>...</div>`;
+frappe.render_template(ldTemplate, { key: value });
+```
+**Parameters & Options**
+| Parameter  | Type     | Description                                        |
+| ---------- | -------- | -------------------------------------------------- |
+| `template` | `string` | Inline HTML template string using Jinja-style tags |
+|  `key`     |  `string`| Name of the param object used in the template      |
+| `value`     | `object` | Context variables used for rendering the template (parameter used in the jinja)  |
+
+**Notes & Best Practices**
+
+- Frappe uses a **microtemplate engine**, not full Jinja — it’s based on **John Resig’s lightweight JavaScript templating system**, commonly referred to as *Resig-style templates*.
+- Loops and variables must follow **Frappe’s JS microtemplate syntax**:
+  - Use `{% for(var i = 0; i < array.length; i++) { %}` for loops  
+  - Use `{%= array[i].field %}` to render values
+- **Standard Jinja syntax** like `{% for item in items %}` is **not supported** in client scripts and will not work.
+- Avoid using **single quotes `'`** inside the HTML template string — always use **double quotes `"`** to avoid syntax issues.
+- It's best practice to set rendered HTML using:
+  ```js
+  frm.set_df_property("fieldname", "options", html);
+  frm.refresh_field("fieldname");
+  ```
+
+**Common Patterns or Use Cases**
+
+Show a visual summary of lead or opportunity status transitions (e.g., Open → Contacted → Quoted), helping users quickly understand progress.
+```js
+frappe.ui.form.on('Lead', {
+    onload(frm) {
+        const laStatusLog = [
+            {
+                status_from: "Open",
+                status_to: "Contacted",
+                timestamp: "2025-06-01 10:00:00",
+                duration: "2 days"
+            },
+            {
+                status_from: "Contacted",
+                status_to: "Quoted",
+                timestamp: "2025-06-03 15:30:00",
+                duration: "1 day 5 hrs"
+            }
+        ];
+
+        const ldTimelineTemplate = `
+           <div class="form-grid-container">
+            <div class="form-grid">
+                <div class="grid-heading-row">
+                    <div class="grid-row">
+                        <div class="data-row row">
+                            <div class="col grid-static-col col-xs-3"><div class="static-area ellipsis">Status From</div></div>
+                            <div class="col grid-static-col col-xs-3"><div class="static-area ellipsis">Status To</div></div>
+                            <div class="col grid-static-col col-xs-3"><div class="static-area ellipsis">Timestamp</div></div>
+                            <div class="col grid-static-col col-xs-3"><div class="static-area ellipsis">Time Difference</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-body">
+                    <div class="rows">
+                        {% for(var i = 0; i < status_log.length; i++) { %}
+                            <div class="grid-row">
+                                <div class="data-row row">
+                                    <div class="col grid-static-col col-xs-3"><div class="static-area ellipsis">{%= status_log[i].status_from %}</div></div>
+                                    <div class="col grid-static-col col-xs-3"><div class="static-area ellipsis">{%= status_log[i].status_to %}</div></div>
+                                    <div class="col grid-static-col col-xs-3"><div class="static-area ellipsis">{%= status_log[i].timestamp %}</div></div>
+                                    <div class="col grid-static-col col-xs-3"><div class="static-area ellipsis">{%= status_log[i].duration %}</div></div>
+                                </div>
+                            </div>
+                        {% } %}
+                        {% if (!status_log.length) { %}
+                            <div class="grid-row">
+                                <div class="data-row row">
+                                    <div class="col text-muted" colspan="4">No status log found.</div>
+                                </div>
+                            </div>
+                        {% } %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+        const ldHtml = frappe.render_template(ldTimelineTemplate, { status_log: laStatusLog });
+        frm.set_df_property("custom_html_field", "options", ldHtml )
+        frm.refresh_field('custom_html_field');
+    }
+});
+```
+**Sample Output :**
+![alt text](render_html.png)
 
 ## JavaScript Array Methods
 
