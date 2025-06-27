@@ -304,3 +304,36 @@ fixtures = [
          ]
     }]
 ```
+
+### 1. page_js
+page_js allows you to include custom JavaScript files specifically for standard Frappe pages like print, query-report, dashboard, etc.
+
+**Basic Syntax**
+```python
+page_js = {
+    "{page_name}": "public/js/<filename>"
+}
+
+```
+**Common Use Case**
+Override the Print page's set_title function to hide the Print button for a restricted document like "Quotation" in Draft.
+```python
+# hooks.py
+page_js = {
+    "print": "public/js/print_restrict.js"
+}
+```
+```javascript
+//  custom_app/public/js/print_restrict.js
+(function () {
+    const fnOriginalSetTitle = frappe.ui.form.PrintView.prototype.set_title;
+    frappe.ui.form.PrintView.prototype.set_title = function () {
+    
+    // Hide PDF button
+    if(this.frm.doctype === "Quotation" && this.frm.doc.status === "Draft"){
+        $(".btn.btn-primary.btn-sm.primary-action").hide();
+    }
+    fnOriginalSetTitle.call(this);
+};
+})
+```
