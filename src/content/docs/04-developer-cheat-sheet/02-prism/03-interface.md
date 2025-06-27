@@ -305,7 +305,7 @@ fixtures = [
     }]
 ```
 
-### 1. page_js
+### 8. page_js
 page_js allows you to include custom JavaScript files specifically for standard Frappe pages like print, query-report, dashboard, etc.
 
 **Basic Syntax**
