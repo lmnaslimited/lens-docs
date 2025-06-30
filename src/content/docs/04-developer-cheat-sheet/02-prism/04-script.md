@@ -1250,6 +1250,64 @@ Sales Order: SAL-ORD-2025-0001 | Date: 2025-08-30 | Total: ₹19,500
 | Does not load DocType metadata                      | Loads and applies DocType metadata                   |
 | Lightweight and fast                                | More feature-rich and secure                         |
 
+### Using frappe.get_doc({...}) – Create and Load Documents in Frappe
+* Used to create a new document with data or fetch an existing one.
+* When passed a dictionary, it initializes a new document (not yet saved).
+* Preferred for quickly building and inserting new documents with nested fields like child tables.
+
+**Common Syntax**
+```python
+ld_doc = frappe.get_doc({
+    "doctype": "<DocType>",
+    "<fieldname_1>": "<value_1>",
+    "<fieldname_2>": "<value_2>",
+    # ... more fields
+})
+ld_doc.insert()
+
+```
+**Common Pattern or Use Cases**
+ Create a Sales Invoice with multiple items using frappe.get_doc() and insert it into the system with child table data.
+
+ ```python
+ld_doc = frappe.get_doc({
+    "doctype": "Sales Invoice",
+    # Set known fields directly inside get_doc()
+    "customer": "Test Customer",  # Can also be set later
+    "items": [  # Child table: Sales Invoice Items
+        {
+            "item_code": "ITEM-001",
+            "qty": 2,
+            "rate": 500
+        },
+        {
+            "item_code": "ITEM-002",
+            "qty": 1,
+            "rate": 300
+        }
+    ]
+})
+
+# Optionally set or override fields after initialization
+# Useful when values are dynamic or require conditional logic
+ld_doc.due_date = "2025-07-10"
+ld_doc.tax_category = "Standard"
+
+# Save the document to the database
+ld_doc.insert()
+
+ ```
+
+**Sample Output**
+ ```
+A new Sales Invoice will be created for the customer "Test Customer" with the following items:
+ITEM-001: Quantity = 2, Rate = 500
+ITEM-002: Quantity = 1, Rate = 300
+The document will be saved in the system with a status of "Draft"
+ ```
+
+---
+
 ### Using `doc.save()` – Save a Document on the Server Side
 * Saves the document to the database.
 * Triggers validations and standard lifecycle events like `before_save`, `validate`, `on_update`, and `after_save`.
