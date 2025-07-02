@@ -1435,7 +1435,68 @@ frappe.msgprint(str(ld_ToDo_meta.fields)) #printing the meta information of the 
       ....
       ]}
 ```
+## Using frappe.make_post_request – Send HTTP POST Requests (Server Script)
 
+* Sends a server-side HTTP POST request to an external API.
+
+* Commonly used in Server Scripts, Webhook integrations, and 3rd-party API calls.
+
+* Automatically handles JSON encoding and headers.
+
+**Basic Syntax**
+```
+frappe.make_post_request(url, data={'username: 'test'})
+```
+
+**Parameters**
+| Parameter | Type   | Description                                                          |
+| --------- | ------ | -------------------------------------------------------------------- |
+| `url`     | string | Target API endpoint (e.g., `https://slack.com/api/chat.postMessage`) |
+| `data`    | dict   | Dictionary of data to send (auto-converted to JSON)                  |
+| `headers` | dict   | Optional HTTP headers (e.g., `Authorization`, `Content-Type`)        |
+
+**Common Use Cases**
+```
+# Prepare payload
+data = {
+    "channel": "your-channel-id",
+    "text": "Quotation *QTN-0001* was just created."
+}
+
+# Define headers
+headers = {
+    "Authorization": "Bearer xoxb-your-token",
+    "Content-Type": "application/json"
+}
+
+# Send the POST request
+response = frappe.make_post_request(
+    url="https://slack.com/api/chat.postMessage",
+    data=data,
+    headers=headers
+)
+
+# Handle response
+if response.get("ok"):
+    frappe.msgprint("✅ Slack message sent!")
+else:
+    frappe.msgprint("❌ Slack error: " + response.get("error", "Unknown error"))
+```
+
+**Sample Response**
+```
+{
+  "ok": true,
+  "channel": "Channel-id",
+  "ts": "1622567890.000400",
+  "message": {
+    "text": "Quotation *QTN-0001* was just created.",
+    "type": "message",
+    "ts": "1622567890.000400"
+  }
+}
+
+```
 
 
 # CPQ CheatSheet
