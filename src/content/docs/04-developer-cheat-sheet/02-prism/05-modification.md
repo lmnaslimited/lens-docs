@@ -201,11 +201,11 @@ The **Guest** role is used for unauthenticated users (like website visitors). Av
 
 **Use Case**
 
-Apply Filter for the Link Field in the Customisation level
+Apply Filter for the Link Field in the Customization level
 
 ### Steps
 
-1. Go to **Doctype Customisation**
+1. Go to **Doctype Customization**
 
 2. Click on the **Link field** where you want to apply the filter (e.g., a field linking to `Customer`).
 
