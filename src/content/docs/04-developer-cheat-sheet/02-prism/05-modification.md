@@ -209,14 +209,16 @@ Apply Filter for the Link Field in the Customization level
 
 2. Click on the **Link field** where you want to apply the filter (e.g., a field linking to `Customer`).
 
-3. Click on the **Filter icon** (small funnel symbol) next to the field options.
+3. Click on the **Filter icon** (small funnel symbol).
+
+4. Click **Add Filter**
 
 4. A popup will open — here, define your filter using key-value pairs.  
    - Example:  
-     - **Field**: `customer_group`  
+     - **Field**: `Customer Group`  
      - **Condition**: `=`  
      - **Value**: `Retail`
-5. Click **Add Filter**, then click **Done**.
+5. Click **Apply**.
 
 6. Click **Save** to save your customization.
 
