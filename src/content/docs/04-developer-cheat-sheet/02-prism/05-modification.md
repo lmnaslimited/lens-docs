@@ -198,3 +198,28 @@ Allow unauthenticated (Guest) users to create Appointment records through the we
 
 ### Note
 The **Guest** role is used for unauthenticated users (like website visitors). Avoid giving `Write`, `Delete`, or `Submit` permissions unless absolutely necessary for security reasons.
+
+**Use Case**
+
+Apply Filter for the Link Field in the Customisation level
+
+### Steps
+
+1. Go to **Doctype Customisation**
+
+2. Click on the **Link field** where you want to apply the filter (e.g., a field linking to `Customer`).
+
+3. Click on the **Filter icon** (small funnel symbol) next to the field options.
+
+4. A popup will open — here, define your filter using key-value pairs.  
+   - Example:  
+     - **Field**: `customer_group`  
+     - **Condition**: `=`  
+     - **Value**: `Retail`
+5. Click **Add Filter**, then click **Done**.
+
+6. Click **Save** to save your customization.
+
+7. Click **Reload** to apply changes in the system.
+
+
