@@ -1593,8 +1593,105 @@ class clActionFactory {
 -   Easily register new actions by adding to `actionsMap`
 -   Keeps instantiation logic centralized.
 
+## Fetch Single Value
 
+To fetch a single field value (like a configuration) from a Single DocType, use get_single_value.
 
+**Basic Syntax**
+```
+frappe.db.get_single_value(<Single DocType>, <fieldname>)
+```
+**Common Use Cases** 
+
+ - Fetch how many days ahead to check for expiring quotations: 
+ 
+```
+l_days = frappe.db.get_single_value("Quotation Presets", "quotations_expiring_within") or 0
+```
+**Sample Output**
+Returns a number like 5, which can be used to calculate a date range.
+
+## Sending Messages via Raven Bot
+
+To send a direct message to a user through Raven Bot, first get the bot doc, then call send_direct_message.
+
+**Basic Syntax**
+```
+ld_lumi = frappe.get_doc("Raven Bot", <bot_name>)
+ld_lumi.send_direct_message(
+    user_id = <user_email>,
+    text = <message>,
+    markdown = True/False
+)
+```
+**Common Use Cases** 
+
+ - Send a message when no quotations are expiring:
+ 
+```
+ld_lumi.send_direct_message(
+    user_id = l_user,
+    text = "✅ No quotations are expiring soon for you.",
+    markdown = True
+)
+```
+**Sample Output**
+ User receives a message directly in chat from the bot.
+
+## Add Days to a Date using frappe.utils.add_days
+
+To calculate a new date by adding or subtracting days, use frappe.utils.add_days.
+
+**Basic Syntax**
+```
+frappe.utils.add_days(<date>, <no_of_days>)
+```
+**Common Use Cases** 
+
+ - Compute a date 5 days from today:
+ 
+```
+l_future_date = frappe.utils.add_days(frappe.utils.today(), 5)
+```
+**Sample Output**
+ Returns a string like "2025-07-13".
+
+## Format Results in Markdown
+
+To build a Markdown table dynamically from query results, concatenate text in a loop.
+
+**Pre-requisite**
+ Collect data into a list or dict for iteration.
+
+**Basic Syntax**
+```
+markdown_text = "| Col1 | Col2 |\n"
+markdown_text += "|------|------|\n"
+for item in items:
+    markdown_text += f"| {item.value1} | {item.value2} |\n"
+
+```
+**Common Use Cases** 
+
+ - Format quotations into a Markdown table:
+ 
+```
+l_text = "### Quotations Expiring Soon\n\n"
+l_text += "| Quotation ID | Customer Name |\n"
+l_text += "|--------------|---------------|\n"
+for ld_qtn in la_quotations:
+    l_link = f"/app/quotation/{ld_qtn.name}"
+    l_text += f"| [{ld_qtn.name}]({l_link}) | {ld_qtn.customer_name} |\n"
+
+```
+**Sample Output**
+```
+| Quotation ID | Customer Name |
+|--------------|---------------|
+| [QTN-0001](/app/quotation/QTN-0001) | ABC Corp |
+| [QTN-0002](/app/quotation/QTN-0002) | XYZ Ltd |
+```
+On sending this text with markdown=True, it displays a clickable Markdown table in chat or UI.
 
 
 
