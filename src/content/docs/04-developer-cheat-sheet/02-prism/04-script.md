@@ -315,7 +315,7 @@ frappe.ui.form.on('Sales Order', {
 ```
 
 **Sample Output :**
-![alt text](set_intro.png)
+![alt text](/lens-docs/set_intro.png)
 
 
 ### Using frappe.df.set_property – Set Properties Dynamically on DocField in a Form
@@ -352,7 +352,7 @@ frappe.ui.form.on('Sales Order', {
 ```
 
 **Sample Output :**
-![alt text](mandatory.png)
+![alt text](/lens-docs/mandatory.png)
 
 
 ### Using `frm.set_value` – Set a Field Value in the Form
@@ -393,7 +393,7 @@ frappe.ui.form.on('Quotation', {
 });
 ```
 **Sample Output :**
-![alt text](image.png)
+![alt text](/lens-docs/set_value.png)
 
 ### Using `add_fetch` – Auto Fetch Field Value from Linked Doctype
 * Automatically pulls a value from a linked document's field and sets it in the current form.
@@ -420,7 +420,7 @@ frappe.ui.form.on('Quotation', {
 });
 ```
 **Sample Output :**
-![alt text](image-1.png)
+![alt text](/lens-docs/add_fetch.png)
 
 ### Using `get_query` – Filter Link Field Options Dynamically (Field-Level)
 * Used to define dynamic filters for Link fields at the field level.
@@ -538,7 +538,7 @@ frappe.ui.form.on('Quotation', {
 });
 ```
 **Sample Output :**
-![alt text](image-2.png)
+![alt text](/lens-docs/msg_print.png)
 
 ### Using `frappe.model.set_value` – Set the Value of a Field in a Child Doctype Row
 
@@ -674,7 +674,7 @@ frappe.ui.form.on('Lead', {
 });
 ```
 **Sample Output :**
-![alt text](render_html.png)
+![alt text](/lens-docs/render_html.png)
 
 ## JavaScript Array Methods
 
