@@ -682,7 +682,7 @@ ld_chart_data = {
 ```
 **Sample Output:**
 
-![alt text](chart.png)
+![alt text](/lens-docs/chart.png)
 
 -   **X-axis labels**: Week numbers 3, 4, 5.
 -   **2 stacked bar series**: "Power A" and "Power B" shown as stacked bars. 

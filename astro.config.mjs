@@ -22,8 +22,8 @@ export default defineConfig({
 		starlight({
 			title: 'LENS Docs',
 			logo: {
-				light: "./src/assets/icon.png",
-				dark: "./src/assets/icon.png",
+				light: "./src/assets/LMNAS-White-Black-plain-rounded.png",
+				dark: "./src/assets/LMNAS-White-Black-plain-rounded.png",
 				replacesTitle: true,
 			  },
 			head: [
