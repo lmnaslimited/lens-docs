@@ -258,3 +258,11 @@ Target Output
 | ------ | ---------- | --------- | ----| ----|
 | SO-001 | John Doe   | ITM-001   | 5   | 10  |
 | SO-002 | Jane Smith | ITM-003   | 8   | 7   |
+
+### Wrong Way
+```python
+```
+
+### Right Way
+```python
+```
