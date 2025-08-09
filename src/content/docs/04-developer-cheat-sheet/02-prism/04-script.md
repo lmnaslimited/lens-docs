@@ -843,6 +843,63 @@ Total Sales Order Amount: 27000
 
 ## JavaScript Child Table
 
+## Using `frappe.client.get_list` with `frappe.call` – For accessing the child table
+
+* Specify which **fields** to return
+* Select which records to include using **filters**
+
+**Command Syntax**
+
+```javascript
+frappe.call({
+    method: 'frappe.client.get_list',
+    args: {
+        doctype: '<Child Table Doctype>',
+        parent: '<Parent Doctype>',
+        filters: { parent: '<Parent Document Name>' },
+        fields: ['<Field1>', '<Field2>'] // specify fields you want to retrieve
+    },
+    callback: function(response) {
+        // handle the response here
+        console.log(response.message);
+    }
+});
+
+```
+
+##  **Parameters & Options**
+
+| Parameter | Type   | Description                                                                |
+| --------- | ------ | -------------------------------------------------------------------------- |
+| doctype   | string | The **Doctype** to retrieve records from (e.g., `"Sales Order"`)           |
+| filters   | object | Conditions to filter the records (e.g., `{ "status": "Draft" }`)           |
+| fields    | array  | List of fields to retrieve from each document (e.g., `["name", "status"]`) |
+
+## Common Patterns or Use Cases for (Child Table) 
+
+* Automatically fetch all organizations linked to that Git user.
+
+* Show them in a message or set them in another field.
+
+```javascript
+ frappe.call({
+    method: 'frappe.client.get_list',
+    args: {
+        doctype: 'Git User Organizations',  // Child Table Doctype
+        parent: 'Git User',                 // Parent Doctype
+        filters: { parent: frm.doc.custom_git_username },  // Parent Document Name
+        fields: ['git_organization']        // Fields to Retrieve
+    },
+    callback: function(r) {
+        if (r.message && r.message.length > 0) {
+            // Example: Set the first organization name in a form field
+            frm.set_value('organization_name', response.message[0].git_organization);
+    }
+    
+    }
+});
+```
+
 ### Accessing All Rows in a Child Table
 **Description:** Access all rows (documents) inside the items child table.
 
@@ -1029,72 +1086,6 @@ frappe.call({
 **Sample Output**
 ```
 open api key fhryryfhghgus8ghffgfhffjfjgjreg
-```
-
-# **Using `frappe.client.get_list` with `frappe.call` – For accessing the child table**
-
-* Specify which **fields** to return
-* Select which records to include using **filters**
-
-
-
-##  **Command Syntax**
-
-```javascript
-frappe.call({
-    method: 'frappe.client.get_list',
-    args: {
-        doctype: '<Child Table Doctype>',
-        parent: '<Parent Doctype>',
-        filters: { parent: '<Parent Document Name>' },
-        fields: ['<Field1>', '<Field2>'] // specify fields you want to retrieve
-    },
-    callback: function(response) {
-        // handle the response here
-        console.log(response.message);
-    }
-});
-
-```
-
-
-
-##  **Parameters & Options**
-
-| Parameter | Type   | Description                                                                |
-| --------- | ------ | -------------------------------------------------------------------------- |
-| doctype   | string | The **Doctype** to retrieve records from (e.g., `"Sales Order"`)           |
-| filters   | object | Conditions to filter the records (e.g., `{ "status": "Draft" }`)           |
-| fields    | array  | List of fields to retrieve from each document (e.g., `["name", "status"]`) |
-
-
-
-## Common Patterns or Use Cases for (Child Table) 
-
-* Automatically fetch all organizations linked to that Git user.
-
-* Show them in a message or set them in another field.
-
-
-
-
-```javascript
- frappe.call({
-    method: 'frappe.client.get_list',
-    args: {
-        doctype: 'Git User Organizations',  // Child Table Doctype
-        parent: 'Git User',                 // Parent Doctype
-        filters: { parent: frm.doc.custom_git_username },  // Parent Document Name
-        fields: ['git_organization']        // Fields to Retrieve
-    },
-    callback: function(r) {
-        if (r.message && r.message.length > 0) {
-            // Example: Set the first organization name in a form field
-            frm.set_value('organization_name', response.message[0].git_organization);
-    }
-    
-    }
-});
 ```
 
 # Server Side
