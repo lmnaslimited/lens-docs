@@ -213,3 +213,48 @@ and can handle edge cases.
 ```python
 l_total_cost = l_cost * (1 + 0.15)  # Tax rate should not be hardcoded like this
 ```
+---
+
+# Processing Concept
+
+## Cursor-Based Sequential Processing in Python
+
+### What Is Cursor-Based Sequential Processing?
+* Cursor-Based Sequential Processing is a method of walking through a dataset one record at a time using a pointer (cursor) that remembers your current position.
+* Think of it like reading a list from top to bottom, keeping your finger on the current row, and only moving down when you’re done with that row’s work.
+
+### When to Use It
+* You need to process related datasets by a shared key (e.g., Sales Order ID).
+* You want to keep processing order predictable — top to bottom.
+* You want to merge or enrich data per record before moving to the next one.
+* You want clean, isolated logic per record.
+
+**Note** : This method is best if the data sources are sorted and has atleast one key common between them
+
+### Common Usecase
+Dataset 1 — Sales Orders (Jan)
+| SO ID  | Customer   |
+| ------ | ---------- |
+| SO-001 | John Doe   |
+| SO-002 | Jane Smith |
+
+Dataset 2 — Sales Order Items
+| SO ID  | Item Code | Amount |
+| ------ | --------- | ------ |
+| SO-001 | ITM-001   | 500    |
+| SO-001 | ITM-002   | 700    |
+| SO-002 | ITM-003   | 300    |
+
+Dataset 3 — Sales Taxes and Charges
+| SO ID  | Account Head | Rate |
+| ------ | ------------ | ---- |
+| SO-001 | VAT          | 5    |
+| SO-001 | GST          | 10   |
+| SO-002 | GST          | 7    |
+| so=002 | VAT          | 8    |
+
+Target Output
+| SO ID  | Customer   | Item Code | VAT | GST |
+| ------ | ---------- | --------- | ----| ----|
+| SO-001 | John Doe   | ITM-001   | 5   | 10  |
+| SO-002 | Jane Smith | ITM-003   | 8   | 7   |
