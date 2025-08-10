@@ -261,8 +261,100 @@ Target Output
 
 ### Wrong Way
 ```python
+la_sales_orders = frappe.get_all("Sales Order",
+    filters={"transaction_date": ["between", ["2025-08-01", "2026-03-01"]]},
+    fields=["name", "customer", "transaction_date"],
+    order_by='name'
+    
+)
+la_sales_order_names = [so["name"] for so in la_sales_orders]
+
+la_items = frappe.get_all("Sales Order Item",
+    filters={"parent": ["in", la_sales_order_names]},
+    fields=["parent", "item_code", "amount"],
+    order_by='parent'
+)
+
+la_taxes = frappe.get_all("Sales Taxes and Charges",
+    filters={"parent": ["in", la_sales_order_names]},
+    fields=["parent", "account_head", "rate"],
+    order_by='parent'
+)
+
+l_before_time=frappe.utils.now_datetime()
+print(l_before_time)
+la_final=[]
+
+for ld_so in la_sales_orders:
+    ld_final={}
+    ld_final["customer"]=ld_so.customer
+    ld_final["sales_order"]=ld_so.name
+
+    for ld_soi in la_items:
+        if ld_so.name == ld_soi.parent:
+            ld_final["item_code"]=ld_soi.item_code
+            for ld_sot in la_taxes:
+               if ld_so.name == ld_sot.parent: 
+                   ld_final[ld_sot.account_head]=ld_soi.amount*ld_sot.rate/100
+            la_final.append(ld_final)
+
+print(la_final)
+
+l_after_time=frappe.utils.now_datetime()
+print("After Time",l_after_time)
+print(l_after_time-l_before_time)
 ```
 
 ### Right Way
 ```python
+la_sales_orders = frappe.get_all("Sales Order",
+    filters={"transaction_date": ["between", ["2025-08-01", "2026-03-01"]]},
+    fields=["name", "customer", "transaction_date"],
+    order_by='name'   
+     )
+
+la_sales_order_names = [so["name"] for so in la_sales_orders]
+log("Parent SO Names:\n" + str(la_sales_orders_names))
+
+la_items = frappe.get_all("Sales Order Item",
+    filters={"parent": ["in", la_sales_order_names]},
+    fields=["parent", "item_code", "amount"],
+    order_by='parent'
+)
+la_taxes = frappe.get_all("Sales Taxes and Charges",
+    filters={"parent": ["in", la_sales_order_names]},
+    fields=["parent", "account_head", "rate"],
+    order_by='parent'
+)
+
+l_before_time=frappe.utils.now_datetime()
+print(l_before_time)
+la_final=[]
+
+so_item_cursor=0
+so_tax_cursor=0
+counter=0
+for ld_so in la_sales_orders:
+    ld_final={}
+    ld_final["customer"]=ld_so.customer
+    ld_final["sales_order"]=ld_so.name
+    for idx,ld_soi in enumerate(la_items[so_item_cursor:], start=so_item_cursor):
+        so_item_cursor = idx
+        if ld_so.name != ld_soi.parent:
+            ld_final["item_code"]=ld_soi.item_code
+            break
+        for index,ld_sot in enumerate(la_taxes[so_tax_cursor:], start=so_tax_cursor):
+            counter=counter+1
+            so_tax_cursor = index
+            if ld_so.name != ld_sot.parent: 
+                break
+            ld_final[ld_sot.account_head]=ld_soi.amount*ld_sot.rate/100
+        la_final.append(ld_final)
+
+print(la_final)
+
+l_after_time=frappe.utils.now_datetime()
+print("After Time",l_after_time)
+print(l_after_time-l_before_time)
+
 ```
