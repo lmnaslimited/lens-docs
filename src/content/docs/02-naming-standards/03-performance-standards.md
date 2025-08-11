@@ -213,3 +213,152 @@ and can handle edge cases.
 ```python
 l_total_cost = l_cost * (1 + 0.15)  # Tax rate should not be hardcoded like this
 ```
+---
+
+# Processing Concept
+
+## Parallel cursor Processing in Python
+
+### What Is Parallel cursor Processing?
+* Parallel cursor processing is a performance optimization technique used to process multiple related datasets without repeatedly scanning them from the start.
+* It works by keeping pointers (cursors) in each dataset, starting the next search from the last matched position instead of restarting from the first record.
+* This is especially efficient when datasets are sorted by the same key and need to be processed sequentially.
+### When to Use It
+* Processing parent–child or multi-level related records.
+* Both datasets are sorted on the join key (e.g., parent or name).
+* You need to merge/enrich data efficiently without restarting loops.
+
+### Common Usecase
+Dataset 1 — Sales Orders (Jan)
+| SO ID  | Customer   |
+| ------ | ---------- |
+| SO-001 | John Doe   |
+| SO-002 | Jane Smith |
+
+Dataset 2 — Sales Order Items
+| SO ID  | Item Code | Amount |
+| ------ | --------- | ------ |
+| SO-001 | ITM-001   | 500    |
+| SO-001 | ITM-002   | 700    |
+| SO-002 | ITM-003   | 300    |
+
+Dataset 3 — Sales Taxes and Charges
+| SO ID  | Account Head | Rate |
+| ------ | ------------ | ---- |
+| SO-001 | VAT          | 5    |
+| SO-001 | GST          | 10   |
+| SO-002 | GST          | 7    |
+| so=002 | VAT          | 8    |
+
+Target Output
+| SO ID  | Customer   | Item Code | VAT | GST |
+| ------ | ---------- | --------- | ----| ----|
+| SO-001 | John Doe   | ITM-001   | 5   | 10  |
+| SO-002 | Jane Smith | ITM-003   | 8   | 7   |
+
+### Wrong Way (Nested Loops — Slow)
+```python
+la_sales_orders = frappe.get_all("Sales Order",
+    filters={"transaction_date": ["between", ["2025-08-01", "2026-03-01"]]},
+    fields=["name", "customer", "transaction_date"],
+    order_by='name'
+    
+)
+la_sales_order_names = [so["name"] for so in la_sales_orders]
+
+la_items = frappe.get_all("Sales Order Item",
+    filters={"parent": ["in", la_sales_order_names]},
+    fields=["parent", "item_code", "amount"],
+    order_by='parent'
+)
+
+la_taxes = frappe.get_all("Sales Taxes and Charges",
+    filters={"parent": ["in", la_sales_order_names]},
+    fields=["parent", "account_head", "rate"],
+    order_by='parent'
+)
+
+l_before_time=frappe.utils.now_datetime()
+print(l_before_time)
+la_final=[]
+
+for ld_so in la_sales_orders:
+    ld_final={}
+    ld_final["customer"]=ld_so.customer
+    ld_final["sales_order"]=ld_so.name
+
+    for ld_soi in la_items:
+        if ld_so.name == ld_soi.parent:
+            ld_final["item_code"]=ld_soi.item_code
+            for ld_sot in la_taxes:
+               if ld_so.name == ld_sot.parent: 
+                   ld_final[ld_sot.account_head]=ld_soi.amount*ld_sot.rate/100
+            la_final.append(ld_final)
+
+print(la_final)
+
+l_after_time=frappe.utils.now_datetime()
+print("After Time",l_after_time)
+print(l_after_time-l_before_time)
+```
+
+**Problem:** Each loop starts from the beginning — scans same data multiple times.
+
+### Right Way (Parallel Cursor — Fast)
+```python
+la_sales_orders = frappe.get_all("Sales Order",
+    filters={"transaction_date": ["between", ["2025-08-01", "2026-03-01"]]},
+    fields=["name", "customer", "transaction_date"],
+    order_by='name'   
+     )
+
+la_sales_order_names = [so["name"] for so in la_sales_orders]
+log("Parent SO Names:\n" + str(la_sales_orders_names))
+
+la_items = frappe.get_all("Sales Order Item",
+    filters={"parent": ["in", la_sales_order_names]},
+    fields=["parent", "item_code", "amount"],
+    order_by='parent'
+)
+la_taxes = frappe.get_all("Sales Taxes and Charges",
+    filters={"parent": ["in", la_sales_order_names]},
+    fields=["parent", "account_head", "rate"],
+    order_by='parent'
+)
+
+l_before_time=frappe.utils.now_datetime()
+print(l_before_time)
+la_final=[]
+
+so_item_cursor=0
+so_tax_cursor=0
+counter=0
+for ld_so in la_sales_orders:
+    ld_final={}
+    ld_final["customer"]=ld_so.customer
+    ld_final["sales_order"]=ld_so.name
+    for idx,ld_soi in enumerate(la_items[so_item_cursor:], start=so_item_cursor):
+        so_item_cursor = idx
+        if ld_so.name != ld_soi.parent:
+            ld_final["item_code"]=ld_soi.item_code
+            break
+        for index,ld_sot in enumerate(la_taxes[so_tax_cursor:], start=so_tax_cursor):
+            counter=counter+1
+            so_tax_cursor = index
+            if ld_so.name != ld_sot.parent: 
+                break
+            ld_final[ld_sot.account_head]=ld_soi.amount*ld_sot.rate/100
+        la_final.append(ld_final)
+
+print(la_final)
+
+l_after_time=frappe.utils.now_datetime()
+print("After Time",l_after_time)
+print(l_after_time-l_before_time)
+
+```
+**How This Works**
+* All datasets are sorted by the same key (name for parent, parent for child tables).
+* item_cursor moves forward through Sales Order Items without going back.
+* tax_cursor moves forward through Taxes without going back.
+* For each SO, items and taxes are processed only once.
