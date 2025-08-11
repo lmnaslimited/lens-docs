@@ -217,19 +217,16 @@ l_total_cost = l_cost * (1 + 0.15)  # Tax rate should not be hardcoded like this
 
 # Processing Concept
 
-## Cursor-Based Sequential Processing in Python
+## Parallel cursor Processing in Python
 
-### What Is Cursor-Based Sequential Processing?
-* Cursor-Based Sequential Processing is a method of walking through a dataset one record at a time using a pointer (cursor) that remembers your current position.
-* Think of it like reading a list from top to bottom, keeping your finger on the current row, and only moving down when you’re done with that row’s work.
-
+### What Is Parallel cursor Processing?
+* Parallel cursor processing is a performance optimization technique used to process multiple related datasets without repeatedly scanning them from the start.
+* It works by keeping pointers (cursors) in each dataset, starting the next search from the last matched position instead of restarting from the first record.
+* This is especially efficient when datasets are sorted by the same key and need to be processed sequentially.
 ### When to Use It
-* You need to process related datasets by a shared key (e.g., Sales Order ID).
-* You want to keep processing order predictable — top to bottom.
-* You want to merge or enrich data per record before moving to the next one.
-* You want clean, isolated logic per record.
-
-**Note** : This method is best if the data sources are sorted and has atleast one key common between them
+* Processing parent–child or multi-level related records.
+* Both datasets are sorted on the join key (e.g., parent or name).
+* You need to merge/enrich data efficiently without restarting loops.
 
 ### Common Usecase
 Dataset 1 — Sales Orders (Jan)
@@ -259,7 +256,7 @@ Target Output
 | SO-001 | John Doe   | ITM-001   | 5   | 10  |
 | SO-002 | Jane Smith | ITM-003   | 8   | 7   |
 
-### Wrong Way
+### Wrong Way (Nested Loops — Slow)
 ```python
 la_sales_orders = frappe.get_all("Sales Order",
     filters={"transaction_date": ["between", ["2025-08-01", "2026-03-01"]]},
@@ -305,7 +302,9 @@ print("After Time",l_after_time)
 print(l_after_time-l_before_time)
 ```
 
-### Right Way
+**Problem:** Each loop starts from the beginning — scans same data multiple times.
+
+### Right Way (Parallel Cursor — Fast)
 ```python
 la_sales_orders = frappe.get_all("Sales Order",
     filters={"transaction_date": ["between", ["2025-08-01", "2026-03-01"]]},
@@ -358,3 +357,8 @@ print("After Time",l_after_time)
 print(l_after_time-l_before_time)
 
 ```
+**How This Works**
+* All datasets are sorted by the same key (name for parent, parent for child tables).
+* item_cursor moves forward through Sales Order Items without going back.
+* tax_cursor moves forward through Taxes without going back.
+* For each SO, items and taxes are processed only once.
