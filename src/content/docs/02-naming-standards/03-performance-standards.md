@@ -225,7 +225,7 @@ l_total_cost = l_cost * (1 + 0.15)  # Tax rate should not be hardcoded like this
 * This is especially efficient when datasets are sorted by the same key and need to be processed sequentially.
 ### When to Use It
 * Processing parent–child or multi-level related records.
-* Both datasets are sorted on the join key (e.g., parent or name).
+* All datasets are sorted on the join key (e.g., parent or name).
 * You need to merge/enrich data efficiently without restarting loops.
 
 ### Common Usecase
@@ -254,28 +254,25 @@ Target Output
 | SO ID  | Customer   | Item Code | VAT | GST |
 | ------ | ---------- | --------- | ----| ----|
 | SO-001 | John Doe   | ITM-001   | 5   | 10  |
+| SO-001 | John Doe   | ITM-002   | 5   | 10  |
 | SO-002 | Jane Smith | ITM-003   | 8   | 7   |
 
 ### Wrong Way (Nested Loops — Slow)
 ```python
 la_sales_orders = frappe.get_all("Sales Order",
     filters={"transaction_date": ["between", ["2025-08-01", "2026-03-01"]]},
-    fields=["name", "customer", "transaction_date"],
-    order_by='name'
-    
+    fields=["name", "customer", "transaction_date"]
 )
-la_sales_order_names = [so["name"] for so in la_sales_orders]
+la_sales_order_names = [ld_so["name"] for ld_so in la_sales_orders]
 
 la_items = frappe.get_all("Sales Order Item",
     filters={"parent": ["in", la_sales_order_names]},
-    fields=["parent", "item_code", "amount"],
-    order_by='parent'
+    fields=["parent", "item_code", "amount"]
 )
 
 la_taxes = frappe.get_all("Sales Taxes and Charges",
     filters={"parent": ["in", la_sales_order_names]},
-    fields=["parent", "account_head", "rate"],
-    order_by='parent'
+    fields=["parent", "account_head", "rate"]
 )
 
 l_before_time=frappe.utils.now_datetime()
@@ -312,7 +309,7 @@ la_sales_orders = frappe.get_all("Sales Order",
     order_by='name'   
      )
 
-la_sales_order_names = [so["name"] for so in la_sales_orders]
+la_sales_order_names = [ld_so["name"] for ld_so in la_sales_orders]
 log("Parent SO Names:\n" + str(la_sales_orders_names))
 
 la_items = frappe.get_all("Sales Order Item",
@@ -330,21 +327,21 @@ l_before_time=frappe.utils.now_datetime()
 print(l_before_time)
 la_final=[]
 
-so_item_cursor=0
-so_tax_cursor=0
-counter=0
+l_so_item_cursor=0
+l_so_tax_cursor=0
+l_counter=0
 for ld_so in la_sales_orders:
     ld_final={}
     ld_final["customer"]=ld_so.customer
     ld_final["sales_order"]=ld_so.name
-    for idx,ld_soi in enumerate(la_items[so_item_cursor:], start=so_item_cursor):
-        so_item_cursor = idx
+    for iIdx,ld_soi in enumerate(la_items[l_so_item_cursor:], start=l_so_item_cursor):
+        l_so_item_cursor = iIdx
         if ld_so.name != ld_soi.parent:
             ld_final["item_code"]=ld_soi.item_code
             break
-        for index,ld_sot in enumerate(la_taxes[so_tax_cursor:], start=so_tax_cursor):
-            counter=counter+1
-            so_tax_cursor = index
+        for iIndex,ld_sot in enumerate(la_taxes[l_so_tax_cursor:], start=l_so_tax_cursor):
+            l_counter=l_counter+1
+            l_so_tax_cursor = iIndex
             if ld_so.name != ld_sot.parent: 
                 break
             ld_final[ld_sot.account_head]=ld_soi.amount*ld_sot.rate/100
