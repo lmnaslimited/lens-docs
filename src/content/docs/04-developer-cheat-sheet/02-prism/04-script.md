@@ -199,6 +199,55 @@ frappe.call({
 }
 ```
 
+### Using frappe.client.get_count method with `frappe.call` – Count of Documents
+
+* Used to retrieve the total number of documents from a specific Doctype that match the given filters. 
+
+**Command Syntax**
+
+```js
+frappe.call({
+    method: "frappe.client.get_count",
+    args: {
+        doctype: "<doctype_name>",
+        filters: { name: "<doctype_id>" },
+    },
+    callback: function(ldResponse) {
+        console.log(ldResponse.message);
+    }
+});
+```
+
+**Parameters & Options**
+| Parameter | Type    | Description         |
+| --------- | ------- | ------------------- |
+| `doctype`  |  string  |  Doctype Name ("Sales Order")       |
+| `filters`  |  object  |  Field-value pairs       |
+
+**Common Patterns or Use Cases**
+
+Counting the number of Sales Order records for a specific customer:
+
+```js
+frappe.call({
+    method: "frappe.client.get_count",
+    args: {
+        doctype: "Sales Order",
+        filters: {
+            customer: "Andrew Bloom"
+        }
+    },
+    callback: function(ldResponse) {
+        console.log("Count:", ldResponse.message);           
+    }
+});
+
+```
+**Sample Output :**
+```
+Count: 5
+```
+
 ### Using the frappe.db.get_value method – Fetch Specific Field(s) without fetching full document
 
 * Used to retrieve only selected fields from a document.
@@ -1803,9 +1852,3 @@ class clActionFactory {
 -   Easily create instances of different classes based on a string key without hardcoding logic.
 -   Easily register new actions by adding to `actionsMap`
 -   Keeps instantiation logic centralized.
-
-
-
-
-
-
