@@ -8,7 +8,7 @@ This allows product owners and project managers to create and manage repositorie
 
 ---
 
-## Key Capabilities
+### Key Capabilities
 
 - **Repository Creation from Nectar**  
   Product Owners can create new Git repositories directly from the Nectar interface.
@@ -21,7 +21,7 @@ This allows product owners and project managers to create and manage repositorie
 
 ---
 
-## Benefits
+### Benefits
 
 - **Unified Workflow** – No context switching between Nectar and Git providers  
 - **Faster Project Setup** – Projects start with a ready-to-use codebase  
@@ -30,7 +30,7 @@ This allows product owners and project managers to create and manage repositorie
 
 ---
 
-## How It Works
+### How It Works
 
 ```text
  [Nectar Project Management] ───▶ [Git Provider]

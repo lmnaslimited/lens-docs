@@ -8,7 +8,7 @@ This ensures that tasks, stories, and project context flow directly into the dev
 
 ---
 
-## Step 1: Link LENS Projects to Developer Machines (via Chordium CLI)
+### Step 1: Link LENS Projects to Developer Machines (via Chordium CLI)
 
 Using the Chordium CLI (`lenscloud`), developers can link their local environment with the LENS Project Module.
 
@@ -26,7 +26,7 @@ Using the Chordium CLI (`lenscloud`), developers can link their local environmen
 
 ---
 
-## How It Works Together
+### How It Works Together
 
 ```text
    [LENS Project Module] ───▶ [Developer Machine via Chordium CLI]

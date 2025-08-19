@@ -8,7 +8,7 @@ This ensures that repositories can be seamlessly created and assigned to project
 
 ---
 
-## 1. Git Provider
+### 1. Git Provider
 
 The **Git Provider** doctype stores the list of supported providers such as **GitHub** or **GitLab**.  
 
@@ -23,7 +23,7 @@ The **Git Provider** doctype stores the list of supported providers such as **Gi
 
 ---
 
-## 2. Git Organization
+### 2. Git Organization
 
 The **Git Organization** doctype stores organizations under a given provider.  
 
@@ -38,7 +38,7 @@ The **Git Organization** doctype stores organizations under a given provider.
 
 ---
 
-## 3. Git User
+### 3. Git User
 
 The **Git User** doctype stores Git account details such as **Personal Access Token (PAT)** and the organizations they belong to.  
 Project or Product Owners must configure their Git User in Nectar to create or link repositories.  
