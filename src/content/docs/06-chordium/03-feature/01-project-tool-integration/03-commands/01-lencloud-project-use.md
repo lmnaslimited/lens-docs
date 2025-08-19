@@ -9,7 +9,7 @@ If the project’s repository is not already on your machine, Chordium will **cl
 
 ---
 
-## Prerequisites
+### Prerequisites
 
 - You must have completed the [lenscloud config](../../02-configuring-nectar-with-dev) setup.
 - Git Personal Access Token with access to the project repositories.
@@ -17,7 +17,7 @@ If the project’s repository is not already on your machine, Chordium will **cl
 
 ---
 
-## Running the Command
+### Running the Command
 
 ```bash
 lenscloud project use
@@ -31,7 +31,7 @@ When you run the command, Chordium will:
 
 - Prompt you to select a project from the list.
 
-## How it Works
+### How it Works
 
 🔹 Selecting a Project
 

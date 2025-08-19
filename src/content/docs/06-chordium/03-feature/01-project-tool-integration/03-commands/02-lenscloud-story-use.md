@@ -8,7 +8,7 @@ Chordium will automatically **create a Git branch** for the story if it doesn’
 
 ---
 
-## Prerequisites
+### Prerequisites
 
 - You must have set an active project using [lenscloud project use](../../02-configuring-nectar-with-dev).
 - Git Personal Access Token with permission to create branches in the project repository.
@@ -16,7 +16,7 @@ Chordium will automatically **create a Git branch** for the story if it doesn’
 
 ---
 
-## Running the Command
+### Running the Command
 
 ```bash
 lenscloud story use
