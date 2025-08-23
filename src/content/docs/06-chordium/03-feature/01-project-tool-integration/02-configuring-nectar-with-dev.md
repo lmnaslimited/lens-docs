@@ -16,7 +16,7 @@ Before you begin, make sure you have:
 - **Node.js version 20 or higher**  
   > Tip: We recommend using [nvm](https://github.com/nvm-sh/nvm) to manage Node versions.
 - **Clone of the `lenscloud` repository**:  
-  [https://github.com/lmnaslimited/lens_ai_test_pilot.git](https://github.com/lmnaslimited/lens_ai_test_pilot.git)
+  [https://github.com/lmnaslimited/lens_ai_test_pilot.git](https://github.com/lmnaslimited/lenscloud.git)
 
 ---
 
@@ -26,13 +26,17 @@ Since **Chordium** is not yet published, you must run it locally from the `lensc
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/lmnaslimited/lens_ai_test_pilot.git
+git clone https://github.com/lmnaslimited/lenscloud.git
 
 # 2. Navigate to the folder
-cd lens_ai_test_pilot
+cd lenscloud
 
 # 3. Install dependencies
-npm install
+npm i
+
+npm run build
+
+npm link
 ```
 > Now you are ready to use Chordium command anywhere in your machine
 
