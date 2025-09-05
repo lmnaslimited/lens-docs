@@ -18,11 +18,11 @@ This guide explains the configuration of child fields in the Configurator. It de
   - `After Submit`
   - `On Tab`
 
-## 3. is_child
+## 3. child_name i
 - **Description**: Indicates whether the field name of the doctype is a child.
 - **Functionality**: If enabled, the child table field names will be listed in the `child_name`.
 
-## 4. child_name
+## 4. is_child
 - **Description**: Lists all the child table names of the targeted doctype.
 - **Details**: If `is_child` is enabled, the child table names from the targeted doctype will be listed. Select the child table to display its fields.
 
