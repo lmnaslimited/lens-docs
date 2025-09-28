@@ -1233,6 +1233,51 @@ for ld_so in la_sales_orders:
 {'name': 'SAL-ORD-2025-00007', 'transaction_date': datetime.date(2025, 2, 4)}]
 ```
 
+### Using `frappe.get_all` with Aggregates (`SUM`)
+* Fetch records and calculate aggregates (e.g., total hours) directly from the database.
+* Supports SQL aggregate functions like `SUM(field) as alias` inside the `fields` parameter.
+* Can be combined with `group_by` to get totals per category.
+
+**Command Syntax**
+
+```python
+frappe.get_all(
+    doctype,
+    filters=None,
+    fields=["field1", "SUM(numeric_field) as total"],
+    group_by="field_to_group"
+)
+**Parameters & Options:**
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| doctype  |  string  |  Name of the DocType to fetch records from.     |
+| filters  |  dict/list  |  Conditions to filter results. |
+| fields  |  list  |  Fields to fetch; supports aggregate functions like SUM, COUNT, AVG. |
+| group_by  |  string  |  SQL GROUP BY clause (e.g., "activity_type"). Optional. |
+| limit  |  int  |  Limits number of results. Optional. |
+| order_by  |  string  |  Sort order (e.g., "creation desc"). Optional. |
+
+**Common Pattern or Use Cases**
+```py
+# Fetch Timesheet Details for a task and calculate total hours per activity
+la_issue_timesheets = frappe.get_all(
+    "Timesheet Detail",
+    filters={'task': 'TASK-2025-1114'},
+    fields=['activity_type', "SUM(hours) as total_hours"],
+    group_by='activity_type'
+)
+# Log the aggregated results
+log(la_issue_timesheets)
+```
+
+**Sample Output:**
+```
+[
+    {"activity_type": "Development", "total_hours": 12},
+    {"activity_type": "Testing", "total_hours": 8}
+]
+```
+
 ### Using `frappe.get_list` – Fetch Records from a Doctype (Server Script)
 
 * Retrieves a list of records from a specified doctype.
