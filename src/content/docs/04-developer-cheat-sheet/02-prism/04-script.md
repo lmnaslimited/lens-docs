@@ -403,6 +403,44 @@ frappe.ui.form.on('Sales Order', {
 **Sample Output :**
 ![alt text](/lens-docs/mandatory.png)
 
+### Using set_field_options – Dynamically Change Options in Select Fields
+* Dynamically modify or filter options of a Select (dropdown) field in a Frappe form.
+
+**Command Syntax**
+
+```js
+set_field_options(fieldname, options);
+
+```
+
+**Parameters & Options**
+
+| Parameter | Type           | Description                                                  |
+| --------- | -------------- | ------------------------------------------------------------ |
+| fieldname | string         | Fieldname of the Select field to update                      |
+| options   | array / string | New list of options (as array) or a newline-separated string |
+
+**Common Patterns or Use Cases**
+
+```js
+
+// LdDesignConfigs variable is available in the form
+const LaUniqueLvVoltage = LdDesignConfigs.lv_voltage_setting.reduce(
+  (iaAccumulator, idCurrent) => {
+    if (!iaAccumulator.includes(idCurrent.um)) {
+      iaAccumulator.push(idCurrent.um);
+    }
+    return iaAccumulator;
+  },
+  []
+);
+// Set the dynamic option to the field "highest_operation_voltage_lv"
+set_field_options("highest_operation_voltage_lv", LaUniqueLvVoltage);
+
+```
+**Sample Output :**
+![set_field_options](/lens-docs/set-options-1.png)
+![set_field_options](/lens-docs/set-option-2.png)
 
 ### Using `frm.set_value` – Set a Field Value in the Form
 * Used to set or update the value of a field programmatically.
