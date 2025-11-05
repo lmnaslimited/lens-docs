@@ -1,4 +1,8 @@
-# How to Prompt a User to Select from a List in CLI
+---
+title: Chordium - Syntax
+---
+
+## How to Prompt a User to Select from a List in CLI
 
 Used to **interactively get user input** by displaying a selectable list of options in the terminal. This is commonly used in CLI-based tools, scripts, or automation flows to collect user choices easily.
 
@@ -11,7 +15,6 @@ Used to **interactively get user input** by displaying a selectable list of opti
 
 ```bash
 npm install inquirer
-
 ```
 
 ----------
