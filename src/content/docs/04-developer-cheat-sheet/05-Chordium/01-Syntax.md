@@ -1,66 +1,85 @@
-### How to Prompt the User to Select a Branch (Interactive CLI)
----
-Used to **allow users to select a branch** from a list of available branches interactively via the command line.
+# How to Prompt a User to Select from a List in CLI
 
-**Prerequisite:**
-- Ensure you have **Node.js** installed on your system.
-- Install the `inquirer` package if not already added:
-  ```bash
-  npm install inquirer
-  ```
-- This function is typically used in **CLI tools** or **automation scripts** that require user input.
+Used to **interactively get user input** by displaying a selectable list of options in the terminal. This is commonly used in CLI-based tools, scripts, or automation flows to collect user choices easily.
 
----
+----------
 
-**Basic Syntax:**
-```typescript
-async function fnPromptSelectBranch(iaBranches: string[]): Promise<string> {
-  const ldAnswers = await inquirer.prompt([
-    {
-      type: "list",
-      name: "selectedBranch",
-      message: "Select the base branch",
-      choices: iaBranches,
-      loop: false
-    }
-  ]);
-  return ldAnswers.selectedBranch;
-}
+## Prerequisite
+
+-   Ensure **Node.js** is installed.
+-   Install the **Inquirer** package:
+
+```bash
+npm install inquirer
+
 ```
 
-- `iaBranches`: An array of branch names to display as selectable options.
-- The function uses **`inquirer.prompt()`** to render a command-line selection list.
-- It returns a **Promise** that resolves to the branch name chosen by the user.
+----------
 
----
-
-**Common Use Case:**
-Used when a script or automation process needs the user to choose a **base branch** (e.g., before creating a feature branch or merging changes).
+## Basic Syntax
 
 ```typescript
-const branches = ["main", "develop", "release/v1.0"];
-const selectedBranch = await fnPromptSelectBranch(branches);
-console.log(`Selected base branch: ${selectedBranch}`);
+import inquirer from "inquirer";
+
+const ldAnswers = await inquirer.prompt([
+  {
+    type: "list",
+    name: "lSelectedValue",
+    message: lMessage,
+    choices: laChoices
+  }
+]);
+
+console.log(ldAnswers.lSelectedValue);
+
 ```
 
----
+----------
 
-**Sample Output (CLI Interaction):**
-```
-? Select the base branch (Use arrow keys)
-❯ main
-  develop
-  release/v1.0
+## Parameters
+
+| Parameter    | Type       | Description                                                      |
+|--------------|------------|------------------------------------------------------------------|
+| `type`       | `string`   | Type of prompt. Use `"list"` for selectable list.               |
+| `name`       | `string`   | Key name to access the selected value (e.g., `"lSelectedValue"`). |
+| `laChoices`  | `string[]` | Array of options to display in the prompt list.                 |
+| `lMessage`   | `string`   | Message/question displayed to the user before the list.         |
+----------
+
+## Example
+
+```typescript
+const laFruits = ["Apple", "Banana", "Cherry", "Mango"];
+
+const ldSelectedFruit = await inquirer.prompt([
+  {
+    type: "list",
+    name: "lSelectedValue",
+    message: "Choose your favorite fruit:",
+    choices: laFruits
+  }
+]);
+
+console.log("Selected Fruit is:", ldSelectedFruit.lSelectedValue);
+
 ```
 
-If the user selects **develop**:
+----------
+
+## Sample CLI Output
+
 ```
-Selected base branch: develop
+? Choose your favorite fruit:
+❯ Apple
+  Banana
+  Cherry
+  Mango
+
 ```
 
----
+If the user selects **Apple**, the console displays:
 
-**Note:**  
-- This function uses **async/await**, so ensure it is called inside an asynchronous context.  
-- The prompt will pause script execution until the user selects a branch.  
-- Ideal for **interactive scripts**, **DevOps tools**, and **version control helpers**.
+```
+Selected Fruit is: Apple
+
+```
