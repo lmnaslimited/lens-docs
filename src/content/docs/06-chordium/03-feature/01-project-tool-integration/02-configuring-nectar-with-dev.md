@@ -15,30 +15,40 @@ Before you begin, make sure you have:
 - **Basic Auth** details for the Nectar account.
 - **Node.js version 20 or higher**  
   > Tip: We recommend using [nvm](https://github.com/nvm-sh/nvm) to manage Node versions.
-- **Clone of the `lenscloud` repository**:  
-  [https://github.com/lmnaslimited/lens_ai_test_pilot.git](https://github.com/lmnaslimited/lenscloud.git)
+- **Git Personal Access Token (PAT) with Package Read Access**
+- **Install Chordium**
 
 ---
 
 ### Setting up `lenscloud` (Chordium CLI) locally
 
-Since **Chordium** is not yet published, you must run it locally from the `lenscloud` repository.
+**Chordium** is officially published, you may see the package in [chordium](https://github.com/lmnaslimited/lenscloud/pkgs/npm/lenscloud).
+
+> Since @lmnaslimited/lenscloud is hosted on GitHub Packages,
+you need to explicitly tell npm to use the GitHub registry for that scope.
+
+**Step-1 :**
+Create (or update) a .npmrc file in your home directory
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/lmnaslimited/lenscloud.git
 
-# 2. Navigate to the folder
-cd lenscloud
+@lmnaslimited:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=<YOUR_TOKEN>
 
-# 3. Install dependencies
-npm i
-
-npm run build
-
-npm link
 ```
-> Now you are ready to use Chordium command anywhere in your machine
+> Replace <YOUR_TOKEN> with Git PAT
+
+**Step-2 :**
+Run the below command in the Terminal
+
+
+```bash
+
+npm install @lmnaslimited/lenscloud@latest
+
+```
+
+---
 
 ### Running the Configuration Command
 
