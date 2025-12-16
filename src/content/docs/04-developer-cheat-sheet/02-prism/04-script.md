@@ -1135,7 +1135,71 @@ frm.fields_dict["items"].grid.refresh();
 ```
 Dropdown list for item_group is updated.
 ```
+### Hide Add Row button in Child Table
+**Description:**  Prevent users from adding new rows to a child table in a Frappe form using client-side configuration.
 
+**Common Syntax**
+```
+frm.set_df_property("your_child_table_name", "cannot_add_rows", true);
+```
+
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| your_child_table_name  |  string  |  Field Name of the child table    |
+| cannot_add_rows  |  string  |  Property to disable adding rows |
+| true / false  |  boolean  |  Enable or disable the restriction |
+
+**Common Patterns or Use Cases**
+```
+frappe.ui.form.on("Quotation", {
+  refresh(frm) {
+    frm.set_df_property("items", "cannot_add_rows", true);
+  }
+});
+```
+
+**Sample Output:**
+**Before :**
+![before-add-row-btn](/lens-docs/before-add-row-btn.png)
+![before-model](/lens-docs/before-model.png)
+
+
+**After :**
+![after-add-row-btn-hide](/lens-docs/after-add-row-btn-hide.png)
+![after-add-row-hide-model](/lens-docs/after-add-row-hide-model.png)
+
+### Hide Delete Row button in Child Table
+**Description:** Restrict users from deleting individual rows from a child table.
+
+**Common Syntax**
+```
+frm.set_df_property("your_child_table_name", "cannot_delete_rows", true);
+```
+
+| Parameter | Type    | Description            |
+| --------- | ------- | ---------------------- |
+| your_child_table_name  |  string  |  Field Name of the child table    |
+| cannot_delete_rows  |  string  |  Property to disable row deletion |
+| true / false  |  boolean  |  Enable or disable the restriction |
+
+**Common Patterns or Use Cases**
+```
+frappe.ui.form.on("Quotation", {
+  refresh(frm) {
+    frm.set_df_property("items", "cannot_delete_rows", true);
+  }
+});
+```
+
+**Sample Output:**
+**Before :**
+![before-delete-btn-hide](/lens-docs/before-delete-btn-hide.png)
+![before-model](/lens-docs/before-model.png)
+
+
+**After :**
+![after-delete-btn-hide](/lens-docs/after-delete-btn-hide.png)
+![after-delete-hide-model](/lens-docs/after-delete-hide-model.png)
 
 ## Get value of password field
 When used get_value() for password field, the return value is asterisk(encrypted), so use `get_password` method to retrieve the actual value of password type field

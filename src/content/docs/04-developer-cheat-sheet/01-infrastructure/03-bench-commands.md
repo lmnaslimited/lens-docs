@@ -210,3 +210,28 @@ Scheduler disabled
 bench set-config -g server_script_enabled 1
 ```
 ---
+## Bench Maintenance Mode Command
+Enable or disable maintenance mode for a site to restrict user access during updates or maintenance activities.
+
+**Command Syntax**
+```
+bench --site <sitename> set-maintenance-mode <on|off>
+```
+**Use Cases**
+```bash
+# Enable maintenance mode
+bench --site dev.localhost set-maintenance-mode on
+
+# Disable maintenance mode
+bench --site dev.localhost set-maintenance-mode off
+```
+
+**Sample Output**
+
+-   When **enabled**:  
+    ![maintence-mode-off](/lens-docs/maintenance-mode.png)
+    
+-   When **disabled**:  
+    Normal site access is restored for all users.
+
+---
