@@ -1,3 +1,7 @@
+---
+title: Jest - Unit Testing
+---
+
 ## Test Doubles in Jest (When & Why to Use Them)
 
 ### Quick Decision Guide
@@ -14,7 +18,7 @@ Ask yourself:
 
 ---
 
-## Stub in Jest
+## 1. Stub in Jest
 
 A **Stub** replaces a function and returns a fixed value.
 
@@ -24,15 +28,16 @@ A **Stub** replaces a function and returns a fixed value.
 - You only need a predictable return value  
 - You want to control test behavior  
 
----
-
-##  Common Syntax
+###  Common Syntax
 
 ```ts
 const LMockFn = jest.fn().mockReturnValue("SUCCESS");
 ```
-## Common Usecase
+
+### Common Usecase
+
 Your service reads the Test Run ID from:
+
 ```ts
 Cypress.env("FETCHED_TEST_RUN")
 ```
