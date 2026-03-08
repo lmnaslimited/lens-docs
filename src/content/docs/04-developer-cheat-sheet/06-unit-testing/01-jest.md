@@ -295,7 +295,7 @@ expect(LdTestRun.status).toBe("FAIL");
 
 ```
 
-## 8. Jest -mockRejectedValue
+## 8. Jest - mockRejectedValue
 **mockRejectedValue()** makes a mock function return a rejected Promise, simulating an error in an asynchronous operation.
 
 ### Use it When:
