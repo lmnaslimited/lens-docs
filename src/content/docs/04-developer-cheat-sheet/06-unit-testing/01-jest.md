@@ -101,14 +101,14 @@ function fnProcessOrder() {
 }
 
 // Test
-test("should log order processed", () => {
+it("should log order processed", () => {
 	// spy on log method
 	const LSpy = jest.spyOn(console, "log");
 
 	// call original function
 	fnProcessOrder();
 
-	expect(LConsoleSpy).toHaveBeenCalled();
+	expect(LSpy).toHaveBeenCalled();
 	expect(LSpy).toHaveBeenCalledTimes(1);
 	expect(LSpy).toHaveBeenCalledWith("Order processed");
 	LSpy.mockRestore(); // restore the spy
@@ -167,11 +167,13 @@ In tests you should not call real APIs.
 So you replace it with a mock.
 
 ```ts
-const LMockApi = jest.fn().mockResolvedValue({
-	name: "Alice",
-});
-const LUser = await LMockApi();
-expect(LUser.name).toBe("Alice");
+it("should return user data", async () => {
+	const LMockApi = jest.fn().mockResolvedValue({
+		name: "Alice",
+	});
+	const LUser = await LMockApi();
+	expect(LUser.name).toBe("Alice");
+})
 ```
 
 ## 5. Jest - mockReturnValue
@@ -206,10 +208,11 @@ In unit tests, you want to control the environment value.
 
 ```ts
 //Test:
-
-const LMockEnv = jest.fn().mockReturnValue("TEST");
-const LEnv = LMockEnv();
-expect(LEnv).toBe("TEST");
+it("should return the mocked environment value", () => {
+	const LMockEnv = jest.fn().mockReturnValue("TEST");
+	const LEnv = LMockEnv();
+	expect(LEnv).toBe("TEST");
+})
 ```
 
 **Why:**
@@ -243,13 +246,15 @@ Your service fetches paginated API data.
 - Second call → Page 2
 
 ```ts
-const LMockApi = jest
-	.fn()
-	.mockReturnValueOnce("PAGE_1_DATA")
-	.mockReturnValueOnce("PAGE_2_DATA");
+it("should return different values for each call", () => {
+	const LMockApi = jest
+		.fn()
+		.mockReturnValueOnce("PAGE_1_DATA")
+		.mockReturnValueOnce("PAGE_2_DATA");
 
-expect(LMockApi()).toBe("PAGE_1_DATA");
-expect(LMockApi()).toBe("PAGE_2_DATA");
+	expect(LMockApi()).toBe("PAGE_1_DATA");
+	expect(LMockApi()).toBe("PAGE_2_DATA");
+})
 ```
 
 ## 7. Jest - mockImplementation
@@ -272,26 +277,28 @@ const LMockFn = jest.fn().mockImplementation((params) => {
 A service fetches Test Run details using a Test Run ID.
 
 ```ts
-const LMockGetTestRun = jest.fn().mockImplementation((ITestRunId) => {
-  if (ITestRunId === "TR-001") {
-    return {
-      name: "TR-001",
-      status: "PASS",
-    };
-  }
+it("should return the correct test run status", () => {
+	const LMockGetTestRun = jest.fn().mockImplementation((ITestRunId) => {
+	if (ITestRunId === "TR-001") {
+		return {
+		name: "TR-001",
+		status: "PASS",
+		};
+	}
 
-  if (ITestRunId === "TR-002") {
-    return {
-      name: "TR-002",
-      status: "FAIL",
-    };
-  }
+	if (ITestRunId === "TR-002") {
+		return {
+		name: "TR-002",
+		status: "FAIL",
+		};
+	}
 
-  return null;
-});
+	return null;
+	});
 
-const LdTestRun = LMockGetRunLog("TR-002");
-expect(LdTestRun.status).toBe("FAIL");
+	const LdTestRun = LMockGetRunLog("TR-002");
+	expect(LdTestRun.status).toBe("FAIL");
+})
 
 ```
 
@@ -313,9 +320,11 @@ Your service fetches user data from an external API.
 You want to test how your application handles API failure.
 
 ```ts
-const LMockApi = jest.fn().mockRejectedValue(
-	new Error("Server Error")
-);
+it("should handle API failure", async () => {
+	const LMockApi = jest.fn().mockRejectedValue(
+		new Error("Server Error")
+	);
 
-await expect(LMockApi()).rejects.toThrow("Server Error");
+	await expect(LMockApi()).rejects.toThrow("Server Error");
+})
 ```
