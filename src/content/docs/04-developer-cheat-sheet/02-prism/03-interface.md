@@ -337,3 +337,77 @@ page_js = {
 };
 })
 ```
+
+## Debugging Background Job Functions in Frappe
+
+Background jobs (scheduler / queue workers) are asynchronous, which makes debugging difficult.
+
+This method lets you run them **directly in VS Code debugger** using `bench execute`.
+
+**Purpose**
+
+Run background job functions synchronously so:
+
+- Breakpoints work instantly
+- No scheduler required
+- No worker setup needed
+- Faster debugging
+
+**Concept**
+
+Instead of:
+```
+Scheduler → Queue Worker → Job Execution
+```
+
+We do:
+```
+VS Code Debugger → bench execute → Function runs immediately
+```
+
+**VS Code Launch Configuration**
+
+Add this in `.vscode/launch.json`
+
+```json
+{
+  "name": "Frappe: Debug Background Job",
+  "type": "python",
+  "request": "launch",
+  "program": "${workspaceFolder}/apps/frappe/frappe/utils/bench_helper.py",
+  "args": [
+    "frappe",
+    "--site",
+    "your-site-name.localhost",
+    "execute",
+    "erpnext.stock.reorder_item.reorder_item"
+  ],
+  "cwd": "${workspaceFolder}/sites",
+  "env": {
+    "DEV_SERVER": "1"
+  }
+}
+```
+
+**Equivalent Bench Command**
+```
+bench --site your-site-name.localhost execute erpnext.stock.reorder_item.reorder_item
+```
+
+**Common Use Cases**
+
+Scheduler Job
+```
+erpnext.stock.reorder_item.reorder_item
+```
+
+- Put breakpoint in function
+```python
+def reorder_item():
+    import pdb; pdb.set_trace()
+```
+- Select VS Code debug config
+- Press F5
+- Function runs instantly → breakpoint hits
+
+**Note**: Change function to debug any job "erpnext.stock.reorder_item.reorder_item" to "your_app.module.function_name"
