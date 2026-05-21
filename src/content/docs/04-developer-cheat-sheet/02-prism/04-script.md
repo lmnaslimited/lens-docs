@@ -594,6 +594,49 @@ frappe.ui.form.on('Sales Order', {
 * Use get_query only if you want to write the filter directly on the field.
 * Avoid hardcoding values unless they are fixed.
 
+### Using set_query with Custom Query for Child Table Fields
+
+Used to apply custom search behavior for Link fields inside child tables.
+
+This approach allows:
+- dynamic filtering
+- reusable query methods
+- customized search result handling
+
+#### Example – Item Code Search in Child Table
+
+```javascript
+frappe.ui.form.on('Quotation', {
+
+    onload_post_render(frm) {
+
+        frm.set_query('item_code', 'items', function(doc) {
+
+            return {
+                query: 'pdf_on_submit.api.custom_item_query',
+
+                filters: {
+                    is_sales_item: 1,
+                    customer: doc.party_name || doc.customer,
+                    has_variants: 0,
+                },
+
+            };
+
+        });
+
+    }
+
+});
+```
+
+#### Best Practice
+
+- Use `set_query` inside `setup` or `onload_post_render` events.
+- Use child table name as the second parameter.
+- Use filters to reduce unwanted search results.
+- Use reusable query methods for advanced search requirements.
+
 ### Using `frappe.model.with_doc` – Access a Full Document in the Client Script
 * `frappe.model.with_doc` is used to **fetch and access the complete document** from the database by specifying its **doctype** and **name**.
 * Useful when you want to **use values from another document** that is not currently open in the form.
