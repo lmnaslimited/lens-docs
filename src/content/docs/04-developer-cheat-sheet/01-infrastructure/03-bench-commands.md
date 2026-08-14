@@ -235,3 +235,286 @@ bench --site dev.localhost set-maintenance-mode off
     Normal site access is restored for all users.
 
 ---
+
+## Bench start Command
+* Starts the Bench development environment and all configured processes.
+* Run this command from the Bench directory.
+
+**Command Syntax**
+
+```
+bench start
+```
+
+**Use Case**
+```bash
+bench start
+```
+
+**Accessing a Local Site**
+
+Sites can be accessed in the browser using:
+
+```
+<sitename>:8000
+```
+
+**Example**
+
+```bash
+dev.localhost:8000
+```
+
+----------
+
+## Bench get-app Command
+
+-   Downloads an app from a Git repository or Frappe Marketplace and adds it to the Bench.
+    
+
+**Command Syntax**
+
+```
+bench get-app <app-name> / [repo-link]
+```
+
+**Options**
+
+| Options | Description |
+| --------- | ------------------- |
+| `--branch <branch-name>` | Fetches the app from a specific branch |
+
+**Use Case**
+
+```bash
+bench get-app https://github.com/lmnaslimit/custom_app
+```
+
+**With Branch**
+
+```bash
+bench get-app --branch develop https://github.com/lmnaslimit/custom_app
+```
+
+**Getting an App from Frappe Marketplace**
+```bash
+bench get-app erpnext
+```
+
+----------
+
+## Bench new-site Command
+
+-   Creates a new Frappe site.
+    
+
+**Command Syntax**
+
+```
+bench new-site <site-name>
+```
+
+**Use Case**
+
+```bash
+bench new-site dev.localhost
+
+```
+
+**For Local Development**
+
+-   Site name should follow the format **.localhost**
+    
+-   Administrator password: **admin**
+    
+-   MySQL root password: **123**
+    
+
+----------
+
+## Bench drop-site Command
+
+-   Removes the site and its database completely.
+    
+
+**Command Syntax**
+
+```
+bench drop-site <site-name>
+```
+
+**Options**
+
+| Options   | Description |
+| --------- | ------------------- |
+| `--root-login` | Root database login |
+| `--root-password` | Root database password |
+
+**Use Case**
+
+```bash
+bench drop-site dev.localhost
+```
+
+**Sample Output**
+```bash
+MySQL root password:
+Installing frappe...
+Updating DocTypes for frappe        : [========================================]
+Updating Dashboard for frappe
+*** Scheduler is disabled ***
+*** Administrator password set ***
+Site dev.localhost created
+```
+
+> **Note:** Take a backup of the site before dropping it if the data is required later.
+
+----------
+
+## Bench new-app Command
+
+-   Creates a new Frappe application in the Bench.
+    
+
+**Command Syntax**
+
+```
+bench new-app <app-name>
+```
+
+**Use Case**
+
+```bash
+bench new-app custom_app
+```
+**Sample Output**
+```bash
+App Title [Custom App]: custom_app
+App Description: A custom app for overriding
+App Publisher: LMNAs
+App Email: email@email.com
+App License:
+```
+----------
+
+## Bench uninstall-app Command
+
+-   Uninstalls an app from the specified site and removes everything linked to the app.
+    
+
+> **Note:** Bench should be running when executing this command.
+
+**Command Syntax**
+
+```
+bench --site <site-name> uninstall-app <app-name>
+```
+
+**Use Case**
+
+```bash
+bench --site dev.localhost uninstall-app custom_app
+```
+
+----------
+
+## Bench remove-app Command
+
+-   Removes an app from the Bench entirely.
+    
+
+**Command Syntax**
+
+```
+bench remove-app <app-name>
+```
+
+**Use Case**
+
+```bash
+bench remove-app custom_app
+```
+
+> **Note:** If the app is installed on a site, uninstall the app from the site before removing it from the Bench.
+
+----------
+
+## Bench data-import Command
+
+-   Imports bulk data into a DocType.
+    
+-   Supports `.csv`, `.xls`, and `.xlsx` files.
+    
+
+**Command Syntax**
+
+```
+bench data-import
+```
+
+**Options**
+
+| Options | Description |
+| --------- | ------------------- |
+| `--file` | File name |
+| `--doctype` | DocType to import data into |
+| `--type` | Import type: Insert or Update |
+
+Import type: Insert or Update
+
+**Use Case**
+
+```bash
+bench data-import --file items.xlsx --doctype Item --type Insert
+
+```
+
+----------
+
+## Bench run-tests Command
+
+-   Runs tests for the specified site.
+    
+
+**Command Syntax**
+
+```
+bench --site <site-name> run-tests
+
+```
+
+**Options**
+
+| Options | Description |
+| --------- | ------------------- |
+| `--app` | Run tests for a specific app |
+| `--doctype` | Run tests for a specific DocType |
+| `--test` | Run a specific test |
+| `--module` | Run tests for a specific module |
+| `--profile` | Run tests with Python profiling enabled |
+
+**Use Cases**
+
+**1) Run tests for a site**
+
+```bash
+bench --site dev.localhost run-tests
+```
+
+**2) Run tests for a specific app**
+
+```bash
+bench --site dev.localhost run-tests --app custom_app
+```
+
+**3) Run tests for a specific DocType**
+
+```bash
+bench --site dev.localhost run-tests --doctype Item
+```
+
+**4) Run a specific test**
+
+```bash
+bench --site dev.localhost run-tests --test test_example
+```
