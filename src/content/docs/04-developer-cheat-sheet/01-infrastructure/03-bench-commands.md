@@ -356,17 +356,6 @@ bench drop-site <site-name>
 bench drop-site dev.localhost
 ```
 
-**Sample Output**
-```bash
-MySQL root password:
-Installing frappe...
-Updating DocTypes for frappe        : [========================================]
-Updating Dashboard for frappe
-*** Scheduler is disabled ***
-*** Administrator password set ***
-Site dev.localhost created
-```
-
 > **Note:** Take a backup of the site before dropping it if the data is required later.
 
 ----------
