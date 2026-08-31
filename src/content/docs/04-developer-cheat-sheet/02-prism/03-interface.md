@@ -166,6 +166,21 @@ def validate_discount_limit(doc, method):
     if doc.additional_discount_percentage > 10:
         frappe.throw("Discount cannot exceed 10%.")
 ```
+**Common DocType Event**
+
+| Event           | When it runs                      |
+| --------------- | --------------------------------- |
+| `before_insert` | Before a new document is inserted |
+| `after_insert`  | After a new document is inserted  |
+| `validate`      | During document validation        |
+| `before_save`   | Before the document is saved      |
+| `on_update`     | After the document is updated     |
+| `before_submit` | Before submission                 |
+| `on_submit`     | After submission                  |
+| `before_cancel` | Before cancellation               |
+| `on_cancel`     | After cancellation                |
+| `on_trash`      | Before deletion                   |
+
 
 ### 2. override_doctype_class
 This allows you to completely replace the backend class of a standard DocType with your own custom class.
@@ -190,8 +205,46 @@ class CustomSalesInvoice(SalesInvoice):
         # Your custom logic here
         print("Custom on_submit called!")
 ```
+**Important:**
+When overriding standard functionality, call the original implementation using super() unless there is a specific reason not to.
 
-### 3. override_whitelisted_methods
+### 3. extend_doctype_class
+Used to extend the standard DocType class by adding custom methods, properties, or behavior without replacing the original controller.
+
+**Basic Syntax**
+```python
+extend_doctype_class = {
+    "{doctype_name}": [
+        "your_app.extensions.custom_class.CustomClass"
+    ]
+}
+```
+**Common Usecase**
+Add custom behavior to the standard Address DocType while keeping the original class functionality.
+```py
+# hooks.py
+extend_doctype_class = {
+    "Address": [
+        "my_app.extensions.address.CustomAddress"
+    ]
+}
+
+# my_app/extensions/address.py
+from frappe.contacts.doctype.address.address import Address
+
+
+class CustomAddress(Address):
+
+    def validate(self):
+        super().validate()
+
+        # Your custom logic
+        pass
+```
+**Best Practice:**
+Prefer extend_doctype_class when you only need to add or extend functionality. Use override_doctype_class when the standard controller needs to be replaced.
+
+### 4. override_whitelisted_methods
 Used to replace any Frappe or ERPNext whitelisted API method with your own implementation.
 **Basic Syntax**
 ```python
@@ -213,7 +266,7 @@ def custom_search_link(doctype, txt, query=None, filters=None, page_length=20):
     return search_widget(doctype, txt, query, filters, page_length)
 ```
 
-### 4. override_report_class
+### 5. override_report_class
 Used to replace the Python class that powers a standard report.
 **Basic Syntax**
 ```python
@@ -244,7 +297,7 @@ class CustomARReport(AccountsReceivable):
         return columns, data
 ```
 
-### 5. scheduler_events
+### 6. scheduler_events
 Run background jobs automatically at specific time intervals (daily, hourly, etc.)
 **Basic Syntax**
 ```python
@@ -263,8 +316,17 @@ scheduler_events = {
     ]
 }
 ```
+**Common Schedules**
+| Schedule  | Use             |
+| --------- | --------------- |
+| `all`     | Runs frequently |
+| `hourly`  | Runs every hour |
+| `daily`   | Runs daily      |
+| `weekly`  | Runs weekly     |
+| `monthly` | Runs monthly    |
 
-### 6. before_install / after_install
+
+### 7. before_install / after_install
 Used to run setup scripts when the app is installed.
 **Basic Syntax**
 ```python
@@ -277,7 +339,7 @@ Create default records after app installation:
 after_install = "my_app.install.setup_default_roles"
 ```
 
-### 7. Fixtures
+### 8. Fixtures
 Fixtures are used to migrate specific data and settings from the custom app during its installation, so they could be available after installation
 
 **Basic Syntax**
@@ -305,7 +367,7 @@ fixtures = [
     }]
 ```
 
-### 8. page_js
+### 9. page_js
 page_js allows you to include custom JavaScript files specifically for standard Frappe pages like print, query-report, dashboard, etc.
 
 **Basic Syntax**
