@@ -325,9 +325,9 @@ bench new-site dev.localhost
 
 -   Site name should follow the format **.localhost**
     
--   Administrator password: **admin**
+-   Administrator password: <pwd>
     
--   MySQL root password: **123**
+-   MySQL root password: <MySQL_pwd>
     
 
 ----------
